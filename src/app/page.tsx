@@ -77,20 +77,108 @@ export default function MainSlider() {
   ));
 
   return (
-    <div className='main-slider-div-bg'>
-      <div className='swiper-container swiper-container-1'>
-        <div className='swiper-wrapper'>
-          {slides}
+    <>
+      <div className='main-slider-div-bg'>
+        <div className='swiper-container swiper-container-1'>
+          <div className='swiper-wrapper'>
+            {slides}
+          </div>
+        </div>
+        <div className="main-slider-back">
+          <Image 
+            src="/eab7b06f-a168-41a4-9491-9ad8c2df0299.jpg" 
+            alt="Background"
+            fill
+            style={{ objectFit: 'cover' }}
+          />
         </div>
       </div>
-      <div className="main-slider-back">
-        <Image 
-          src="/eab7b06f-a168-41a4-9491-9ad8c2df0299.jpg" 
-          alt="Background"
-          fill
-          style={{ objectFit: 'cover' }}
-        />
+
+      <div className='main-news-page'>
+        <div className='main-news-page-small'>
+          <div className='news-page-title-menu-div'>
+            <div className='news-page-title'>
+              <span className='news-page-title-span'>НОВОСТИ</span>
+            </div>
+            <div className='news-page-menu'>
+              <a href="#" className='news-page-menu-btn active'>Все Новости</a>
+              <a href="#" className='news-page-menu-btn'>Научные</a>
+              <a href="#" className='news-page-menu-btn'>Сообщество</a>
+              <a href="#" className='news-page-menu-btn'>Посещения</a>
+              <a href="#" className='news-page-menu-btn'>События</a>
+              <a href="#" className='news-page-menu-btn'>Новости спорта</a>
+              <a href="#" className='news-page-menu-btn'>Поздравления</a>
+            </div>
+          </div>
+
+          <div className='main-news-all-cards-div'>
+            {[1, 2, 3, 4, 5, 6].map((index) => (
+              <div className='news-card' key={index}>
+                <div className='news-photo-div'>
+                  <div className='news-category'>
+                    <span className='news-category-span'>Событие</span>
+                  </div>
+                  <img 
+                    className='news-photo'
+                    src={index === 1 ? "/0xGrCR8gUquinkrMYlrCTLNiT3KO1yqO.jpg" : "/photo_2024-07-18_17-00-41.png"}
+                    alt=""
+                  />
+                </div>
+                <div className='news-info'>
+                  <div className="news-info-types">
+                    <p>Tegishli maqsadlar:</p>
+                    <div>
+                      <a href="#"><span className="number" style={{ background: 'rgb(197, 25, 45)' }}>4</span></a>
+                      <a href="#"><span className="number" style={{ background: 'rgb(19, 73, 107)' }}>17</span></a>
+                    </div>
+                  </div>
+                  <div className='news-title'>
+                    <a href="../singlenews/index.html" className='news-title-span'>
+                      Поездка студентов и докторантов в Китай
+                    </a>
+                  </div>
+                  <div className='news-post-date'>
+                    <span className='news-post-time-span'>19:20</span>
+                    <span className='news-post-date-span'>20 Июль 2024</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className='news-page-numbers'>
+            <div className='news-page-numbers-left'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                <path fillRule="evenodd" clipRule="evenodd" d="M10.9691 5.69757C10.664 5.39248 10.1694 5.39248 9.86427 5.69757L3.61427 11.9476C3.30916 12.2527 3.30916 12.7473 3.61427 13.0524L9.86427 19.3024C10.1694 19.6075 10.664 19.6075 10.9691 19.3024C11.2742 18.9973 11.2742 18.5027 10.9691 18.1976L6.05281 13.2812L20.8333 13.2812C21.2648 13.2812 21.6146 12.9315 21.6146 12.5C21.6146 12.0685 21.2648 11.7187 20.8333 11.7187L6.05281 11.7187L10.9691 6.80242C11.2742 6.49733 11.2742 6.00266 10.9691 5.69757Z" fill="#002B6A" />
+              </svg>
+            </div>
+            <div className='news-page-numbers-num'>
+              <span className='news-page-numbers-span active'>1</span>
+              <span className='news-page-numbers-span'>2</span>
+              <span className='news-page-numbers-span'>3</span>
+              <span className='news-page-numbers-span'>4</span>
+              <span className='news-page-dots-span'>...</span>
+              <span className='news-page-numbers-span'>18</span>
+              <span className='news-page-numbers-span'>19</span>
+              <span className='news-page-numbers-span'>20</span>
+            </div>
+            <div className='news-page-numbers-right'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                <path fillRule="evenodd" clipRule="evenodd" d="M14.0309 19.3024C14.336 19.6075 14.8306 19.6075 15.1357 19.3024L21.3857 13.0524C21.6908 12.7473 21.6908 12.2527 21.3857 11.9476L15.1357 5.69761C14.8306 5.3925 14.336 5.3925 14.0309 5.69761C13.7258 6.00271 13.7258 6.49729 14.0309 6.8024L18.9472 11.7188H4.16667C3.7352 11.7188 3.38542 12.0685 3.38542 12.5C3.38542 12.9315 3.7352 13.2813 4.16667 13.2813H18.9472L14.0309 18.1976C13.7258 18.5027 13.7258 18.9973 14.0309 19.3024Z" fill="#002B6A" />
+              </svg>
+            </div>
+          </div>
+
+          <div className='all-events-page-link-div'>
+            <Link href="/newspage" className='all-events-page-link'>
+              Все новости
+            </Link>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+              <path fillRule="evenodd" clipRule="evenodd" d="M14.0309 19.3024C14.336 19.6075 14.8306 19.6075 15.1357 19.3024L21.3857 13.0524C21.6908 12.7473 21.6908 12.2527 21.3857 11.9476L15.1357 5.69761C14.8306 5.3925 14.336 5.3925 14.0309 5.69761C13.7258 6.00271 13.7258 6.49729 14.0309 6.8024L18.9472 11.7188H4.16667C3.7352 11.7188 3.38542 12.0685 3.38542 12.5C3.38542 12.9315 3.7352 13.2813 4.16667 13.2813H18.9472L14.0309 18.1976C13.7258 18.5027 13.7258 18.9973 14.0309 19.3024Z" fill="#002B6A" />
+            </svg>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
