@@ -1,7 +1,15 @@
 'use client'
 import Image from 'next/image'
 import { useEffect } from 'react';
- const  Header = () => {
+import { useTranslation } from 'react-i18next';
+
+const Header = () => {
+    const { t, i18n } = useTranslation();
+    
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
+
     useEffect(() => {
         const burger_menu = document.querySelector('.header-menu-nav-burger');
         const menu = document.querySelector('.header-main-nav');
@@ -130,11 +138,16 @@ import { useEffect } from 'react';
                     </div>
                     <div className='header-main-left'>
                         <div className='header-main-left-lang'>
-                            <select name="language" id="language">
-                                <option value="UZ">O'zbekcha</option>
-                                <option value="QR">Qaraqalpaqsha</option>
-                                <option value="RU">Русский</option>
-                                <option value="EN">English</option>
+                            <select 
+                                name="language" 
+                                id="language"
+                                onChange={(e) => changeLanguage(e.target.value.toLowerCase())}
+                                value={i18n.language?.toUpperCase()}
+                            >
+                                <option value="UZ">{t('header.languages.uz')}</option>
+                                <option value="KK">{t('header.languages.kk')}</option>
+                                <option value="RU">{t('header.languages.ru')}</option>
+                                <option value="EN">{t('header.languages.en')}</option>
                             </select>
                             <div className="language-icons" aria-hidden="true">
                                 <Image src="/uzbek-icon.jpg" alt="" width={20} height={20} />

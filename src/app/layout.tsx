@@ -1,9 +1,10 @@
 import Header from './components/Header'
 import Footer from './components/Footer'
 import './styles/main.css'
+import './styles/mormalize.css'
 import Script from 'next/script'
-import './mormalize.css'
 import { Nunito, Roboto, Cabin } from 'next/font/google'
+import '../app/i18n/config'
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -81,7 +82,6 @@ export default function RootLayout({
         {children}
         <Footer />
 
-        {/* Scripts */}
         <Script src="https://code.jquery.com/jquery-3.6.0.min.js" strategy="beforeInteractive" />
         <Script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js" strategy="afterInteractive" />
       </body>
