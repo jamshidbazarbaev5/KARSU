@@ -15,7 +15,6 @@ const Header = () => {
         const menu = document.querySelector('.header-main-nav');
         const close_menu = document.querySelector('.menu-btn');
         
-        // Burger menu toggle
         burger_menu?.addEventListener('click', () => {
           menu?.classList.add('actived');
         });
@@ -24,7 +23,6 @@ const Header = () => {
           menu?.classList.remove('actived');
         });
     
-        // Media query handling
         const mediaQuery = window.matchMedia("(max-width: 1439px)");
         
         const toggleClickListeners = (add: boolean) => {
@@ -54,7 +52,6 @@ const Header = () => {
         handleScreenChange(mediaQuery);
         mediaQuery.addEventListener('change', handleScreenChange);
     
-        // Cleanup function
         return () => {
           burger_menu?.removeEventListener('click', () => {
             menu?.classList.add('actived');
@@ -66,7 +63,7 @@ const Header = () => {
           
           mediaQuery.removeEventListener('change', handleScreenChange);
         };
-      }, []); // Empty dependency
+      }, []);
     return (
         <>
             <div className='header-main'>
@@ -94,7 +91,7 @@ const Header = () => {
                                         d="M7.5 30c0-2.21-.672-4-1.5-4s-1.5 1.79-1.5 4 .672 4 1.5 4 1.5-1.79 1.5-4z"
                                         fill="#ffffff"></path>
                                 </svg>
-                                <span>Moodle</span>
+                                <span>{t('header.topLinks.moodle')}</span>
                             </li>
                             <li className='header-main-right-li'>
                                 <svg className="top-links__svg"
@@ -114,7 +111,7 @@ const Header = () => {
                                         d="M0,52.1v128.484c0,1.475,0.339,2.897,0.707,4.256l69.738-67.156L0,52.1z"
                                         fill="#ffffff"></path>
                                 </svg>
-                                <span> Корпоративная почта</span>
+                                <span>{t('header.topLinks.corporateEmail')}</span>
                             </li>
                             <a href="../rektor/rektor.html"
                                 className='header-main-right-li'>
@@ -132,7 +129,7 @@ const Header = () => {
                                         d="M20.5355 20.5355C22 19.0711 22 16.714 22 12C22 10.4517 22 9.15774 21.9481 8.0661L15.586 14.4283C15.2347 14.7797 14.9708 15.0437 14.6738 15.2753C14.3252 15.5473 13.948 15.7804 13.5488 15.9706C13.2088 16.1327 12.8546 16.2506 12.3833 16.4076L9.45143 17.3849C8.64568 17.6535 7.75734 17.4438 7.15678 16.8432C6.55621 16.2427 6.34651 15.3543 6.61509 14.5486L7.59235 11.6167C7.74936 11.1454 7.86732 10.7912 8.02935 10.4512C8.21958 10.052 8.45272 9.6748 8.72466 9.32615C8.9563 9.02918 9.22032 8.76528 9.57173 8.41404L15.9339 2.05188C14.8423 2 13.5483 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355Z"
                                         fill="#ffffff" />
                                 </svg>
-                                <span> Приемная ректора</span>
+                                <span>{t('header.topLinks.rectorsOffice')}</span>
                             </a>
                         </ul>
                     </div>
@@ -203,7 +200,7 @@ const Header = () => {
                                 <input type="checkbox" id="uni_menu" />
                                 <label htmlFor="uni_menu"
                                     className="header-main-menu-list-li">
-                                    УНИВЕРСИТЕТ
+                                    {t('header.mainMenu.university')}
                                 </label>
 
                                 <div className="header-main-hover">
@@ -212,7 +209,7 @@ const Header = () => {
                                             <div className="header-block-flex-part">
                                                 <div
                                                     className="header-block-flex-uni">
-                                                    <span>УНИВЕРСИТЕТ</span>
+                                                    <span>{t('header.mainMenu.university')}</span>
                                                     <svg width="60" height="60"
                                                         viewBox="0 0 48 40"
                                                         fill="none"
@@ -315,96 +312,35 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.charter')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.mission')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.regulations')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.leadership')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.structure')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.councils')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.ratings')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.requisites')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.financialReports')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.universityInNumbers')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.accreditation')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.universitySubmenu.famousGraduates')}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -416,7 +352,7 @@ const Header = () => {
                                 <input type="checkbox" id="sec_menu" />
                                 <label htmlFor="sec_menu"
                                     className="header-main-menu-list-li">
-                                    ДЕЯТЕЛЬНОСТЬ
+                                    {t('header.mainMenu.activities')}
                                 </label>
 
                                 <div className="header-main-hover">
@@ -425,7 +361,7 @@ const Header = () => {
                                             <div className="header-block-flex-part">
                                                 <div
                                                     className="header-block-flex-uni">
-                                                    <span>ДЕЯТЕЛЬНОСТЬ</span>
+                                                    <span>{t('header.mainMenu.activities')}</span>
                                                     <svg width="48" height="40"
                                                         viewBox="0 0 48 40"
                                                         fill="none"
@@ -473,17 +409,13 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.charter')}</a>
                                                 </div>
 
                                             </div>
@@ -560,17 +492,35 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.charter')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.mission')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.regulations')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.leadership')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.structure')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.councils')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.ratings')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.requisites')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.financialReports')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.universityInNumbers')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.accreditation')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.famousGraduates')}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -646,17 +596,35 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.charter')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.mission')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.regulations')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.leadership')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.structure')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.councils')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.ratings')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.requisites')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.financialReports')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.universityInNumbers')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.accreditation')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.famousGraduates')}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -732,17 +700,13 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.internationalSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.internationalSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.internationalSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.internationalSubmenu.charter')}</a>
                                                 </div>
 
                                             </div>
@@ -819,17 +783,35 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.charter')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.mission')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.regulations')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.leadership')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.structure')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.councils')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.ratings')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.requisites')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.financialReports')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.universityInNumbers')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.accreditation')}</a>
+                                                    <a href="#"
+                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.famousGraduates')}</a>
                                                 </div>
 
                                             </div>
@@ -905,17 +887,13 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.marketingSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.marketingSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.marketingSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.marketingSubmenu.charter')}</a>
                                                 </div>
 
                                             </div>
@@ -992,17 +970,13 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.charter')}</a>
                                                 </div>
 
                                             </div>
@@ -1078,77 +1052,35 @@ const Header = () => {
                                                 <div
                                                     className="header-block-flex-links">
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.administration')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.history')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.internalRules')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.charter')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.mission')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.regulations')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.leadership')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.structure')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.councils')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.ratings')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.requisites')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.financialReports')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.universityInNumbers')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.accreditation')}</a>
                                                     <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Админстрация</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">История
-                                                        университета</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Правила
-                                                        внутренного
-                                                        распорядка</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">Устав
-                                                        университета</a>
+                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.famousGraduates')}</a>
                                                 </div>
 
                                             </div>
@@ -1331,30 +1263,30 @@ const Header = () => {
                                                     className="fa-solid fa-angle-right"></i>
                                             </a>
                                             <ul className="header-main-nav-ul">
-                                                <a href="#">
+                                            <a href="#">
                                                     <li>Seminarlar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Resurslar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Bakalavriat</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Magistratura</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Malaka
                                                         talablari</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>O'quv rejalar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>O'quv
                                                         dasturlari(Sillabuslar)</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Masofaviy o'qitish
                                                         tizimi</li>
                                                 </a>
@@ -1371,32 +1303,32 @@ const Header = () => {
                                             </a>
 
                                             <ul className="header-main-nav-ul">
-                                                <a href="#">
+                                            <a href="#">
                                                     <li>Xalqaro aloqalar
                                                         departamenti
                                                         xodimlari</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Xalqaro hamkorlik
                                                         aloqalari</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Xalqaro
                                                         grantlar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Xalqaro ilmiy
                                                         aloqalari</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Xalqaro
                                                         konferensiyalar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Xorijda malaka oshirish
                                                         va ta'lim</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li> Xorijlik pedagoglar
                                                         uchun malaka</li>
                                                 </a>
@@ -1411,47 +1343,47 @@ const Header = () => {
                                                     className="fa-solid fa-angle-right"></i>
                                             </a>
                                             <ul className="header-main-nav-ul">
-                                                <a href="#">
+                                            <a href="#">
                                                     <li>Jamoaviy
                                                         klublar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Sog'liqni saqlashni
                                                         xizmati</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Ijtimoiy hayot</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Ijtimoiy
                                                         xonalar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Tanlovlar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Ijtimoiy muhofaza
                                                         markazi</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Talabalar turar
                                                         joyi</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Sport
                                                         inshootlari</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Kafeteriyalar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Kitob do'koni</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Imkoniyati cheklanganlar
                                                         uchun qulayliklar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Talaba fikri</li>
                                                 </a>
                                             </ul>
@@ -1465,16 +1397,16 @@ const Header = () => {
                                                     className="fa-solid fa-angle-right"></i>
                                             </a>
                                             <div className="header-main-nav-ul">
-                                                <a href="#">
+                                            <a href="#">
                                                     <li>Ikkinchi taʼlim
                                                         to'g'risidagi nizom</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Qabul 2024
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         2024/2025 o'quv yili
                                                         uchun
@@ -1485,61 +1417,61 @@ const Header = () => {
                                                         qabul
                                                         shartlari
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Xalqaro abituriyentlarga
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Mahalliy abiturentlarga
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Qabul bo'yicha
                                                         bog'lanish
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Qabul kvotalari
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Abituriyentlar uchun
                                                         yo'riqnoma
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         O'qishni ko'chirish
                                                         bo'yicha
                                                         ma'lumotlar
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Bakalavriatga qabul
                                                         uchun
                                                         ro'yhatdan o'tish
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Javoblar varaqasi bilan
                                                         ishlash
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Texnikum bitiruvchilari
                                                         qabuli-2024
                                                     </li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>
                                                         Tez-tez so'raladigan
                                                         savollarga
@@ -1557,20 +1489,20 @@ const Header = () => {
                                                     className="fa-solid fa-angle-right"></i>
                                             </a>
                                             <ul className="header-main-nav-ul">
-                                                <a href="#">
+                                            <a href="#">
                                                     <li>Yangiliklar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Videogalereya</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Kutilayotgan
                                                         tadbirlar</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Fotogalereya</li>
-                                                </a>
-                                                <a href="#">
+                                            </a>
+                                            <a href="#">
                                                     <li>Kontaktlar</li>
                                                 </a>
                                             </ul>
@@ -1591,19 +1523,19 @@ const Header = () => {
                             <div className="header-main-nav-footer">
                                 <div className="header-nav-footer-info">
                                     <div>
-                                        <a href="#">
+                                            <a href="#">
                                             <i className="fa-solid fa-phone"></i>
                                             <span>+998 61 223-60-47</span>
-                                        </a>
+                                            </a>
                                     </div>
                                     <div>
-                                        <a href="#">
+                                            <a href="#">
                                             <i className="fa-solid fa-envelope"></i>
                                             <span>karsu_info@edu.uz</span>
-                                        </a>
+                                            </a>
                                     </div>
                                     <div>
-                                        <a href="#">
+                                            <a href="#">
                                             <i
                                                 className="fa-solid fa-location-dot"></i>
                                             <span>Nukus</span>

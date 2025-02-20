@@ -1,22 +1,41 @@
 'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import Swiper from 'swiper';
 import 'swiper/css';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import 'swiper/css/effect-fade';
+import 'swiper/css/effect-cube';
+import 'swiper/css/effect-coverflow';
 
 const facultiesData = [
-  { id: 'acc1', title: 'Chet tillari fakulteti' },
-  { id: 'acc2', title: 'Fizika fakulteti' },
-  { id: 'acc3', title: 'KF va jurnalistika fakulteti' },
-  { id: 'acc4', title: 'Ozbek filologiyasi fakulteti' },
-  { id: 'acc5', title: 'Tarix fakulteti' },
-  { id: 'acc6', title: 'Iqtisodiyot fakulteti' }
+  { 
+    id: 1, 
+    title: 'Факультет Узбекской филологии',
+    description: 'Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.'
+  },
+  { 
+    id: 2, 
+    title: 'Факультет Физики',
+   description: 'Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.'
+  },
+  { 
+    id: 3, 
+    title: 'Факультет МФ и журналистики',
+   description: 'Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.'
+  },
+  { 
+    id: 4, 
+    title: 'Факультет Истории',
+  description: 'Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.'
+  }
 ];
 
 export default function MainSlider() {
+  const { t } = useTranslation();
+
   useEffect(() => {
     let mainSwiper: Swiper | null = null;
     let videoSwiper: Swiper | null = null;
@@ -79,28 +98,42 @@ export default function MainSlider() {
           mousewheel: true,
           grabCursor: true,
           loop: true,
+          speed: 800,
+          effect: 'slide',
           autoplay: {
-            delay: 3000,
+            delay: 1000,
             disableOnInteraction: false,
+            reverseDirection: true
           },
           pagination: {
             el: '.swiper-pagination',
             clickable: true,
           },
           navigation: {
-            nextEl: '.swiper-next',
-            prevEl: '.swiper-prev',
+            nextEl: '.faculty-select-btn.swiper-next',
+            prevEl: '.faculty-select-btn.swiper-prev',
           },
+          on: {
+            slideChange: function(swiper) {
+              if (infoSwiper) {
+                infoSwiper.slideTo(swiper.realIndex);
+              }
+            }
+          }
         });
       }
 
-      // Info slider initialization
       if (document.querySelector('.swiper-container-info')) {
         infoSwiper = new Swiper('.swiper-container-info', {
           direction: 'vertical',
           slidesPerView: 1,
           mousewheel: true,
           loop: true,
+          speed: 800,
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          },
           autoplay: {
             delay: 3000,
             disableOnInteraction: false,
@@ -115,11 +148,23 @@ export default function MainSlider() {
           },
         });
       }
+
+      const nextBtn = document.querySelector('.faculty-select-btn.swiper-next');
+      const prevBtn = document.querySelector('.faculty-select-btn.swiper-prev');
+      
+      if (nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', () => {
+          facultySwiper?.slidePrev();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+          facultySwiper?.slideNext();
+        });
+      }
     } catch (error) {
       console.error('Error initializing Swiper:', error);
     }
 
-    // Horizontal scroll for news menu
     const newsMenuContainer = document.querySelector('.news-page-menu');
     if (newsMenuContainer) {
       const handleWheel = (event: WheelEvent) => {
@@ -127,7 +172,6 @@ export default function MainSlider() {
         (event.currentTarget as HTMLElement).scrollLeft += event.deltaY;
       };
       
-      // Cast the event handler to EventListener
       newsMenuContainer.addEventListener('wheel', handleWheel as unknown as EventListener);
 
       // Cleanup
@@ -135,19 +179,28 @@ export default function MainSlider() {
         try {
           if (mainSwiper) mainSwiper.destroy();
           if (videoSwiper) videoSwiper.destroy();
-          if (facultySwiper) facultySwiper.destroy();
+          if (facultySwiper) {
+            const nextBtn = document.querySelector('.faculty-select-btn.swiper-next');
+            const prevBtn = document.querySelector('.faculty-select-btn.swiper-prev');
+            
+            if (nextBtn && prevBtn) {
+              nextBtn.removeEventListener('click', () => facultySwiper?.slidePrev());
+              prevBtn.removeEventListener('click', () => facultySwiper?.slideNext());
+            }
+            
+            facultySwiper.destroy();
+          }
           if (infoSwiper) infoSwiper.destroy();
         } catch (error) {
           console.error('Error destroying Swiper instances:', error);
         }
 
-        // Remove event listener with the same cast
         if (newsMenuContainer) {
           newsMenuContainer.removeEventListener('wheel', handleWheel as unknown as EventListener);
         }
       };
     }
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
   const slides = [1, 2, 3].map((index) => (
     <div className='swiper-slide' key={index}>
@@ -161,7 +214,7 @@ export default function MainSlider() {
                 </div>
                 <div className='header-logo-title-bg'>
                   <Link href="/" className='header-logo-title'>
-                    КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
+                    {t('university.name')}
                   </Link>
                 </div>
               </div>
@@ -170,15 +223,15 @@ export default function MainSlider() {
               <div className='main-slider-div-data-small'>
                 <div className='main-slider-div-data-span-div'>
                   <span className='main-slider-div-data-span-uni-title'>
-                    КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
+                    {t('university.name')}
                   </span>
                   <span className='main-slider-div-data-span-text'>
-                    ПРИЕМ ЗАЯВОК НА 2024/2025 УЧЕБНЫЙ ГОД
+                    {t('university.admissions')}
                   </span>
                 </div>
                 <div className='main-slider-btn-div'>
                   <Link href="#" className='main-slider-btn'>
-                    ПОДРОБНЕЕ
+                    {t('university.moreDetails')}
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20" fill="none">
                       <path d="M3 10.4569H16M16 10.4569L12.3889 6.4458M16 10.4569L12.3889 14.4681" stroke="white" strokeWidth="1.2" />
                     </svg>
@@ -230,16 +283,16 @@ export default function MainSlider() {
         <div className='main-news-page-small'>
           <div className='news-page-title-menu-div'>
             <div className='news-page-title'>
-              <span className='news-page-title-span'>НОВОСТИ</span>
+              <span className='news-page-title-span'>{t('sections.news')}</span>
             </div>
             <div className='news-page-menu'>
-              <a href="#" className='news-page-menu-btn active'>Все Новости</a>
-              <a href="#" className='news-page-menu-btn'>Научные</a>
-              <a href="#" className='news-page-menu-btn'>Сообщество</a>
-              <a href="#" className='news-page-menu-btn'>Посещения</a>
-              <a href="#" className='news-page-menu-btn'>События</a>
-              <a href="#" className='news-page-menu-btn'>Новости спорта</a>
-              <a href="#" className='news-page-menu-btn'>Поздравления</a>
+              <a href="#" className='news-page-menu-btn active'>{t('navigation.allNews')}</a>
+              <a href="#" className='news-page-menu-btn'>{t('navigation.scientific')}</a>
+              <a href="#" className='news-page-menu-btn'>{t('navigation.community')}</a>
+              <a href="#" className='news-page-menu-btn'>{t('navigation.visits')}</a>
+              <a href="#" className='news-page-menu-btn'>{t('navigation.events')}</a>
+              <a href="#" className='news-page-menu-btn'>{t('navigation.sportsNews')}</a>
+              <a href="#" className='news-page-menu-btn'>{t('navigation.congratulations')}</a>
             </div>
           </div>
 
@@ -248,7 +301,7 @@ export default function MainSlider() {
               <div className='news-card' key={index}>
                 <div className='news-photo-div'>
                   <div className='news-category'>
-                    <span className='news-category-span'>Событие</span>
+                    <span className='news-category-span'>{t('common.event')}</span>
                   </div>
                   <img 
                     className='news-photo'
@@ -258,7 +311,7 @@ export default function MainSlider() {
                 </div>
                 <div className='news-info'>
                   <div className="news-info-types">
-                    <p>Tegishli maqsadlar:</p>
+                    <p>{t('common.relatedGoals')}:</p>
                     <div>
                       <a href="#"><span className="number" style={{ background: 'rgb(197, 25, 45)' }}>4</span></a>
                       <a href="#"><span className="number" style={{ background: 'rgb(19, 73, 107)' }}>17</span></a>
@@ -266,7 +319,7 @@ export default function MainSlider() {
                   </div>
                   <div className='news-title'>
                     <a href="../singlenews/index.html" className='news-title-span'>
-                      Поездка студентов и докторантов в Китай
+                      {t('common.attention')}
                     </a>
                   </div>
                   <div className='news-post-date'>
@@ -303,7 +356,7 @@ export default function MainSlider() {
 
           <div className='all-events-page-link-div'>
             <Link href="/newspage" className='all-events-page-link'>
-              Все новости
+              {t('navigation.allNews')}
             </Link>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
               <path fillRule="evenodd" clipRule="evenodd" d="M14.0309 19.3024C14.336 19.6075 14.8306 19.6075 15.1357 19.3024L21.3857 13.0524C21.6908 12.7473 21.6908 12.2527 21.3857 11.9476L15.1357 5.69761C14.8306 5.3925 14.336 5.3925 14.0309 5.69761C13.7258 6.00271 13.7258 6.49729 14.0309 6.8024L18.9472 11.7188H4.16667C3.7352 11.7188 3.38542 12.0685 3.38542 12.5C3.38542 12.9315 3.7352 13.2813 4.16667 13.2813H18.9472L14.0309 18.1976C13.7258 18.5027 13.7258 18.9973 14.0309 19.3024Z" fill="#002B6A" />
@@ -316,7 +369,7 @@ export default function MainSlider() {
         <div className='main-events-page-small'>
           <div className='events-page-title-menu-div'>
             <div className='events-page-title'>
-              <span className='events-page-title-span'>СОБЫТИЯ</span>
+              <span className='events-page-title-span'>{t('sections.events')}</span>
             </div>
           </div>
 
@@ -326,12 +379,12 @@ export default function MainSlider() {
                 <div className="main-event-top">
                   <div className='main-event-title'>
                     <Link href="#" className='main-event-title-link'>
-                      ВНИМАНИЕ!!! ВНИМАНИЕ!!! СРОЧНО!!!!
+                      {t('common.attention')}
                     </Link>
                   </div>
                   <div className='main-event-info'>
                     <span className='main-event-info-span'>
-                      Каракалпакский государственный университет проводит набор абитуриентов для обучения в Уфимском университете науки и технологий на бюджетной основе...
+                      {t('common.attention')}
                     </span>
                   </div>
                 </div>
@@ -351,7 +404,7 @@ export default function MainSlider() {
         <div className="main-videos-page-small">
           <div className="videos-page-title-menu-div">
             <div className="videos-page-title">
-              <span className="videos-page-title-span">ВИДЕО ГАЛЕРЕЯ</span>
+              <span className="videos-page-title-span">{t('sections.videoGallery')}</span>
             </div>
           </div>
           
@@ -376,7 +429,7 @@ export default function MainSlider() {
 
             <div className='all-events-page-link-div'>
               <Link href="/videos" className='all-events-page-link'>
-                Все видео
+                {t('navigation.allVideos')}
               </Link>
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
                 <path 
@@ -395,7 +448,7 @@ export default function MainSlider() {
         <div className='faculties-page-small'>
           <div className='faculties-page-title-menu-div'>
             <div className='faculties-page-title'>
-              <span className='faculties-page-title-span'>ФАКУЛЬТЕТЫ</span>
+              <span className='faculties-page-title-span'>{t('sections.faculties')}</span>
             </div>
           </div>
           <div className='main-faculties-page'>
@@ -403,12 +456,7 @@ export default function MainSlider() {
               <div className='all-faculties-page'>
                 <div className="swiper-container swiper-container-faculty">
                   <div className="swiper-wrapper">
-                    {[
-                      { id: 1, title: 'Факультет Узбекской филологии' },
-                      { id: 2, title: 'Факультет Физики' },
-                      { id: 3, title: 'Факультет МФ и журналистики' },
-                      { id: 4, title: 'Факультет Истории' }
-                    ].map(({ id, title }) => (
+                    {facultiesData.map(({ id, title }) => (
                       <div className="swiper-slide" data-faculty={id} key={id}>
                         <div className='faculty-card'>
                           <div className='faculty-logo'>
@@ -430,13 +478,24 @@ export default function MainSlider() {
               </div>
 
               <div className='faculty-select'>
-                <button className='faculty-select-btn swiper-next'>
+                <button 
+                  className='faculty-select-btn swiper-next'
+                  aria-label="Previous slide"
+                  aria-controls="swiper-wrapper-faculty"
+                >
+                  {/* Up arrow SVG */}
+
                   <svg xmlns="http://www.w3.org/2000/svg" width="100" height="30" viewBox="0 0 100 30" fill="none">
                     <rect width="100" height="30" rx="5" fill="#002B6A"/>
                     <path fillRule="evenodd" clipRule="evenodd" d="M56.7712 13.5837C57.0763 13.2786 57.0763 12.784 56.7712 12.4789L50.5211 6.22894C50.216 5.92383 49.7215 5.92383 49.4164 6.22894L43.1664 12.4789C42.8613 12.784 42.8613 13.2786 43.1664 13.5837C43.4715 13.8888 43.966 13.8888 44.2711 13.5837L49.1875 8.66748V23.448C49.1875 23.8795 49.5373 24.2292 49.9688 24.2292C50.4002 24.2292 50.75 23.8795 50.75 23.448V8.66748L55.6663 13.5837C55.9714 13.8888 56.4661 13.8888 56.7712 13.5837Z" fill="white"/>
                   </svg>
                 </button>
-                <button className='faculty-select-btn swiper-prev'>
+                <button 
+                  className='faculty-select-btn swiper-prev'
+                  aria-label="Next slide"
+                  aria-controls="swiper-wrapper-faculty"
+                >
+                  {/* Down arrow SVG */}
                   <svg xmlns="http://www.w3.org/2000/svg" width="100" height="30" viewBox="0 0 100 30" fill="none">
                     <rect width="100" height="30" rx="5" fill="#002B6A"/>
                     <path fillRule="evenodd" clipRule="evenodd" d="M43.2289 16.6456C42.9238 16.9507 42.9238 17.4453 43.2289 17.7504L49.4789 24.0004C49.784 24.3055 50.2786 24.3055 50.5837 24.0004L56.8337 17.7504C57.1388 17.4453 57.1388 16.9507 56.8337 16.6456C56.5286 16.3405 56.034 16.3405 55.7289 16.6456L50.8125 21.5619V6.78137C50.8125 6.3499 50.4627 6.00012 50.0313 6.00012C49.5998 6.00012 49.25 6.3499 49.25 6.78137V21.5619L44.3337 16.6456C44.0286 16.3405 43.5339 16.3405 43.2289 16.6456Z" fill="white"/>
@@ -447,12 +506,7 @@ export default function MainSlider() {
 
             <div className="swiper-container swiper-container-info">
               <div className="swiper-wrapper">
-                {[
-                  { id: 1, title: 'Факультет Узбекской филологии' },
-                  { id: 2, title: 'Факультет Физики' },
-                  { id: 3, title: 'Факультет МФ и журналистики' },
-                  { id: 4, title: 'Факультет Истории' }
-                ].map(({ id, title }) => (
+                {facultiesData.map(({ id, title, description }) => (
                   <div className={`swiper-slide swiper-slide-${id}`} key={id}>
                     <div className='faculty-info' data-faculty={id}>
                       <div className='faculty-info-title-logo'>
@@ -471,15 +525,11 @@ export default function MainSlider() {
                       <div className='faculty-info-text-btn-div'>
                         <div className='faculty-info-text'>
                           <span className='faculty-info-text-span'>
-                            Сегодня изучение иностранных языков стало чрезвычайно важным направлением
-                            государственной политики в Республике Узбекистан. Согласно постановлению
-                            Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень
-                            деятельности по популяризации изучения иностранных языков в Республике
-                            Узбекистан» от 19 мая 2021 года.
+                            {description}
                           </span>
                         </div>
                         <Link href="#" className='faculty-info-details-btn'>
-                          Подробнее
+                          {t('common.moreDetails')}
                         </Link>
                       </div>
                     </div>
@@ -495,7 +545,7 @@ export default function MainSlider() {
         <div className='services-page-small'>
           <div className='services-page-title-menu-div'>
             <div className='services-page-title'>
-              <span className='services-page-title-span'>ИНТЕРАКТИВНЫЕ УСЛУГИ</span>
+              <span className='services-page-title-span'>{t('sections.services')}</span>
             </div>
           </div>
           <div className='all-services-cards-page'>
@@ -510,7 +560,7 @@ export default function MainSlider() {
                 </div>
                 <div className='service-name'>
                   <span className='service-name-span'>
-                    СИСТЕМА ПОДАЧИ ЗАЯВЛЕНИЙ ПО СОВМЕСТНОЙ ОБРАЗОВАТЕЛЬНОЙ ПРОГРАММЕ
+                    {t('common.attention')}
                   </span>
                 </div>
               </div>
@@ -523,7 +573,7 @@ export default function MainSlider() {
         <div className='numbers-page-small'>
           <div className='numbers-page-title-menu-div'>
             <div className='numbers-page-title'>
-              <span className='numbers-page-title-span'>КГУ В ЧИСЛАХ</span>
+              <span className='numbers-page-title-span'>{t('sections.numbers')}</span>
             </div>
           </div>
           <div className='numbers-circle-div'>
@@ -537,7 +587,7 @@ export default function MainSlider() {
                     </svg>
                   </div>
                   <div className='numbers-name'>
-                    <span className='numbers-name-span'>Количество студентов</span>
+                    <span className='numbers-name-span'>{t('common.event')}</span>
                   </div>
                   <div className='numbers-num'>
                     <span className='numbers-num-span'>123456</span>
@@ -556,7 +606,7 @@ export default function MainSlider() {
                     </svg>
                   </div>
                   <div className='numbers-name'>
-                    <span className='numbers-name-span'>Количество студентов</span>
+                    <span className='numbers-name-span'>{t('common.event')}</span>
                   </div>
                   <div className='numbers-num'>
                     <span className='numbers-num-span'>123456</span>
@@ -575,7 +625,7 @@ export default function MainSlider() {
                     </svg>
                   </div>
                   <div className='numbers-name'>
-                    <span className='numbers-name-span'>Количество студентов</span>
+                    <span className='numbers-name-span'>{t('common.event')}</span>
                   </div>
                   <div className='numbers-num'>
                     <span className='numbers-num-span'>123456</span>
@@ -615,7 +665,7 @@ export default function MainSlider() {
         <div className="partners-page-small">
           <div className="partners-page-title-menu-div">
             <div className="partners-page-title">
-              <span className="partners-page-title-span">ПАРТНЕРЫ</span>
+              <span className="partners-page-title-span">{t('sections.partners')}</span>
             </div>
           </div>
         </div>
@@ -658,7 +708,7 @@ export default function MainSlider() {
                 </div>
                 <div className="partner-name">
                   <span className="partner-name-span">
-                    Агентство по делам молодежи
+                    {t('common.event')}
                   </span>
                 </div>
               </div>

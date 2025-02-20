@@ -1,0 +1,111 @@
+{
+    "navigation": {
+      "allNews": "Все Новости",
+      "scientific": "Научные",
+      "community": "Сообщество",
+      "visits": "Посещения",
+      "events": "События",
+      "sportsNews": "Новости спорта",
+      "congratulations": "Поздравления"
+    },
+    "sections": {
+      "news": "НОВОСТИ",
+      "events": "СОБЫТИЯ",
+      "videoGallery": "ВИДЕО ГАЛЕРЕЯ",
+      "faculties": "ФАКУЛЬТЕТЫ",
+      "services": "ИНТЕРАКТИВНЫЕ УСЛУГИ",
+      "partners": "ПАРТНЕРЫ"
+    },
+    "university": {
+      "name": "КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ",
+      "admissions": "ПРИЕМ ЗАЯВОК НА 2024/2025 УЧЕБНЫЙ ГОД",
+      "moreDetails": "ПОДРОБНЕЕ"
+    },
+    "faculties": {
+      "foreignLanguages": "Факультет иностранных языков",
+      "physics": "Факультет физики",
+      "journalism": "Факультет КФ и журналистики",
+      "uzbekPhilology": "Факультет узбекской филологии",
+      "history": "Факультет истории",
+      "economics": "Факультет экономики"
+    },
+    "common": {
+      "event": "Событие",
+      "relatedGoals": "Связанные цели",
+      "moreDetails": "Подробнее",
+      "allVideos": "Все видео",
+      "attention": "ВНИМАНИЕ!!! ВНИМАНИЕ!!! СРОЧНО!!!!"
+    },
+    "header": {
+      "languages": {
+        "uz": "Узбекский",
+        "kk": "Каракалпакский",
+        "ru": "Русский",
+        "en": "Английский"
+      },
+      "topLinks": {
+        "moodle": "Moodle",
+        "corporateEmail": "Корпоративная почта",
+        "rectorsOffice": "Приемная ректора"
+      },
+      "mainMenu": {
+        "university": "УНИВЕРСИТЕТ",
+        "activities": "ДЕЯТЕЛЬНОСТЬ",
+        "students": "СТУДЕНТЫ",
+        "admissions": "ПРИЕМ-2024",
+        "international": "МЕЖДУНАРОДНАЯ ДЕЯТЕЛЬНОСТЬ",
+        "careers": "ВАКАНСИИ"
+      },
+      "universitySubmenu": {
+        "administration": "Администрация",
+        "history": "История университета",
+        "internalRules": "Правила внутреннего распорядка",
+        "charter": "Устав университета",
+        "mission": "Миссия университета",
+        "regulations": "Нормативные документы",
+        "leadership": "Руководство",
+        "structure": "Организационная структура",
+        "councils": "Советы",
+        "ratings": "Рейтинги",
+        "requisites": "Реквизиты",
+        "financialReports": "Финансовые отчеты",
+        "universityInNumbers": "Университет в цифрах",
+        "accreditation": "Аккредитация",
+        "famousGraduates": "Известные выпускники"
+      },
+      "admissionsSubmenu": {
+        "secondEducation": "Положение о втором образовании",
+        "admission2024": "Прием 2024",
+        "admissionRequirements": "Условия приема на второе и последующее высшее образование 2024/2025",
+        "internationalApplicants": "Международным абитуриентам",
+        "localApplicants": "Местным абитуриентам",
+        "admissionContacts": "Контакты приемной комиссии",
+        "admissionQuotas": "Квоты приема",
+        "applicantGuide": "Руководство для абитуриентов",
+        "transferInfo": "Информация о переводе",
+        "bachelorRegistration": "Регистрация на бакалавриат",
+        "answerSheet": "Работа с листами ответов",
+        "technicalAdmissions": "Прием выпускников техникумов-2024",
+        "faq": "Часто задаваемые вопросы"
+      },
+      "activitiesSubmenu": {
+        "title": "ДЕЯТЕЛЬНОСТЬ",
+        "research": "Исследования",
+        "education": "Образование",
+        "innovation": "Инновации",
+        "projects": "Проекты",
+        "publications": "Публикации",
+        "conferences": "Конференции",
+        "partnerships": "Партнерства"
+      },
+      "internationalSubmenu": {
+        "title": "МЕЖДУНАРОДНАЯ ДЕЯТЕЛЬНОСТЬ",
+        "partnerships": "Международные партнерства",
+        "programs": "Программы обмена",
+        "projects": "Международные проекты",
+        "mobility": "Мобильность студентов",
+        "research": "Международные исследования",
+        "cooperation": "Академическое сотрудничество"
+      }
+    }
+  }

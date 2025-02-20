@@ -1,0 +1,113 @@
+{
+    "navigation": {
+      "allNews": "Barcha Yangiliklar",
+      "scientific": "Ilmiy",
+      "community": "Jamiyat",
+      "visits": "Tashriflar",
+      "events": "Tadbirlar",
+      "sportsNews": "Sport Yangiliklari",
+      "congratulations": "Tabriklar"
+    },
+    "sections": {
+      "news": "YANGILIKLAR",
+      "events": "TADBIRLAR",
+      "videoGallery": "VIDEO GALEREYA",
+      "faculties": "FAKULTETLAR",
+      "services": "INTERAKTIV XIZMATLAR",
+      "partners": "HAMKORLAR"
+    },
+    "university": {
+      "name": "QORAQALPOQ DAVLAT UNIVERSITETI",
+      "admissions": "2024/2025 O'QUV YILI UCHUN QABUL",
+      "moreDetails": "BATAFSIL"
+    },
+    "faculties": {
+      "foreignLanguages": "Chet tillari fakulteti",
+      "physics": "Fizika fakulteti",
+      "journalism": "KF va jurnalistika fakulteti",
+      "uzbekPhilology": "O'zbek filologiyasi fakulteti",
+      "history": "Tarix fakulteti",
+      "economics": "Iqtisodiyot fakulteti"
+    },
+    "common": {
+      "event": "Tadbir",
+      "relatedGoals": "Tegishli maqsadlar",
+      "moreDetails": "Batafsil",
+      "allVideos": "Barcha videolar",
+      "attention": "DIQQAT!!! DIQQAT!!! TEZKOR!!!!"
+    },
+    "header": {
+      "languages": {
+        "uz": "O'zbek",
+        "kk": "Qaraqalpaq",
+        "ru": "Rus",
+        "en": "Ingliz"
+      },
+      "topLinks": {
+        "moodle": "Moodle",
+        "corporateEmail": "Korporativ pochta",
+        "rectorsOffice": "Rektor qabulxonasi"
+      },
+      "mainMenu": {
+        "university": "UNIVERSITET",
+        "activities": "FAOLIYAT",
+        "students": "TALABALAR",
+        "admissions": "QABUL-2024",
+        "international": "XALQARO FAOLIYAT",
+        "careers": "VAKANSIYALAR",
+        "faculties": "FAKULTETLAR"
+        
+      },
+      "universitySubmenu": {
+        "administration": "Ma'muriyat",
+        "history": "Universitet tarixi",
+        "internalRules": "Ichki tartib qoidalari",
+        "charter": "Universitet ustavi",
+        "mission": "Universitet missiyasi",
+        "regulations": "Me'yoriy hujjatlar",
+        "leadership": "Rahbariyat",
+        "structure": "Tashkiliy tuzilma",
+        "councils": "Kengashlar",
+        "ratings": "Reytinglar",
+        "requisites": "Rekvizitlar",
+        "financialReports": "Moliyaviy hisobotlar",
+        "universityInNumbers": "Universitet raqamlarda",
+        "accreditation": "Akkreditatsiya",
+        "famousGraduates": "Mashhur bitiruvchilar"
+      },
+      "admissionsSubmenu": {
+        "secondEducation": "Ikkinchi ta'lim to'g'risidagi nizom",
+        "admission2024": "Qabul 2024",
+        "admissionRequirements": "2024/2025 o'quv yili uchun ikkinchi va undan keyingi oliy ma'lumot olish bo'yicha qabul shartlari",
+        "internationalApplicants": "Xalqaro abituriyentlarga",
+        "localApplicants": "Mahalliy abituriyentlarga",
+        "admissionContacts": "Qabul bo'yicha bog'lanish",
+        "admissionQuotas": "Qabul kvotalari",
+        "applicantGuide": "Abituriyentlar uchun yo'riqnoma",
+        "transferInfo": "O'qishni ko'chirish bo'yicha ma'lumotlar",
+        "bachelorRegistration": "Bakalavriatga qabul uchun ro'yxatdan o'tish",
+        "answerSheet": "Javoblar varaqasi bilan ishlash",
+        "technicalAdmissions": "Texnikum bitiruvchilari qabuli-2024",
+        "faq": "Tez-tez so'raladigan savollarga javoblar"
+      },
+      "activitiesSubmenu": {
+        "title": "FAOLIYAT",
+        "research": "Tadqiqotlar",
+        "education": "Ta'lim",
+        "innovation": "Innovatsiyalar",
+        "projects": "Loyihalar",
+        "publications": "Nashrlar",
+        "conferences": "Konferensiyalar",
+        "partnerships": "Hamkorliklar"
+      },
+      "internationalSubmenu": {
+        "title": "XALQARO FAOLIYAT",
+        "partnerships": "Xalqaro hamkorlik",
+        "programs": "Almashinuv dasturlari",
+        "projects": "Xalqaro loyihalar",
+        "mobility": "Talabalar almashinuvi",
+        "research": "Xalqaro tadqiqotlar",
+        "cooperation": "Akademik hamkorlik"
+      }
+    }
+  }

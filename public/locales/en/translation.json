@@ -1,0 +1,111 @@
+{
+    "navigation": {
+      "allNews": "All News",
+      "scientific": "Scientific",
+      "community": "Community",
+      "visits": "Visits",
+      "events": "Events",
+      "sportsNews": "Sports News",
+      "congratulations": "Congratulations"
+    },
+    "sections": {
+      "news": "NEWS",
+      "events": "EVENTS",
+      "videoGallery": "VIDEO GALLERY",
+      "faculties": "FACULTIES",
+      "services": "INTERACTIVE SERVICES",
+      "partners": "PARTNERS"
+    },
+    "university": {
+      "name": "KARAKALPAK STATE UNIVERSITY",
+      "admissions": "ADMISSIONS FOR 2024/2025 ACADEMIC YEAR",
+      "moreDetails": "MORE DETAILS"
+    },
+    "faculties": {
+      "foreignLanguages": "Faculty of Foreign Languages",
+      "physics": "Faculty of Physics",
+      "journalism": "Faculty of CF and Journalism",
+      "uzbekPhilology": "Faculty of Uzbek Philology",
+      "history": "Faculty of History",
+      "economics": "Faculty of Economics"
+    },
+    "common": {
+      "event": "Event",
+      "relatedGoals": "Related Goals",
+      "moreDetails": "More Details",
+      "allVideos": "All Videos",
+      "attention": "ATTENTION!!! ATTENTION!!! URGENT!!!!"
+    },
+    "header": {
+      "languages": {
+        "uz": "Uzbek",
+        "kk": "Karakalpak",
+        "ru": "Russian", 
+        "en": "English"
+      },
+      "topLinks": {
+        "moodle": "Moodle",
+        "corporateEmail": "Corporate Email",
+        "rectorsOffice": "Rector's Office"
+      },
+      "mainMenu": {
+        "university": "UNIVERSITY",
+        "activities": "ACTIVITIES",
+        "students": "STUDENTS",
+        "admissions": "ADMISSIONS-2024",
+        "international": "INTERNATIONAL ACTIVITIES",
+        "careers": "CAREERS"
+      },
+      "universitySubmenu": {
+        "administration": "Administration",
+        "history": "University History",
+        "internalRules": "Internal Rules",
+        "charter": "University Charter",
+        "mission": "University Mission",
+        "regulations": "Regulations",
+        "leadership": "Leadership",
+        "structure": "Organizational Structure",
+        "councils": "Councils",
+        "ratings": "Ratings",
+        "requisites": "Requisites",
+        "financialReports": "Financial Reports",
+        "universityInNumbers": "University in Numbers",
+        "accreditation": "Accreditation",
+        "famousGraduates": "Famous Graduates"
+      },
+      "admissionsSubmenu": {
+        "secondEducation": "Second Education Regulations",
+        "admission2024": "Admission 2024",
+        "admissionRequirements": "2024/2025 Academic Year Second and Subsequent Higher Education Admission Requirements",
+        "internationalApplicants": "International Applicants",
+        "localApplicants": "Local Applicants",
+        "admissionContacts": "Admission Contacts",
+        "admissionQuotas": "Admission Quotas",
+        "applicantGuide": "Applicant Guide",
+        "transferInfo": "Transfer Information",
+        "bachelorRegistration": "Bachelor's Registration",
+        "answerSheet": "Working with Answer Sheets",
+        "technicalAdmissions": "Technical School Graduates Admission-2024",
+        "faq": "Frequently Asked Questions"
+      },
+      "activitiesSubmenu": {
+        "title": "ACTIVITIES",
+        "research": "Research",
+        "education": "Education",
+        "innovation": "Innovation",
+        "projects": "Projects",
+        "publications": "Publications",
+        "conferences": "Conferences",
+        "partnerships": "Partnerships"
+      },
+      "internationalSubmenu": {
+        "title": "INTERNATIONAL ACTIVITIES",
+        "partnerships": "International Partnerships",
+        "programs": "Exchange Programs",
+        "projects": "International Projects",
+        "mobility": "Student Mobility",
+        "research": "International Research",
+        "cooperation": "Academic Cooperation"
+      }
+    }
+  }
