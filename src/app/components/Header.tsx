@@ -1,11 +1,41 @@
 'use client'
 import Image from 'next/image'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+interface MenuTranslation {
+    name: string;
+    title: string;
+    slug: string;
+    description: string;
+}
+
+interface MenuItem {
+    id: number;
+    parent: number | null;
+    translations: {
+        en: MenuTranslation;
+        ru: MenuTranslation;
+        uz: MenuTranslation;
+        kk: MenuTranslation;
+    };
+    menu_posts: number[];
+}
 
 const Header = () => {
     const { t, i18n } = useTranslation();
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+    const router = useRouter();
     
+    useEffect(() => {
+        fetch('https://debttracker.uz/en/menus/main/')
+            .then(res => res.json())
+            .then(data => setMenuItems(data))
+            .catch(err => console.error('Error fetching menu items:', err));
+    }, []);
+
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
     };
@@ -64,6 +94,115 @@ const Header = () => {
           mediaQuery.removeEventListener('change', handleScreenChange);
         };
       }, []);
+
+    const renderMenuItem = (item: MenuItem) => {
+        const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
+        
+        const handleMenuClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+            e.preventDefault();
+            const menuSlug = translation.slug;
+            if (menuSlug) {
+                router.push(`/menus/main/${menuSlug}/`);
+            }
+        };
+
+        return (
+            <li key={item.id} className='header-main-menu-list-li' id={`menu-${item.id}`}>
+                <input type="checkbox" id={`menu_${item.id}`} />
+                <label 
+                    htmlFor={`menu_${item.id}`}
+                    className="header-main-menu-list-li"
+                    onClick={handleMenuClick}
+                >
+                    {translation.name}
+                </label>
+
+                {menuItems.filter(subItem => subItem.parent === item.id).length > 0 && (
+                    <div className="header-main-hover">
+                        <div className="header-main-hover-block">
+                            <div className="header-hover-block-flex">
+                                <div className="header-block-flex-part">
+                                    <div className="header-block-flex-uni">
+                                        <span>{translation.name}</span>
+                                        <svg width="48" height="40" viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z" fill="#002B6A"/>
+                                            <mask
+                                                id="path-2-inside-1_54_239"
+                                                fill="white">
+                                                <path
+                                                    d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
+                                            </mask>
+                                            <path
+                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
+                                                fill="#002B6A" />
+                                            <path
+                                                d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
+                                                fill="#002B6A"
+                                                mask="url(#path-2-inside-1_54_239)" />
+                                        </svg>
+                                    </div>
+                                    <div className="header-block-flex-text">
+                                        <p>{translation.title}</p>
+                                    </div>
+                                </div>
+                                <div className="header-block-flex-list">
+                                    <div className="header-block-flex-links">
+                                        {menuItems
+                                            .filter(subItem => subItem.parent === item.id)
+                                            .map(subItem => {
+                                                const subTranslation = subItem.translations[i18n.language as keyof typeof subItem.translations] || subItem.translations.en;
+                                                return (
+                                                    <Link 
+                                                        key={subItem.id}
+                                                        href={`/menus/main/${subTranslation.slug}/`}
+                                                        className="header-block-flex-link"
+                                                    >
+                                                        {subTranslation.name}
+                                                    </Link>
+                                                );
+                                            })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </li>
+        );
+    };
+
+    const renderMobileMenuItem = (item: MenuItem) => {
+        const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
+        const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
+        
+        return (
+            <ul key={item.id}>
+                <a href="#" className="main-title">
+                    <span>{translation.name}</span>
+                    {hasChildren && (
+                        <span className="non-active">
+                            <i className="fa-solid fa-angle-right"></i>
+                        </span>
+                    )}
+                </a>
+                {hasChildren && (
+                    <ul className="header-main-nav-ul">
+                        {menuItems
+                            .filter(subItem => subItem.parent === item.id)
+                            .map(subItem => {
+                                const subTranslation = subItem.translations[i18n.language as keyof typeof subItem.translations] || subItem.translations.en;
+                                return (
+                                    <a key={subItem.id} href={`/menus/main/${subTranslation.slug}`}>
+                                        <li>{subTranslation.name}</li>
+                                    </a>
+                                );
+                            })}
+                    </ul>
+                )}
+            </ul>
+        );
+    };
+
     return (
         <>
             <div className='header-main'>
@@ -146,12 +285,7 @@ const Header = () => {
                                 <option value="RU">{t('header.languages.ru')}</option>
                                 <option value="EN">{t('header.languages.en')}</option>
                             </select>
-                            <div className="language-icons" aria-hidden="true">
-                                <Image src="/uzbek-icon.jpg" alt="" width={20} height={20} />
-                                <Image src="/karakalpakstan-icon.png" alt="" width={20} height={20} />
-                                <Image src="/russia-icon.jpg" alt="" width={20} height={20} />
-                                <Image src="/english-icon.jpg" alt="" width={20} height={20} />
-                            </div>
+                           
                         </div>
                         <form action="/search" method="GET"
                             className='header-main-left-search'>
@@ -194,900 +328,10 @@ const Header = () => {
                         </div>
                     </div>
                     <div className='header-main-menu-list'>
-
                         <ul className='header-main-menu-list-ul'>
-                            <li className="header-main-menu-list-li" id="uni-hover">
-                                <input type="checkbox" id="uni_menu" />
-                                <label htmlFor="uni_menu"
-                                    className="header-main-menu-list-li">
-                                    {t('header.mainMenu.university')}
-                                </label>
-
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>{t('header.mainMenu.university')}</span>
-                                                    <svg width="60" height="60"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A"></path>
-                                                        <mask
-                                                            id="path-2-inside-1_2_438"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3479 20L19.8321 23.737C22.6498 24.8473 25.8077 24.8473 28.6255 23.737L38.1095 20V28.9452C38.1095 30.6253 37.111 32.1982 35.3625 33.0122C32.4507 34.3675 27.7901 36.2362 24.2287 36.2362C20.6673 36.2362 16.0067 34.3675 13.095 33.0122C11.3463 32.1982 10.3479 30.6253 10.3479 28.9452V20Z">
-                                                            </path>
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3479 20L19.8321 23.737C22.6498 24.8473 25.8077 24.8473 28.6255 23.737L38.1095 20V28.9452C38.1095 30.6253 37.111 32.1982 35.3625 33.0122C32.4507 34.3675 27.7901 36.2362 24.2287 36.2362C20.6673 36.2362 16.0067 34.3675 13.095 33.0122C11.3463 32.1982 10.3479 30.6253 10.3479 28.9452V20Z"
-                                                            fill="#002B6A"></path>
-                                                        <path
-                                                            d="M10.3479 20L22.5677 -11.0127L-22.9854 -28.9618V20H10.3479ZM19.8321 23.737L32.0524 -7.27549L32.0519 -7.2757L19.8321 23.737ZM28.6255 23.737L16.4055 -7.2756L16.4053 -7.27552L28.6255 23.737ZM38.1095 20H71.4428V-28.9622L25.8894 -11.0126L38.1095 20ZM35.3625 33.0122L49.4288 63.2322L49.4302 63.2315L35.3625 33.0122ZM13.095 33.0122L-0.972366 63.2317L-0.971596 63.2321L13.095 33.0122ZM-1.87189 51.0127L7.61227 54.7497L32.0519 -7.2757L22.5677 -11.0127L-1.87189 51.0127ZM7.61173 54.7495C18.2826 58.9543 30.175 58.9543 40.8458 54.7495L16.4053 -7.27552C21.4404 -9.25959 27.0171 -9.25962 32.0524 -7.27549L7.61173 54.7495ZM40.8456 54.7496L50.3295 51.0126L25.8894 -11.0126L16.4055 -7.2756L40.8456 54.7496ZM4.77612 20V28.9452H71.4428V20H4.77612ZM4.77612 28.9452C4.77612 16.6936 12.1972 7.02788 21.2947 2.7928L49.4302 63.2315C62.0249 57.3685 71.4428 44.5571 71.4428 28.9452H4.77612ZM21.2961 2.79215C20.9852 2.93687 20.6671 3.07659 20.3692 3.19743C20.0617 3.3221 19.8725 3.38728 19.8099 3.40746C19.7236 3.4353 19.9793 3.34579 20.5332 3.23517C20.8261 3.17669 21.2728 3.0981 21.8545 3.03214C22.4305 2.96683 23.2353 2.90283 24.2287 2.90283V69.5695C31.0911 69.5695 36.9817 67.9172 40.2684 66.8574C43.9925 65.6566 47.2318 64.2548 49.4288 63.2322L21.2961 2.79215ZM24.2287 2.90283C25.2221 2.90283 26.0268 2.96683 26.6028 3.03214C27.1845 3.0981 27.6313 3.17669 27.9241 3.23517C28.4781 3.34579 28.7338 3.4353 28.6475 3.40747C28.5849 3.3873 28.3958 3.32213 28.0883 3.19747C27.7904 3.07664 27.4724 2.93694 27.1615 2.79226L-0.971596 63.2321C1.22547 64.2547 4.46481 65.6566 8.18888 66.8574C11.4757 67.9172 17.3663 69.5695 24.2287 69.5695V2.90283ZM27.1623 2.79262C36.2599 7.0276 43.6812 16.6933 43.6812 28.9452H-22.9854C-22.9854 44.5573 -13.5673 57.3687 -0.972366 63.2317L27.1623 2.79262ZM43.6812 28.9452V20H-22.9854V28.9452H43.6812Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_2_438)"></path>
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).
-                                                        В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).
-                                                        В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.charter')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.mission')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.regulations')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.leadership')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.structure')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.councils')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.ratings')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.requisites')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.financialReports')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.universityInNumbers')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.accreditation')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.universitySubmenu.famousGraduates')}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </li>
-                            <li className='header-main-menu-list-li' id="sec_hover">
-                                <input type="checkbox" id="sec_menu" />
-                                <label htmlFor="sec_menu"
-                                    className="header-main-menu-list-li">
-                                    {t('header.mainMenu.activities')}
-                                </label>
-
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>{t('header.mainMenu.activities')}</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> Hozirda universitetda 24
-                                                        ta bakalavriat va 28 ta
-                                                        magistratura
-                                                        yo'nalishlari mavjud.
-                                                        Talabalarni ta'lim
-                                                        bo'yicha kerakli
-                                                        kitoblar bo'yicha
-                                                        yelektron ARM
-                                                        shakllantirilgan.
-                                                        Abituriyentlar
-                                                        universitetga qabul
-                                                        qilish jarayoni bo'yicha
-                                                        ma'lumotlarni masofaviy
-                                                        tarzda xabardor bo'lishi
-                                                        mumkin.</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.charter')}</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="th_hover">
-                                <input type="checkbox" id="th_menu" />
-                                <label htmlFor="th_menu"
-                                    className="header-main-menu-list-li">
-                                    АБИТУРИЕНТЫ
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>АБИТУРИЕНТЫ</span>
-
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.charter')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.mission')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.regulations')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.leadership')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.structure')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.councils')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.ratings')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.requisites')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.financialReports')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.universityInNumbers')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.accreditation')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.famousGraduates')}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="fr_hover">
-                                <input type="checkbox" id="fr_menu" />
-                                <label htmlFor="fr_menu"
-                                    className="header-main-menu-list-li">
-                                    СТУДЕНТЫ
-
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>СТУДЕНТЫ</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.charter')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.mission')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.regulations')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.leadership')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.structure')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.councils')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.ratings')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.requisites')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.financialReports')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.universityInNumbers')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.accreditation')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.admissionsSubmenu.famousGraduates')}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="ff_hover">
-                                <input type="checkbox" id="ff_menu" />
-                                <label htmlFor="ff_menu"
-                                    className="header-main-menu-list-li">
-                                    МЕЖДУНАРОДНАЯ ДЕЯТЕЛЬНОСТЬ
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>МЕЖДУНАРОДНАЯ
-                                                        ДЕЯТЕЛЬНОСТЬ</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.internationalSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.internationalSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.internationalSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.internationalSubmenu.charter')}</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="six_hover">
-                                <input type="checkbox" id="six_menu" />
-                                <label htmlFor="six_menu"
-                                    className="header-main-menu-list-li">
-                                    НАУЧНАЯ ДЕЯТЕЛЬНОСТЬ
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>НАУЧНАЯ
-                                                        ДЕЯТЕЛЬНОСТЬ</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.charter')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.mission')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.regulations')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.leadership')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.structure')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.councils')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.ratings')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.requisites')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.financialReports')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.universityInNumbers')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.accreditation')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.activitiesSubmenu.famousGraduates')}</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="sv_hover">
-                                <input type="checkbox" id="sv_menu" />
-                                <label htmlFor="sv_menu"
-                                    className="header-main-menu-list-li">
-                                    МАРКЕТИНГ
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>МАРКЕТИНГ</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.marketingSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.marketingSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.marketingSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.marketingSubmenu.charter')}</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="eh_hover">
-                                <input type="checkbox" id="eh_menu" />
-                                <label htmlFor="eh_menu"
-                                    className="header-main-menu-list-li">
-                                    НОРМАТИВНЫЕ ДОКУМЕНТЫ
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>НОРМАТИВНЫЕ
-                                                        ДОКУМЕНТЫ</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.normativeDocumentsSubmenu.charter')}</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className='header-main-menu-list-li' id="nn_hover">
-                                <input type="checkbox" id="nn_menu" />
-                                <label htmlFor="nn_menu"
-                                    className="header-main-menu-list-li">
-                                    ОПРОСНИК
-                                </label>
-                                <div className="header-main-hover">
-                                    <div className="header-main-hover-block">
-                                        <div className="header-hover-block-flex">
-                                            <div className="header-block-flex-part">
-                                                <div
-                                                    className="header-block-flex-uni">
-                                                    <span>ОПРОСНИК</span>
-                                                    <svg width="48" height="40"
-                                                        viewBox="0 0 48 40"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M28.2288 5.83275C25.411 4.72242 22.2531 4.72242 19.4353 5.83275L6.16705 11.061C4.03337 11.9017 3.47709 14.2725 4.49818 15.9111V24.1667C4.49818 24.857 5.16404 25.4167 5.98541 25.4167C6.80677 25.4167 7.47263 24.857 7.47263 24.1667V17.7867L19.4355 22.5005C22.2533 23.6108 25.4112 23.6108 28.229 22.5005L41.4972 17.2723C44.3834 16.1351 44.3834 12.1983 41.4972 11.0611L28.2288 5.83275Z"
-                                                            fill="#002B6A" />
-                                                        <mask
-                                                            id="path-2-inside-1_54_239"
-                                                            fill="white">
-                                                            <path
-                                                                d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z" />
-                                                        </mask>
-                                                        <path
-                                                            d="M10.3481 20L19.8323 23.737C22.6501 24.8473 25.808 24.8473 28.6258 23.737L38.1097 20V28.9452C38.1097 30.6253 37.1113 32.1982 35.3627 33.0122C32.4509 34.3675 27.7903 36.2362 24.2289 36.2362C20.6675 36.2362 16.0069 34.3675 13.0952 33.0122C11.3466 32.1982 10.3481 30.6253 10.3481 28.9452V20Z"
-                                                            fill="#002B6A" />
-                                                        <path
-                                                            d="M10.3481 20L22.5679 -11.0127L-22.9852 -28.9618V20H10.3481ZM19.8323 23.737L32.0526 -7.27549L32.0521 -7.2757L19.8323 23.737ZM28.6258 23.737L16.4057 -7.2756L16.4055 -7.27552L28.6258 23.737ZM38.1097 20H71.443V-28.9622L25.8897 -11.0126L38.1097 20ZM35.3627 33.0122L49.429 63.2322L49.4304 63.2315L35.3627 33.0122ZM13.0952 33.0122L-0.972122 63.2317L-0.971352 63.2321L13.0952 33.0122ZM-1.87165 51.0127L7.61251 54.7497L32.0521 -7.2757L22.5679 -11.0127L-1.87165 51.0127ZM7.61197 54.7495C18.2828 58.9543 30.1752 58.9543 40.846 54.7495L16.4055 -7.27552C21.4407 -9.25959 27.0173 -9.25962 32.0526 -7.27549L7.61197 54.7495ZM40.8458 54.7496L50.3297 51.0126L25.8897 -11.0126L16.4057 -7.2756L40.8458 54.7496ZM4.77637 20V28.9452H71.443V20H4.77637ZM4.77637 28.9452C4.77637 16.6936 12.1974 7.02788 21.295 2.7928L49.4304 63.2315C62.0251 57.3685 71.443 44.5571 71.443 28.9452H4.77637ZM21.2964 2.79215C20.9854 2.93687 20.6674 3.07659 20.3694 3.19743C20.0619 3.3221 19.8727 3.38728 19.8101 3.40746C19.7238 3.4353 19.9796 3.34579 20.5335 3.23517C20.8263 3.17669 21.2731 3.0981 21.8548 3.03214C22.4308 2.96683 23.2355 2.90283 24.2289 2.90283V69.5695C31.0913 69.5695 36.9819 67.9172 40.2687 66.8574C43.9927 65.6566 47.2321 64.2548 49.429 63.2322L21.2964 2.79215ZM24.2289 2.90283C25.2223 2.90283 26.0271 2.96683 26.6031 3.03214C27.1848 3.0981 27.6315 3.17669 27.9244 3.23517C28.4783 3.34579 28.7341 3.4353 28.6477 3.40747C28.5852 3.3873 28.396 3.32213 28.0886 3.19747C27.7906 3.07664 27.4726 2.93694 27.1618 2.79226L-0.971352 63.2321C1.22571 64.2547 4.46505 65.6566 8.18913 66.8574C11.4759 67.9172 17.3665 69.5695 24.2289 69.5695V2.90283ZM27.1625 2.79262C36.2602 7.0276 43.6815 16.6933 43.6815 28.9452H-22.9852C-22.9852 44.5573 -13.567 57.3687 -0.972122 63.2317L27.1625 2.79262ZM43.6815 28.9452V20H-22.9852V28.9452H43.6815Z"
-                                                            fill="#002B6A"
-                                                            mask="url(#path-2-inside-1_54_239)" />
-                                                    </svg>
-
-                                                </div>
-
-                                                <div
-                                                    className="header-block-flex-text">
-                                                    <p> В сентябре 1935 года в
-                                                        Каракалпакcтане было
-                                                        открыто
-                                                        первое высшее
-                                                        учебное заведение —
-                                                        учительский институт. В
-                                                        1944
-                                                        году он был преобразован
-                                                        в
-                                                        Каракалпакский
-                                                        государственный
-                                                        педагогический институт,
-                                                        на
-                                                        базе которого в сентябре
-                                                        1976 года
-                                                        образовался Нукусский
-                                                        государственный
-                                                        университет
-                                                        имени Т.Шевченко (ныне —
-                                                        Каракалпакский
-                                                        государственный
-                                                        университет
-                                                        имени Бердаха).</p>
-                                                </div>
-                                            </div>
-                                            <div className="header-block-flex-list">
-                                                <div
-                                                    className="header-block-flex-links">
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.administration')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.history')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.internalRules')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.charter')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.mission')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.regulations')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.leadership')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.structure')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.councils')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.ratings')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.requisites')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.financialReports')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.universityInNumbers')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.accreditation')}</a>
-                                                    <a href="#"
-                                                        className="header-block-flex-link">{t('header.questionnaireSubmenu.famousGraduates')}</a>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            {menuItems
+                                .filter(item => item.parent === null)
+                                .map(renderMenuItem)}
                         </ul>
                     </div>
                 </div>
@@ -1119,437 +363,14 @@ const Header = () => {
                                     </div>
                                 </div>
                                 <div className="header-main-nav-column-2">
-                                    <ul>
-                                        <a href="#"
-                                            className="main-title">
-                                            <span>UNIVERSITET</span>
-                                            <span className="non-active"><i
-                                                    className="fa-solid fa-angle-right"></i></span>
-                                        </a>
-
-                                        <ul className="header-main-nav-ul">
-                                            <a href="#">
-                                                <li>Ustav</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Universitet
-                                                    missiyasi</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Meʼyoriy
-                                                    hujjatlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Rahbariyat</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Tashkiliy
-                                                    tuzilma</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Kengashlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Ustav</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Universitet
-                                                    missiyasi</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Meʼyoriy
-                                                    hujjatlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Rahbariyat</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Tashkiliy
-                                                    tuzilma</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Kengashlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Reytinglar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Rekvizitlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Moliyaviy
-                                                    hisobotlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Universitet
-                                                    raqamlarda</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Akkreditatsiya</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Mashhur
-                                                    bitiruvchilar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Ochiq
-                                                    ma'lumotlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Kafedralar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Fakultetlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Markaz, departament va
-                                                    bo'limlar</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Kontrakt
-                                                    narxlari</li>
-                                            </a>
-                                            <a href="#">
-                                                <li>Kasaba uyushma
-                                                    qo'mitasi</li>
-                                            </a>
-                                        </ul>
-
-                                    </ul>
-
-                                    <ul>
-                                        <a href="#" className="main-title">
-                                            <span>Ta'lim</span>
-                                            <span className="non-active">
-                                                <i className="fa-solid fa-angle-right"></i>
-                                            </span>
-                                            <ul className="header-main-nav-ul">
-                                                <li>
-                                                    <a href="#">Kurs katalogi</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Resurslar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Bakalavriat</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Magistratura</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Malaka
-                                                        talablari</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">O'quv rejalar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">O'quv
-                                                        dasturlari(Sillabuslar)</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">Masofaviy o'qitish
-                                                        tizimi</a>
-                                                </li>
-                                            </ul>
-                                        </a>
-                                    </ul>
-
-                                    <ul>
-                                        <a href="#"
-                                            className="main-title">
-                                                <span>ILM-FAN</span>
-                                                <i
-                                                    className="fa-solid fa-angle-right"></i>
-                                            </a>
-                                            <ul className="header-main-nav-ul">
-                                            <a href="#">
-                                                    <li>Seminarlar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Resurslar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Bakalavriat</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Magistratura</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Malaka
-                                                        talablari</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>O'quv rejalar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>O'quv
-                                                        dasturlari(Sillabuslar)</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Masofaviy o'qitish
-                                                        tizimi</li>
-                                                </a>
-                                            </ul>
-
-                                        </ul>
-
-                                        <ul>
-                                            <a href="#"
-                                                className="main-title">
-                                                <span>Xalqarolashtirish</span>
-                                                <i
-                                                    className="fa-solid fa-angle-right"></i>
-                                            </a>
-
-                                            <ul className="header-main-nav-ul">
-                                            <a href="#">
-                                                    <li>Xalqaro aloqalar
-                                                        departamenti
-                                                        xodimlari</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Xalqaro hamkorlik
-                                                        aloqalari</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Xalqaro
-                                                        grantlar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Xalqaro ilmiy
-                                                        aloqalari</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Xalqaro
-                                                        konferensiyalar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Xorijda malaka oshirish
-                                                        va ta'lim</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li> Xorijlik pedagoglar
-                                                        uchun malaka</li>
-                                                </a>
-                                            </ul>
-                                        </ul>
-
-                                        <ul>
-                                            <a href="#"
-                                                className="main-title"><span>TALABALAR
-                                                    HAYOTI</span>
-                                                <i
-                                                    className="fa-solid fa-angle-right"></i>
-                                            </a>
-                                            <ul className="header-main-nav-ul">
-                                            <a href="#">
-                                                    <li>Jamoaviy
-                                                        klublar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Sog'liqni saqlashni
-                                                        xizmati</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Ijtimoiy hayot</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Ijtimoiy
-                                                        xonalar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Tanlovlar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Ijtimoiy muhofaza
-                                                        markazi</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Talabalar turar
-                                                        joyi</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Sport
-                                                        inshootlari</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Kafeteriyalar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Kitob do'koni</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Imkoniyati cheklanganlar
-                                                        uchun qulayliklar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Talaba fikri</li>
-                                                </a>
-                                            </ul>
-                                        </ul>
-
-                                        <ul>
-                                            <a href="#"
-                                                className="main-title">
-                                                <span>QABUL-2024</span>
-                                                <i
-                                                    className="fa-solid fa-angle-right"></i>
-                                            </a>
-                                            <div className="header-main-nav-ul">
-                                            <a href="#">
-                                                    <li>Ikkinchi taʼlim
-                                                        to'g'risidagi nizom</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Qabul 2024
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        2024/2025 o'quv yili
-                                                        uchun
-                                                        ikkinchi va undan
-                                                        keyingi
-                                                        oliy
-                                                        ma'lumot olish bo'yicha
-                                                        qabul
-                                                        shartlari
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Xalqaro abituriyentlarga
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Mahalliy abiturentlarga
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Qabul bo'yicha
-                                                        bog'lanish
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Qabul kvotalari
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Abituriyentlar uchun
-                                                        yo'riqnoma
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        O'qishni ko'chirish
-                                                        bo'yicha
-                                                        ma'lumotlar
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Bakalavriatga qabul
-                                                        uchun
-                                                        ro'yhatdan o'tish
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Javoblar varaqasi bilan
-                                                        ishlash
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Texnikum bitiruvchilari
-                                                        qabuli-2024
-                                                    </li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>
-                                                        Tez-tez so'raladigan
-                                                        savollarga
-                                                        javoblar
-                                                    </li>
-                                                </a>
-                                            </div>
-                                        </ul>
-
-                                        <ul>
-                                            <a href="#"
-                                                className="main-title"><span>Axborot
-                                                    xizmati</span>
-                                                <i
-                                                    className="fa-solid fa-angle-right"></i>
-                                            </a>
-                                            <ul className="header-main-nav-ul">
-                                            <a href="#">
-                                                    <li>Yangiliklar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Videogalereya</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Kutilayotgan
-                                                        tadbirlar</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Fotogalereya</li>
-                                            </a>
-                                            <a href="#">
-                                                    <li>Kontaktlar</li>
-                                                </a>
-                                            </ul>
-                                        </ul>
-
-                                        <ul>
-                                            <a href="#"
-                                                className="main-title">
-                                                <span>VAKANSIYALAR</span>
-                                                <i
-                                                    className="fa-solid fa-angle-right"></i>
-                                            </a>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className="header-main-nav-footer">
-                                <div className="header-nav-footer-info">
-                                    <div>
-                                            <a href="#">
-                                            <i className="fa-solid fa-phone"></i>
-                                            <span>+998 61 223-60-47</span>
-                                            </a>
-                                    </div>
-                                    <div>
-                                            <a href="#">
-                                            <i className="fa-solid fa-envelope"></i>
-                                            <span>karsu_info@edu.uz</span>
-                                            </a>
-                                    </div>
-                                    <div>
-                                            <a href="#">
-                                            <i
-                                                className="fa-solid fa-location-dot"></i>
-                                            <span>Nukus</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div className="header-nav-footer-by">
-                                    <p>Sayt ishlab chiquvchisi:</p>
-                                    <a href="https://www.softium.uz">Softium</a>
+                                    {menuItems
+                                        .filter(item => item.parent === null)
+                                        .map(renderMobileMenuItem)}
                                 </div>
                             </div>
                         </div>
                     </div>
-                      
+                </div>
             </div>
         </>
     )

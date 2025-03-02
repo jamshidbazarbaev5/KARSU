@@ -5,13 +5,36 @@ import { useState, useRef, useEffect } from 'react';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useTranslation } from 'react-i18next';
+import DOMPurify from 'isomorphic-dompurify';
 
-export default function News() {
+interface NewsProps {
+  newsData: {
+    id: number;
+    category: number;
+    goals: number[];
+    main_image: string;
+    images: { image: string }[];
+    views_count: number;
+    date_posted: string;
+    translations: {
+      [key: string]: {
+        title: string;
+        description: string;
+        slug: string;
+      };
+    };
+  };
+}
+
+export default function News({ newsData }: NewsProps) {
     const [nav1, setNav1] = useState<Slider | null>(null);
     const [nav2, setNav2] = useState<Slider | null>(null);
     const [showAllButtons, setShowAllButtons] = useState(false);
     const slider1 = useRef<Slider | null>(null);
     const slider2 = useRef<Slider | null>(null);
+
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         setNav1(slider1.current);
@@ -58,81 +81,117 @@ export default function News() {
         ]
     };
 
+    // Create a function to get translated content
+    const getTranslatedContent = (field: 'title' | 'description') => {
+        const content = newsData.translations[i18n.language]?.[field] || newsData.translations['en']?.[field] || '';
+        return field === 'description' ? DOMPurify.sanitize(content) : content;
+    };
+
+    // Modify the sliderImages to use the images from newsData
+    const sliderImages = newsData.images.map((img, index) => ({
+        src: img.image,
+        alt: `Slide ${index + 1}`
+    }));
+
     return (
         <main className="main">
             <div className="container">
                 <div className="main-news-pages">
-                    <Link href="#">Asosiy</Link>
-                    <Link href="#">Barqaror rivojlanish Maqsadlari</Link>
-                    <Link href="#">Barqaror rivojlanish Maqsadlari</Link>
-                    <Link href="#">Asosiy</Link>
+                    <Link href="/">Asosiy</Link>
+                    <Link href="/news">Yangiliklar</Link>
+                    <span>{getTranslatedContent('title')}</span>
                 </div>
                 <div className="main-news">
                     <div className="main-news-block">
                         <div className="main-news-block-title">
-                            <h1>TDIU bilan Rossiyaning MMFI qo'shma ta'lim dasturiga magistratura uchun imtihon bo'lib o'tmoqda</h1>
+                            <h1>{getTranslatedContent('title')}</h1>
                         </div>
                         
                         {/* Date and Views Section */}
                         <div className="main-news-block-date">
                             <div>
                                 {/* SVG Calendar Icon */}
-                                <span className="date-day">22</span>
-                                <span className="date-month">Sentabr</span>
-                                <span className="date-year">2024</span>
+                                <span className="date-day">
+                                    {new Date(newsData.date_posted).getDate()}
+                                </span>
+                                <span className="date-month">
+                                    {new Date(newsData.date_posted).toLocaleString(i18n.language, { month: 'long' })}
+                                </span>
+                                <span className="date-year">
+                                    {new Date(newsData.date_posted).getFullYear()}
+                                </span>
                             </div>
                             <div className="main-news-block-views">
                                 {/* SVG Eye Icon */}
-                                <span className="view-number">777</span>
+                                <span className="view-number">{newsData.views_count}</span>
                             </div>
                         </div>
 
                         <div className="main-news-block-photo">
                             <Image 
-                                src="/eab7b06f-a168-41a4-9491-9ad8c2df0299.jpg"
-                                alt="News Image"
+                                src={newsData.main_image}
+                                alt={getTranslatedContent('title')}
                                 width={800}
                                 height={400}
+                                priority
                             />
                         </div>
 
-                        <div className="main-news-block-text">
-                            Toshkent davlat iqtisodiyot universitetida Rossiyaning MMFI instituti bilan hamkorlikda qo’shma ta’lim dasturi magistratura bosqichi uchun kirish imtihonlarini o’tkazmoqda. Imtihon belgilangan tartibda - yozma va suhbat asosida bo’lib o’tmoqda. Jarayonda Rossiya milliy tadqiqotlar yadro universiteti moliyaviy texnologiyalar va iqtisodiy xavfsizlik xalqaro hamkorlik bo‘limi boshlig‘i, moliyaviy monitoring kafedrasi dotsenti Morozov Nikolay Vladimirovich, MMFI koordinatori, Moliyaviy texnologiyalar va iqtisodiy xavfsizlik instituti xalqaro hamkorlik bo‘limi xodimi Kazakova Yelizaveta Gennadyevna hamda Moliyaviy monitoring kafedrasi dotsenti Lenov Pavel Yuryevichlar qatnashishdi. Sinovdan muvaffaqiyatli o’tganlar qo‘shma ta’lim dasturi doirasida 1+1 tizimida Toshkent davlat iqtisodiyot universitetida va Rossiyadagi MMFI institutida tahsil olish imkonini qo‘lga kiritadilar. Eslatib o‘tamiz, Rossiyaning MMFI instituti “QS World University Rankings-2024” reytingida TOP-500 universitetlar ro‘yxatiga kiritilgan. Aldın xabar bergenimizdey, usı jıldıń 12-sentyabr kúni Ózbekstan Respublikası Prezidentiniń 2024-jıl 1-apreldegi «Dóretiwshilik mektepleriniń jumısın bunnan bılay da jetilistiriw ilajları haqqında»ǵı PQ-147-sanlı qararına tiykar Berdaq atındaǵı Qaraqalpaq mámleketlik universiteti tárepinen paytaxtımızdaǵı Ibrayım Yusupov atındaǵı dóretiwshilik mektebinde «Ajiniyaz shıǵarmaları bilimdanı» atamasında 9-10-11-klass oqıwshıları arasında Qaraqalpaq tili hám ádebiyatı pán olimpiadası ótkerilgen edi.
-                        </div>
+                        <div 
+                            className="main-news-block-text"
+                            dangerouslySetInnerHTML={{ __html: getTranslatedContent('description') }}
+                        />
 
-                        <div className="main-news-block-slider">
-                            <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
-                                {sliderImages.map((img, index) => (
-                                    <div key={index} className="slide">
-                                        <div className="slide-image-wrapper">
-                                            <Image 
-                                                src={img.src}
-                                                alt={img.alt}
-                                                fill
-                                                sizes="(max-width: 800px) 100vw, 800px"
-                                                priority={index === 0}
-                                                className="slider-image"
-                                            />
+                        {/* Image gallery - only show if there are additional images */}
+                        {newsData.images.length > 0 && (
+                            <div className="main-news-block-slider">
+                                <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
+                                    {sliderImages.map((img, index) => (
+                                        <div key={index} className="slide">
+                                            <div className="slide-image-wrapper">
+                                                <Image 
+                                                    src={img.src}
+                                                    alt={img.alt}
+                                                    fill
+                                                    sizes="(max-width: 800px) 100vw, 800px"
+                                                    priority={index === 0}
+                                                    className="slider-image"
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))}
+                                </Slider>
+                                
+                                {sliderImages.length > 1 && (
+                                    <Slider {...thumbnailSettings} ref={slider2} className="thumbnail-slider">
+                                        {sliderImages.map((img, index) => (
+                                            <div key={index} className="thumbnail">
+                                                <div className="thumbnail-image-wrapper">
+                                                    <Image 
+                                                        src={img.src}
+                                                        alt={`Thumbnail ${index + 1}`}
+                                                        fill
+                                                        sizes="(max-width: 150px) 100vw, 150px"
+                                                        className="thumbnail-image"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Goals section */}
+                        <div className="main-news-block-goals">
+                            <h3>Related Goals:</h3>
+                            <div className="goals-list">
+                                {newsData.goals.map((goal) => (
+                                    <span key={goal} className="goal-tag">
+                                        Goal {goal}
+                                    </span>
                                 ))}
-                            </Slider>
-                            
-                            <Slider {...thumbnailSettings} ref={slider2} className="thumbnail-slider">
-                                {sliderImages.map((img, index) => (
-                                    <div key={index} className="thumbnail">
-                                        <div className="thumbnail-image-wrapper">
-                                            <Image 
-                                                src={img.src}
-                                                alt={`Thumbnail ${index + 1}`}
-                                                fill
-                                                sizes="(max-width: 150px) 100vw, 150px"
-                                                className="thumbnail-image"
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </Slider>
+                            </div>
                         </div>
 
                         <div className="main-news-block-social">
@@ -176,10 +235,3 @@ export default function News() {
         </main>
     );
 }
-
-const sliderImages = [
-    { src: "/karsu6.jpeg", alt: "Slide 1" },
-    { src: "/karsu2.jpeg", alt: "Slide 2" },
-    { src: "/karsuu.jpeg", alt: "Slide 3" },
-    // Add other slider images here
-];

@@ -1,4 +1,45 @@
+'use client'
+import { useEffect, useState } from 'react'
+
+interface MenuTranslation {
+    name: string;
+    slug: string;
+}
+
+interface MenuTranslations {
+    en: MenuTranslation;
+    ru: MenuTranslation;
+    uz: MenuTranslation;
+    kk: MenuTranslation;
+}
+
+interface MenuItem {
+    id: number;
+    parent: number | null;
+    translations: MenuTranslations;
+    footer_menu_posts: any[];
+}
+
 const Footer = () => {
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+
+    useEffect(() => {
+        const fetchMenuItems = async () => {
+            try {
+                const response = await fetch('https://debttracker.uz/en/menus/footer/');
+                const data = await response.json();
+                setMenuItems(data);
+            } catch (error) {
+                console.error('Error fetching menu items:', error);
+            }
+        };
+
+        fetchMenuItems();
+    }, []);
+
+    const getParentMenuItems = () => menuItems.filter(item => item.parent === null);
+    const getChildMenuItems = (parentId: number) => menuItems.filter(item => item.parent === parentId);
+
     return (
         <div className='footer'>
             <div className="container">
@@ -54,40 +95,26 @@ const Footer = () => {
                             />
                         </div>
                         <div className="footer-info-links">
-                            <div className="footer-info-university">
-                                <div className="footer-info-university-title">
-                                    <span className="footer-info-university-title-span">УНИВЕРСИТЕТ</span>
+                            {getParentMenuItems().map((parentItem) => (
+                                <div key={parentItem.id} className="footer-info-university">
+                                    <div className="footer-info-university-title">
+                                        <span className="footer-info-university-title-span">
+                                            {parentItem.translations.ru.name}
+                                        </span>
+                                    </div>
+                                    <div className="footer-info-university-links">
+                                        {getChildMenuItems(parentItem.id).map((childItem) => (
+                                            <a 
+                                                key={childItem.id}
+                                                href={`/${childItem.translations.ru.slug}`} 
+                                                className="footer-info-university-link"
+                                            >
+                                                {childItem.translations.ru.name}
+                                            </a>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="footer-info-university-links">
-                                    <a href="#" className="footer-info-university-link">Начальство</a>
-                                    <a href="#" className="footer-info-university-link">Устав университета</a>
-                                    <a href="#" className="footer-info-university-link">Внутренние процедуры</a>
-                                    <a href="#" className="footer-info-university-link">Факультеты</a>
-                                    <a href="#" className="footer-info-university-link">Разделы</a>
-                                </div>
-                            </div>
-                            <div className="footer-info-activity">
-                                <div className="footer-info-activity-title">
-                                    <span className="footer-info-activity-title-span">АКТИВНОСТЬ</span>
-                                </div>
-                                <div className="footer-info-activity-links">
-                                    <a href="#" className="footer-info-activity-link">Инновации</a>
-                                    <a href="#" className="footer-info-activity-link">Научная деятельность</a>
-                                    <a href="#" className="footer-info-activity-link">Финансовая деятельность</a>
-                                    <a href="#" className="footer-info-activity-link">Международные отношения</a>
-                                    <a href="#" className="footer-info-activity-link">Культурно-просветительская деятельность</a>
-                                </div>
-                            </div>
-                            <div className="footer-info-students">
-                                <div className="footer-info-students-title">
-                                    <span className="footer-info-students-title-span">СТУДЕНТЫ</span>
-                                </div>
-                                <div className="footer-info-students-links">
-                                    <a href="#" className="footer-info-students-link">Абитуриенты</a>
-                                    <a href="#" className="footer-info-students-link">Бакалавр</a>
-                                    <a href="#" className="footer-info-students-link">Магистратура</a>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>

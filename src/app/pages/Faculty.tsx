@@ -1,13 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-const Faculty = () => {
-  const departments = [
-    "Археология",
-    "Өзбекстан ҳәм Қарақалпақстан тарийхы",
-    "Социаллық пәнлер",
-    "Педогогика ҳәм психология",
-  ];
+interface FacultyProps {
+  facultyData: {
+    id: number;
+    email: string;
+    logo: string;
+    translations: {
+      [key: string]: {
+        name: string;
+        slug: string;
+        description: string;
+        history_of_faculty: string;
+      };
+    };
+  };
+}
+
+const Faculty = ({ facultyData }: FacultyProps) => {
+  const { i18n } = useTranslation();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Get the current language's slug
+    const currentSlug = facultyData.translations[i18n.language]?.slug;
+    if (currentSlug) {
+      // Update URL without reloading the page
+      router.replace(`/faculty/${currentSlug}`);
+    }
+  }, [i18n.language, facultyData.translations, router]);
+
+  const getTranslatedContent = (field: keyof typeof facultyData.translations[string]) => {
+    return facultyData.translations[i18n.language]?.[field] || facultyData.translations['en']?.[field] || '';
+  };
 
   const socialLinks = [
     { icon: "fa-square-facebook", url: "#" },
@@ -24,27 +52,24 @@ const Faculty = () => {
             <Image src="/logo.png" alt="logo" width={100} height={100} />
           </div>
           <div className="header-logo-uni-name">
-            <a 
-              href="/"
-              className="header-logo-uni-name-span"
-            >
+            <Link href="/" className="header-logo-uni-name-span">
               КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
-            </a>
+            </Link>
           </div>
         </div>
       </div>
       <main className="faculty">
         <div className="container">
           <div className="faculty-logo">
-            <h1>Тарийх факультети</h1>
+            <h1>{getTranslatedContent('name')}</h1>
           </div>
 
           <div className="faculty-block">
             <div className="faculty-block-pro">
               <div className="faculty-block-pro-img">
                 <Image
-                  src="/main.png"
-                  alt="Dean's photo"
+                  src={facultyData.logo}
+                  alt="Faculty logo"
                   width={300}
                   height={400}
                   priority
@@ -52,26 +77,14 @@ const Faculty = () => {
               </div>
 
               <div className="faculty-block-pro-title">
-                <div className="faculty-block-pro-title-info">
-                  <h2 className="faculty-course">Тарийх факультети деканы:</h2>
-                  <p className="faculty-name">Реймов Ахмед Мамбеткаримович</p>
-                </div>
-
                 <div className="faculty-block-pro-title-contact">
-                  <div className="faculty-number">
-                    <p>
-                      <i className="fa-solid fa-phone"></i>
-                      Phone:
-                    </p>
-                    <Link href="tel:+99897357817">+99897 357 78 17</Link>
-                  </div>
                   <div className="faculty-email">
                     <p>
                       <i className="fa-solid fa-envelope"></i>
                       Email:
                     </p>
-                    <Link href="mailto:s_salamatsu@mail.ru">
-                      s_salamatsu@mail.ru
+                    <Link href={`mailto:${facultyData.email}`}>
+                      {facultyData.email}
                     </Link>
                   </div>
                 </div>
@@ -79,40 +92,11 @@ const Faculty = () => {
             </div>
 
             <div className="faculty-block-text">
-              <div className="faculty-block-text-links">
-                <h4>Факультеттеги кафедралар:</h4>
-                <ul>
-                  {departments.map((dept, index) => (
-                    <li key={index}>
-                      <Link href="#">{dept}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               <div className="faculty-block-text-info">
-                <h4>Тарийх факультети тарийхы</h4>
-                <p>
-                  Қарақалпақ мәмлекетлик университетиниң ашылыўы менен 1976 жылы
-                  Тарийх-география факультети шөлкемлестирилип 1977-1978-оқыў
-                  жылларында Тарийх-география факультети қурамында Ҳуқықтаныў
-                  бөлими ашылды. 1993 жылы Юридика ҳәм Тарийх факультетлери
-                  болып екиге бөлинеди ҳәм Юридика факультети шөлкемлестириледи.
-                  1996 жылы Юридика – тарийх факультети болып қайта дүзиледи.
-                  Сол ўақытта факультетте 5 кафедра болып соннан 3 кафедра
-                  юриспруденция тəлим бағдары бойынша, 2 кафедра тарийх тəлим
-                  бағдары бойынша бакалавр ҳәм магистрантларды таярлай баслады.
-                  2003 жылы тарийх ҳәм юридика факультетлери өз-алдына қайтадан
-                  бөлек факультет болып қәнигеликлер таярлай баслады. 2011 –
-                  жылдан баслап Тарийх ҳәм ҳуқық факультети болып қайта дүзилип
-                  бүгинги күнге шекем 4 кафедра жумыс алып барды. 2019 жылы
-                  тарийх ҳәм юридика факультетлери өз-алдына қайтадан бөлек
-                  факультет болып қәнигеликлер таярлай баслады. «Археология»,
-                  «Өзбекстан ҳәм Қарақалпақстан тарийхы», «Социаллық пәнлер» ҳәм
-                  «Педагогика» кафедраларында ҳәзирги күнде 3 илим докторы, 21
-                  илим кандидатлары ҳәм доцентлер, 31 ассистент оқытыўшылар оқыў
-                  ҳәм илимий педагогикалық жумыс алып бармақта.
-                </p>
+                <h4>{getTranslatedContent('name')}</h4>
+                <div dangerouslySetInnerHTML={{ __html: getTranslatedContent('description') }} />
+                <h4>History</h4>
+                <div dangerouslySetInnerHTML={{ __html: getTranslatedContent('history_of_faculty') }} />
               </div>
 
               <div className="faculty-block-text-social">

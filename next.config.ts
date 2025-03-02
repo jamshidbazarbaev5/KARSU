@@ -1,15 +1,8 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: ['localhost'], // Add any other domains you're loading images from
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: ""
-      },
-    ],
-  }
-};
+    domains: ['debttracker.uz'], // Add your external image domains here
+  },
+}
 
-export default nextConfig;
+module.exports = nextConfig

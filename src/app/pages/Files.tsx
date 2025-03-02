@@ -9,7 +9,6 @@ interface DocumentItem {
 }
 
 const Files = () => {
-  // Sample data - you can replace this with actual data from an API
   const documents: DocumentItem[] = [
     {
       id: 1,
@@ -42,7 +41,6 @@ const Files = () => {
         date: "2024, 19 Сентябрь",
         name: "Odob axloq kodeksi"
       },
-    // ... add other documents
   ];
 
   return (

@@ -1,16 +1,32 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface Administrator {
+  id: number;
+  position: number;
+  phone_number: string;
+  email: string;
+  main_image: string;
+  translations: {
+    [key: string]: {
+      full_name: string;
+      biography: string;
+    }
+  }
+}
+
 interface AdministratorProps {
   photo: string;
   title: string;
-  study: string;
   name: string;
   phone: string;
-  emails: string[];
+  email: string;
   isMain?: boolean;
 }
 
-const AdministratorCard = ({ photo, title, study, name, phone, emails, isMain = false }: AdministratorProps) => {
+const AdministratorCard = ({ photo, title, name, phone, email, isMain = false }: AdministratorProps) => {
   const baseClass = isMain ? 'administration-main' : 'administration-other';
   
   return (
@@ -24,22 +40,18 @@ const AdministratorCard = ({ photo, title, study, name, phone, emails, isMain = 
       </div>
       <div className={`${baseClass}-info`}>
         <div className={`${baseClass}-title-div`}>
-          <span className={`${baseClass}-title`}>{title}</span>
-          <div className={`${baseClass}-line`}></div>
-          <div className="administration-main-study">
-            <span>{study}</span>
-          </div>
+          <span className={`${baseClass}-title`}
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
         </div>
         <div className={`${baseClass}-other-info`}>
           <span className={`${baseClass}-name`}>{name}</span>
           <span className={`${baseClass}-phone`}>
             <span className="bold-span">Телефон</span> {phone}
           </span>
-          {emails.map((email, index) => (
-            <span key={index} className={`${baseClass}-email`}>
-              <span className="bold-span">Email:</span> {email}
-            </span>
-          ))}
+          <span className={`${baseClass}-email`}>
+            <span className="bold-span">Email:</span> {email}
+          </span>
         </div>
       </div>
     </div>
@@ -47,49 +59,26 @@ const AdministratorCard = ({ photo, title, study, name, phone, emails, isMain = 
 };
 
 const AdministrationPage = () => {
-  const administrators = [
-    {
-      photo: "/main.png",
-      title: "Ректор, Доктор технических наук",
-      study: "Lorem ipsum",
-      name: "Реймов Ахмед Мамбеткаримович",
-      phone: "(99861) 223-60-47",
-      emails: ["r.axmed@exat.uz", "rector@karsu.uz"],
-      isMain: true
-    },
-    {
-      photo: "/second.png",
-      title: "Проректор по учебной работе",
-      study: "Lorem ipsum",
-      name: "Дуйсенбаев Олимжон Исмаилович",
-      phone: "(99861) 223-58-31",
-      emails: ["qmu.oqiw@exat.uz", "o_duysenbayev1978@karsu.uz"]
-    },
-    {
-      photo: "/third.png",
-      title: "Проректор по науке и инновационных работ, доцент",
-      study: "Lorem ipsum",
-      name: "Турдымамбетов Изимбет Рахметович",
-      phone: "(99861) 223-60-19",
-      emails: ["qmu.ilim@exat.uz", "izimbet76@mail.ru"]
-    },
-    {
-      photo: "/fourth.png",
-      title: "Проректор по экономике и финансам, доцент",
-      study: "Lorem ipsum",
-      name: "Кудайбергенов Азамат Шамуратович",
-      phone: "(99861) 223-59-13",
-      emails: ["qmu.moliya@exat.uz", "Imam_2001@mail.ru"]
-    },
-    {
-      photo: "/none.png",
-      title: "Первый проректор по вопросам молодежи и духовно-просветительской работе",
-      study: "Lorem ipsum",
-      name: "Алауатдинов Сахабатдин Иниятдинович",
-      phone: "(99861) 2235918",
-      emails: ["qmu.manaviyat@exat.uz", "saxabatdin78@mail.ru"]
-    }
-  ];
+  const [administrators, setAdministrators] = useState<Administrator[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { i18n } = useTranslation();
+  const language = i18n.language;
+
+  useEffect(() => {
+    const fetchAdministrators = async () => {
+      try {
+        const response = await fetch(`https://debttracker.uz/${language}/menus/admin/`);
+        const data = await response.json();
+        setAdministrators(data);
+      } catch (error) {
+        console.error('Error fetching administrators:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAdministrators();
+  }, [language]);
 
   return (
     <div className="administration-page">
@@ -100,12 +89,21 @@ const AdministrationPage = () => {
           </div>
         </div>
         <div className="all-administration-group">
-          {administrators.map((admin, index) => (
-            <AdministratorCard 
-              key={index}
-              {...admin}
-            />
-          ))}
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            administrators.map((admin) => (
+              <AdministratorCard 
+                key={admin.id}
+                photo={admin.main_image}
+                title={admin.translations[language].biography}
+                name={admin.translations[language].full_name}
+                phone={admin.phone_number}
+                email={admin.email}
+                isMain={admin.position === 1}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
