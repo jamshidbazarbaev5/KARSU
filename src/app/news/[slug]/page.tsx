@@ -23,26 +23,46 @@ interface NewsItem {
   };
 }
 
+interface Goal {
+  id: number;
+  translations: {
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
+  };
+  goals: number;
+  color: string;
+}
+
 export default function NewsPage() {
   const { slug } = useParams();
   const [newsData, setNewsData] = useState<NewsItem | null>(null);
+  const [goalsData, setGoalsData] = useState<Goal[]>([]);
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    const fetchNewsDetail = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get<NewsItem>(
-          `https://debttracker.uz/${i18n.language}/news/posts/${slug}/`
+        const [newsResponse, goalsResponse] = await Promise.all([
+          axios.get<NewsItem>(`https://debttracker.uz/${i18n.language}/news/posts/${slug}/`),
+          axios.get<Goal[]>('https://debttracker.uz/en/news/goals/')
+        ]);
+        
+        // Filter goalsData to only include goals that are in newsData.goals
+        const filteredGoals = goalsResponse.data.filter(goal => 
+          newsResponse.data.goals.includes(goal.id)
         );
-        setNewsData(response.data);
+        
+        setNewsData(newsResponse.data);
+        setGoalsData(filteredGoals);
       } catch (error) {
-        console.error('Error fetching news detail:', error);
-        // Add error handling here if needed
+        console.error('Error fetching data:', error);
       }
     };
 
     if (slug) {
-      fetchNewsDetail();
+      fetchData();
     }
   }, [slug, i18n.language]);
 
@@ -50,5 +70,5 @@ export default function NewsPage() {
     return <div>Loading...</div>;
   }
 
-  return <NewsDetail newsData={newsData} />;
+  return <NewsDetail newsData={newsData} goalsData={goalsData} />;
 }

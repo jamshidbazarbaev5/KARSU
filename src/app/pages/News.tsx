@@ -8,6 +8,18 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'isomorphic-dompurify';
 
+interface GoalType {
+  id: number;
+  translations: {
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
+  };
+  goals: number;
+  color: string;
+}
+
 interface NewsProps {
   newsData: {
     id: number;
@@ -25,9 +37,20 @@ interface NewsProps {
       };
     };
   };
+  goalsData: {
+    id: number;
+    translations: {
+      [key: string]: {
+        name: string;
+        slug: string;
+      };
+    };
+    goals: number;
+    color: string;
+  }[];
 }
 
-export default function News({ newsData }: NewsProps) {
+export default function News({ newsData, goalsData }: NewsProps) {
     const [nav1, setNav1] = useState<Slider | null>(null);
     const [nav2, setNav2] = useState<Slider | null>(null);
     const [showAllButtons, setShowAllButtons] = useState(false);
@@ -92,6 +115,14 @@ export default function News({ newsData }: NewsProps) {
         src: img.image,
         alt: `Slide ${index + 1}`
     }));
+
+    // Add a function to get translated goal name
+    const getGoalName = (goal: typeof goalsData[0]) => {
+        return goal.translations[i18n.language]?.name || 
+               goal.translations['en']?.name || 
+               'Unknown Goal';
+    };
+    console.log(goalsData)
 
     return (
         <main className="main">
@@ -199,18 +230,38 @@ export default function News({ newsData }: NewsProps) {
                         </div>
 
                         <div className="main-news-block-buttons">
-                            {/* Visible buttons */}
+                            {/* Visible buttons - show first 4 by default */}
+                            {goalsData.map((goal) => (
+                                <a 
+                                    key={goal.id} 
+                                    href="#" 
+                                    style={{ backgroundColor: goal.color.startsWith('#') ? goal.color : `#${goal.color}` }}
+                                >
+                                    <span className="buttons-number">{goal.goals}</span>
+                                    <p>{getGoalName(goal)}</p>
+                                </a>
+                            ))}
+                            
                             {/* Hidden buttons section */}
-                            <div className={`hidden-buttons ${showAllButtons ? 'show' : ''}`}>
-                                {/* Button content */}
+                            <div className="hidden-buttons">
+                                {goalsData.slice(4).map((goal) => (
+                                    <a 
+                                        key={goal.id} 
+                                        href="#" 
+                                        style={{ backgroundColor: goal.color.startsWith('#') ? goal.color : `#${goal.color}` }}
+                                    >
+                                        <span className="buttons-number">{goal.goals}</span>
+                                        <p>{getGoalName(goal)}</p>
+                                    </a>
+                                ))}
                             </div>
                         </div>
-                        <button 
+                        <span 
                             className="show-all-text"
                             onClick={() => setShowAllButtons(!showAllButtons)}
                         >
                             {showAllButtons ? 'Show Less' : 'Show All'}
-                        </button>
+                        </span>
                     </div>
 
                     <div className="main-news-rubric">

@@ -1,7 +1,6 @@
 import FacultyClient from './FacultyClient';
 import '../main.css';
 
-// Define the structure of faculty translations
 interface FacultyTranslation {
   name: string;
   slug: string;
@@ -9,7 +8,6 @@ interface FacultyTranslation {
   history_of_faculty: string;
 }
 
-// Define the structure of faculty data
 interface FacultyData {
   id: number;
   email: string;
@@ -17,7 +15,6 @@ interface FacultyData {
   translations: { [key: string]: FacultyTranslation };
 }
 
-// Function to fetch faculty data
 async function getFacultyData(slug: string): Promise<FacultyData> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
@@ -56,13 +53,11 @@ async function getFacultyData(slug: string): Promise<FacultyData> {
   }
 }
 
-// Update the props interface to match Next.js requirements
 interface PageProps {
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Update the component signature
 export default async function FacultyPage(props: {
   params: Promise<{ slug: string }>;
 }) {

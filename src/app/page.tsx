@@ -64,14 +64,11 @@ interface VideoTranslation {
 // Add interface for faculty data
 interface FacultyTranslation {
   name: string;
-  slug: string;
   description: string;
-  history_of_faculty: string;
 }
 
 interface Faculty {
   id: number;
-  email: string;
   logo: string;
   translations: {
     [key: string]: FacultyTranslation;
@@ -105,13 +102,48 @@ interface Service {
   };
 }
 
-// 1. Add default fallback for translations
+// Add interfaces for goals and categories
+interface GoalTranslation {
+  name: string;
+  slug: string;
+}
+
+interface Goal {
+  id: number;
+  translations: {
+    [key: string]: GoalTranslation;
+  };
+  goals: number;
+  color: string;
+}
+
+interface CategoryTranslation {
+  name: string;
+  slug: string;
+}
+
+interface Category {
+  id: number;
+  translations: {
+    [key: string]: CategoryTranslation;
+  };
+}
+
+// Add this helper function at the top level
+const decodeHtmlEntities = (text: string) => {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+};
+
+// Update getTranslatedText function
 const getTranslatedText = (
   translations: any,
-  language: string,
+  language: string, 
   field: string
 ) => {
-  return translations?.[language]?.[field] || "No translation available";
+  const text = translations?.[language]?.[field] || "No translation available";
+  return decodeHtmlEntities(text);
 };
 
 // 2. Add image path validation
@@ -134,42 +166,75 @@ const getValidImagePath = (path: string | undefined) => {
   return path.startsWith("/") ? path : `/${path}`;
 };
 
-const facultiesData = [
+// Update the FACULTY_DATA constant with the full structure
+const FACULTY_DATA = [
   {
     id: 1,
-    title: "Факультет Узбекской филологии",
-    description:
-      "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.",
+    logo: "content/image_2024-09-16_14-55-28.png",
+    translations: {
+      ru: {
+        name: "Факультет Узбекской филологии",
+        description: "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года."
+      }
+    }
   },
   {
     id: 2,
-    title: "Факультет Физики",
-    description:
-      "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.",
+    logo: "content/image_2024-09-16_14-55-28.png",
+    translations: {
+      ru: {
+        name: "Факультет Физики",
+        description: "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года."
+      }
+    }
   },
   {
     id: 3,
-    title: "Факультет МФ и журналистики",
-    description:
-      "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.",
+    logo: "content/image_2024-09-16_14-55-28.png",
+    translations: {
+      ru: {
+        name: "Факультет МФ и журналистики",
+        description: "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года."
+      }
+    }
   },
   {
     id: 4,
-    title: "Факультет Истории",
-    description:
-      "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года.",
-  },
+    logo: "content/image_2024-09-16_14-55-28.png",
+    translations: {
+      ru: {
+        name: "Факультет Истории",
+        description: "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года."
+      }
+    }
+  }
 ];
+
+
+
 
 export default function MainSlider() {
   const { t, i18n } = useTranslation();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
-  const [faculties, setFaculties] = useState<Faculty[]>([]);
+  const [faculties, setFaculties] = useState<Faculty[]>(FACULTY_DATA);
   const [quantities, setQuantities] = useState<Quantity[]>([]);
   const [services, setServices] = useState<Service[]>([]);
-
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [mainSwiper, setMainSwiper] = useState<Swiper | null>(null);
+  useEffect(() => {
+    const fetchFaculties = async () => {
+      try {
+        const response = await axios.get(`https://debttracker.uz/${i18n.language}/menus/faculty/`);
+        setFaculties(response.data);
+      } catch (error) {
+        console.error("Error fetching faculties:", error);
+      }
+    };
+    fetchFaculties();
+  }, [i18n.language]);
   // Update news fetching effect to handle the direct response format
   useEffect(() => {
     const fetchNews = async () => {
@@ -218,22 +283,6 @@ export default function MainSlider() {
     fetchVideos();
   }, [i18n.language]);
 
-  // Add faculties fetching effect
-  useEffect(() => {
-    const fetchFaculties = async () => {
-      try {
-        const response = await axios.get<Faculty[]>(
-          `https://debttracker.uz/${i18n.language}/menus/faculty/`
-        );
-        setFaculties(response.data);
-      } catch (error) {
-        console.error("Error fetching faculties:", error);
-      }
-    };
-
-    fetchFaculties();
-  }, [i18n.language]);
-
   // Add quantities fetching effect
   useEffect(() => {
     const fetchQuantities = async () => {
@@ -266,8 +315,39 @@ export default function MainSlider() {
     fetchServices();
   }, [i18n.language]);
 
+  // Add goals fetching effect
   useEffect(() => {
-    let mainSwiper: Swiper | null = null;
+    const fetchGoals = async () => {
+      try {
+        const response = await axios.get<Goal[]>(
+          `https://debttracker.uz/${i18n.language}/news/goals/`
+        );
+        setGoals(response.data);
+      } catch (error) {
+        console.error("Error fetching goals:", error);
+      }
+    };
+
+    fetchGoals();
+  }, [i18n.language]);
+
+  // Add categories fetching effect
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get<Category[]>(
+          `https://debttracker.uz/${i18n.language}/news/category/`
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [i18n.language]);
+
+  useEffect(() => {
     let videoSwiper: Swiper | null = null;
     let facultySwiper: Swiper | null = null;
     let infoSwiper: Swiper | null = null;
@@ -275,7 +355,7 @@ export default function MainSlider() {
     try {
       // Main slider initialization
       if (document.querySelector(".swiper-container-1")) {
-        mainSwiper = new Swiper(".swiper-container-1", {
+        const swiper = new Swiper(".swiper-container-1", {
           loop: true,
           autoplay: {
             delay: 5000,
@@ -286,6 +366,7 @@ export default function MainSlider() {
             prevEl: ".main-slider-btn-left",
           },
         });
+        setMainSwiper(swiper);
       }
 
       // Video slider initialization
@@ -322,24 +403,20 @@ export default function MainSlider() {
       if (document.querySelector(".swiper-container-faculty")) {
         facultySwiper = new Swiper(".swiper-container-faculty", {
           direction: "vertical",
-        slidesPerView: 3,
-        spaceBetween: 30,
-        centeredSlides: true,
-        mousewheel: true,
-        grabCursor: true,
-        loop: true,
+          slidesPerView: 3,
+          spaceBetween: 20,
+          centeredSlides: true,
+          initialSlide: 1,
+          loop: true,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
           speed: 800,
-          effect: "slide",
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-            reverseDirection: false,
-        },
-        pagination: {
-            el: ".swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
+          mousewheel: {
+            invert: false,
+          },
+          navigation: {
             nextEl: ".faculty-select-btn.swiper-next",
             prevEl: ".faculty-select-btn.swiper-prev",
           },
@@ -348,47 +425,53 @@ export default function MainSlider() {
               if (infoSwiper) {
                 infoSwiper.slideTo(swiper.realIndex);
               }
-            },
-        },
-      });
+            }
+          },
+        });
       }
 
+      // Info slider initialization
       if (document.querySelector(".swiper-container-info")) {
         infoSwiper = new Swiper(".swiper-container-info", {
           direction: "vertical",
-        slidesPerView: 1,
-        mousewheel: true,
-        loop: true,
+          slidesPerView: 1,
+          mousewheel: {
+            invert: true,
+          },
+          loop: true,
           speed: 800,
           effect: "fade",
           fadeEffect: {
             crossFade: true,
           },
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-        },
-        pagination: {
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: true,
+          },
+          pagination: {
             el: ".swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".swiper-next",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".swiper-next",
             prevEl: ".swiper-prev",
-        },
-      });
+          },
+        });
       }
 
+      // Add event listeners for navigation buttons
       const nextBtn = document.querySelector(".faculty-select-btn.swiper-next");
       const prevBtn = document.querySelector(".faculty-select-btn.swiper-prev");
 
       if (nextBtn && prevBtn) {
         nextBtn.addEventListener("click", () => {
-          facultySwiper?.slidePrev();
+          facultySwiper?.slideNext();
+          infoSwiper?.slideNext();
         });
 
         prevBtn.addEventListener("click", () => {
-          facultySwiper?.slideNext();
+          facultySwiper?.slidePrev();
+          infoSwiper?.slidePrev();
         });
       }
     } catch (error) {
@@ -422,10 +505,10 @@ export default function MainSlider() {
 
             if (nextBtn && prevBtn) {
               nextBtn.removeEventListener("click", () =>
-                facultySwiper?.slidePrev()
+                facultySwiper?.slideNext()
               );
               prevBtn.removeEventListener("click", () =>
-                facultySwiper?.slideNext()
+                facultySwiper?.slidePrev()
               );
             }
 
@@ -463,7 +546,7 @@ export default function MainSlider() {
                 </div>
                 <div className="header-logo-title-bg">
                   <Link href="/" className="header-logo-title">
-                    Karakalpak State University
+                    КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
                   </Link>
                 </div>
               </div>
@@ -472,11 +555,16 @@ export default function MainSlider() {
               <div className="main-slider-div-data-small">
                 <div className="main-slider-div-data-span-div">
                   <span className="main-slider-div-data-span-uni-title">
-                    {getTranslatedText(
-                      item.translations,
-                      i18n.language,
-                      "title"
-                    )}
+                    {getTranslatedText(item.translations, i18n.language, "title")
+                      .split(' ')
+                      .slice(0, 3)
+                      .join('\n')}
+                  </span>
+                  <span className="main-slider-div-data-span-text">
+                    {getTranslatedText(item.translations, i18n.language, "title")
+                      .split(' ')
+                      .slice(3)
+                      .join(' ')}
                   </span>
                 </div>
                 <div className="main-slider-btn-div">
@@ -505,7 +593,10 @@ export default function MainSlider() {
                   </Link>
                 </div>
                 <div className="main-slider-arrows-div">
-                  <button className="main-slider-btn-left">
+                  <button 
+                    className="main-slider-btn-left"
+                    onClick={() => mainSwiper?.slidePrev()}
+                  >
                     {/* Left arrow SVG */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -529,7 +620,10 @@ export default function MainSlider() {
                       />
                     </svg>
                   </button>
-                  <button className="main-slider-btn-right">
+                  <button 
+                    className="main-slider-btn-right"
+                    onClick={() => mainSwiper?.slideNext()}
+                  >
                     {/* Right arrow SVG */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -573,8 +667,8 @@ export default function MainSlider() {
           <Image
             src={getValidImagePath("/eab7b06f-a168-41a4-9491-9ad8c2df0299.jpg")}
             alt="Background"
-            fill
-            style={{ objectFit: "cover" }}
+            width={1920}
+            height={1080}
           />
         </div>
       </div>
@@ -616,40 +710,38 @@ export default function MainSlider() {
                 <div className="news-photo-div">
                   <div className="news-category">
                     <span className="news-category-span">
-                      {item.category === 1
-                        ? t("navigation.scientific")
-                        : t("navigation.events")}
+                      {getTranslatedText(
+                        categories.find(cat => cat.id === item.category)?.translations || {},
+                        i18n.language,
+                        "name"
+                      )}
                     </span>
                   </div>
                   <img
                     className="news-photo"
                     src={getValidImagePath(item.main_image)}
-                    alt={getTranslatedText(
-                      item.translations,
-                      i18n.language,
-                      "title"
-                    )}
+                    alt={getTranslatedText(item.translations, i18n.language, "title")}
                   />
                 </div>
                 <div className="news-info">
                   <div className="news-info-types">
                     <p>{t("common.relatedGoals")}:</p>
                     <div>
-                      {item.goals.map((goal) => (
-                        <a href="#" key={goal}>
-                          <span
-                            className="number"
-                            style={{
-                              background:
-                                goal === 1
-                                  ? "rgb(197, 25, 45)"
-                                  : "rgb(19, 73, 107)",
-                            }}
-                          >
-                            {goal}
-                          </span>
-                        </a>
-                      ))}
+                      {item.goals.map((goalId) => {
+                        const goalItem = goals.find(g => g.id === goalId);
+                        return (
+                          <a href="#" key={goalId}>
+                            <span
+                              className="number"
+                              style={{
+                                background: goalItem?.color || "#002B6A"
+                              }}
+                            >
+                              {goalItem?.goals || goalId}
+                            </span>
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className="news-title">
@@ -915,25 +1007,16 @@ export default function MainSlider() {
                 <div className="swiper-container swiper-container-faculty">
                   <div className="swiper-wrapper">
                     {faculties.map((faculty) => (
-                      <div
-                        className="swiper-slide"
-                        data-faculty={faculty.id}
-                        key={faculty.id}
-                      >
-                        <div className="faculty-card">
-                          <div className="faculty-logo">
-                            <Image 
-                              src={getValidImagePath(faculty.logo)}
-                              alt={
-                                faculty.translations[i18n.language]?.name ||
-                                "Faculty logo"
-                              }
-                              width={100}
-                              height={100}
+                      <div className="swiper-slide" key={faculty.id} data-faculty={faculty.id}>
+                        <div className='faculty-card'>
+                          <div className='faculty-logo'>
+                            <img 
+                              src={faculty.logo} 
+                              alt={faculty.translations[i18n.language]?.name || ''} 
                             />
                           </div>
-                          <div className="faculty-title">
-                            <span className="faculty-title-span">
+                          <div className='faculty-title'>
+                            <span className='faculty-title-span'>
                               {faculty.translations[i18n.language]?.name}
                             </span>
                           </div>
@@ -945,46 +1028,16 @@ export default function MainSlider() {
               </div>
 
               <div className="faculty-select">
-                <button
-                  className="faculty-select-btn swiper-next"
-                  aria-label="Previous slide"
-                  aria-controls="swiper-wrapper-faculty"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="100"
-                    height="30"
-                    viewBox="0 0 100 30"
-                    fill="none"
-                  >
+                <button className='faculty-select-btn swiper-next'>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="30" viewBox="0 0 100 30" fill="none">
                     <rect width="100" height="30" rx="5" fill="#002B6A" />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M56.7712 13.5837C57.0763 13.2786 57.0763 12.784 56.7712 12.4789L50.5211 6.22894C50.216 5.92383 49.7215 5.92383 49.4164 6.22894L43.1664 12.4789C42.8613 12.784 42.8613 13.2786 43.1664 13.5837C43.4715 13.8888 43.966 13.8888 44.2711 13.5837L49.1875 8.66748V23.448C49.1875 23.8795 49.5373 24.2292 49.9688 24.2292C50.4002 24.2292 50.75 23.8795 50.75 23.448V8.66748L55.6663 13.5837C55.9714 13.8888 56.4661 13.8888 56.7712 13.5837Z"
-                      fill="white"
-                    />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M56.7712 13.5837C57.0763 13.2786 57.0763 12.784 56.7712 12.4789L50.5211 6.22894C50.216 5.92383 49.7215 5.92383 49.4164 6.22894L43.1664 12.4789C42.8613 12.784 42.8613 13.2786 43.1664 13.5837C43.4715 13.8888 43.966 13.8888 44.2711 13.5837L49.1875 8.66748V23.448C49.1875 23.8795 49.5373 24.2292 49.9688 24.2292C50.4002 24.2292 50.75 23.8795 50.75 23.448V8.66748L55.6663 13.5837C55.9714 13.8888 56.4661 13.8888 56.7712 13.5837Z" fill="white" />
                   </svg>
                 </button>
-                <button
-                  className="faculty-select-btn swiper-prev"
-                  aria-label="Next slide"
-                  aria-controls="swiper-wrapper-faculty"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="100"
-                    height="30"
-                    viewBox="0 0 100 30"
-                    fill="none"
-                  >
+                <button className='faculty-select-btn swiper-prev'>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="30" viewBox="0 0 100 30" fill="none">
                     <rect width="100" height="30" rx="5" fill="#002B6A" />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M43.2289 16.6456C42.9238 16.9507 42.9238 17.4453 43.2289 17.7504L49.4789 24.0004C49.784 24.3055 50.2786 24.3055 50.5837 24.0004L56.8337 17.7504C57.1388 17.4453 57.1388 16.9507 56.8337 16.6456C56.5286 16.3405 56.034 16.3405 55.7289 16.6456L50.8125 21.5619V6.78137C50.8125 6.3499 50.4627 6.00012 50.0313 6.00012C49.5998 6.00012 49.25 6.3499 49.25 6.78137V21.5619L44.3337 16.6456C44.0286 16.3405 43.5339 16.3405 43.2289 16.6456Z"
-                      fill="white"
-                    />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M43.2289 16.6456C42.9238 16.9507 42.9238 17.4453 43.2289 17.7504L49.4789 24.0004C49.784 24.3055 50.2786 24.3055 50.5837 24.0004L56.8337 17.7504C57.1388 17.4453 57.1388 16.9507 56.8337 16.6456C56.5286 16.3405 56.034 16.3405 55.7289 16.6456L50.8125 21.5619V6.78137C50.8125 6.3499 50.4627 6.00012 50.0313 6.00012C49.5998 6.00012 49.25 6.3499 49.25 6.78137V21.5619L44.3337 16.6456C44.0286 16.3405 43.5339 16.3405 43.2289 16.6456Z" fill="white" />
                   </svg>
                 </button>
               </div>
@@ -993,54 +1046,41 @@ export default function MainSlider() {
             <div className="swiper-container swiper-container-info">
               <div className="swiper-wrapper">
                 {faculties.map((faculty) => (
-                  <div
-                    className={`swiper-slide swiper-slide-${faculty.id}`}
-                    key={faculty.id}
-                  >
-                    <div className="faculty-info" data-faculty={faculty.id}>
-                      <div className="faculty-info-title-logo">
-                        <div className="faculty-info-title">
-                          <span className="faculty-info-title-span">
+                  <div className="swiper-slide" key={faculty.id}>
+                    <div className='faculty-info' data-faculty={faculty.id}>
+                      <div className='faculty-info-title-logo'>
+                        <div className='faculty-info-title'>
+                          <span className='faculty-info-title-span'>
                             {faculty.translations[i18n.language]?.name}
                           </span>
                         </div>
-                        <div className="faculty-info-logo">
-                          <Image
-                            src={getValidImagePath(faculty.logo)}
-                            alt={
-                              faculty.translations[i18n.language]?.name ||
-                              "Faculty logo"
-                            }
-                              width={90}
-                              height={90}
-                            />
-                          </div>
-                      </div>
-                      <div className="faculty-info-text-btn-div">
-                        <div className="faculty-info-text">
-                          <span className="faculty-info-text-span">
-                            {faculty.translations[
-                              i18n.language
-                            ]?.description.replace(/<[^>]*>/g, "")}
-                            </span>
-                        </div>
-                        <Link
-                          href={`/faculty/${
-                            faculty.translations[i18n.language]?.slug
-                          }`}
-                          className="faculty-info-details-btn"
-                        >
-                          {t("common.moreDetails")}
-                        </Link>
-                          </div>
+                        <div className='faculty-info-logo'>
+                          <img 
+                            src={faculty.logo} 
+                            alt={faculty.translations[i18n.language]?.name || ''} 
+                            width={90} 
+                            height={90} 
+                          />
                         </div>
                       </div>
-                    ))}
+                      <div className='faculty-info-text-btn-div'>
+                        <div className='faculty-info-text'>
+                          <span className='faculty-info-text-span'>
+                            {faculty.translations[i18n.language]?.description.replace(/<[^>]*>/g, '')}
+                          </span>
+                        </div>
+                        <a href="#" className='faculty-info-details-btn'>
+                          {t("buttons.more")}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-                  </div>
-                </div>
-              </div>
+          </div>
+        </div>
+      </div>
 
       <div className="services-page">
         <div className="services-page-small">
