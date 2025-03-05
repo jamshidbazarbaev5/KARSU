@@ -1,5 +1,5 @@
 'use client';
-import Faculty from '../../pages/Faculty';
+import Faculty from '../../../pages/Faculty';
 
 interface FacultyData {
   id: number;

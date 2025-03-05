@@ -1041,7 +1041,7 @@ export default function MainSlider() {
                             {faculty.translations[i18n.language]?.description.replace(/<[^>]*>/g, '')}
                           </span>
                         </div>
-                        <Link href={`/faculty/${faculty.translations['ru']?.slug}`} className='faculty-info-details-btn'>
+                        <Link href={`/${i18n.language}/faculty/${faculty.translations['ru']?.slug}`} className='faculty-info-details-btn'>
                           {t("buttons.more")}
                         </Link>
                       </div>
