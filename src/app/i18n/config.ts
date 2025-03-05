@@ -21,7 +21,8 @@ const initI18n = async () => {
         loadPath: '/locales/{{lng}}/translation.json',
       },
       detection: {
-        order: ['localStorage', 'cookie', 'navigator'],
+        order: ['path', 'localStorage', 'cookie', 'navigator'],
+        lookupFromPathIndex: 0,
         caches: ['localStorage', 'cookie'],
       },
     });

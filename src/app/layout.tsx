@@ -3,7 +3,7 @@ import Footer from './components/Footer'
 import './styles/main.css'
 import './styles/mormalize.css'
 import Script from 'next/script'
-import { Nunito, Roboto } from 'next/font/google'
+import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes } from 'next/font/google'
 import I18nProvider from './i18n/provider'
 import '../app/i18n/config'
 import { EffectFade, EffectCube, EffectCoverflow } from 'swiper/modules';
@@ -14,12 +14,60 @@ import 'swiper/css/effect-coverflow';
 const nunito = Nunito({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-nunito',
 })
 
 const roboto = Roboto({
-  weight: ['400', '700'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-roboto',
+})
+
+const cabin = Cabin({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-cabin',
+})
+
+// const robotoSlab = RobotoSlab({
+//   subsets: ['latin'],
+//   display: 'swap',
+//   variable: '--font-roboto-slab',
+// })
+
+const sourceSans3 = Source_Sans_3({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-source-sans',
+})
+
+const biryani = Biryani({
+  weight: ['200', '300', '400', '600', '700', '800', '900'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-biryani',
+})
+
+const sofiaSans = Sofia_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sofia-sans',
+})
+
+const satisfy = Satisfy({
+  weight: ['400'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-satisfy',
+})
+
+const greatVibes = Great_Vibes({
+  weight: ['400'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-great-vibes',
 })
 
 export default function RootLayout({
@@ -28,7 +76,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${nunito.className} ${roboto.className}`}>
+    <html lang="en" className={`
+      ${nunito.variable} 
+      ${roboto.variable}
+      ${cabin.variable}
+      ${sourceSans3.variable}
+      ${biryani.variable}
+      ${sofiaSans.variable}
+      ${satisfy.variable}
+      ${greatVibes.variable}
+    `}>
       <head>
         {/* Font Awesome */}
         <link 

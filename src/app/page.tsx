@@ -353,136 +353,128 @@ export default function MainSlider() {
   }, [i18n.language]);
 
   useEffect(() => {
+    let mainSwiper: Swiper | null = null;
     let videoSwiper: Swiper | null = null;
     let facultySwiper: Swiper | null = null;
     let infoSwiper: Swiper | null = null;
 
-    try {
-      // Main slider initialization
-      if (document.querySelector(".swiper-container-1")) {
-        const swiper = new Swiper(".swiper-container-1", {
-          loop: true,
-          autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-          },
-          navigation: {
-            nextEl: ".main-slider-btn-right",
-            prevEl: ".main-slider-btn-left",
-          },
-        });
-        setMainSwiper(swiper);
-      }
-
-      // Video slider initialization
-      if (document.querySelector(".swiper-container-video")) {
-        videoSwiper = new Swiper(".swiper-container-video", {
-          speed: 400,
-          spaceBetween: 30,
-          initialSlide: 0,
-          autoHeight: true,
-          direction: "horizontal",
-          loop: true,
-          autoplay: {
-            delay: 5000,
-            disableOnInteraction: true,
-          },
-          pagination: {
-            el: ".swiper-pagination",
-            type: "bullets",
-            clickable: true,
-          },
-          navigation: {
-            nextEl: ".swiper-video-next",
-            prevEl: ".swiper-video-prev",
-          },
-          effect: "slide",
-          slidesPerView: 2,
-          centeredSlides: true,
-          grabCursor: true,
-          allowTouchMove: true,
-        });
-      }
-
-      // Faculty slider initialization
-      if (document.querySelector(".swiper-container-faculty")) {
-        facultySwiper = new Swiper(".swiper-container-faculty", {
-          direction: "vertical",
-          slidesPerView: 3,
-          spaceBetween: 20,
-          centeredSlides: true,
-          initialSlide: 1,
-          loop: true,
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-          },
-          speed: 800,
-          mousewheel: {
-            invert: false,
-          },
-          navigation: {
-            nextEl: ".faculty-select-btn.swiper-next",
-            prevEl: ".faculty-select-btn.swiper-prev",
-          },
-          on: {
-            slideChange: function (swiper) {
-              if (infoSwiper) {
-                infoSwiper.slideTo(swiper.realIndex);
-              }
-            }
-          },
-        });
-      }
-
-      // Info slider initialization
-      if (document.querySelector(".swiper-container-info")) {
-        infoSwiper = new Swiper(".swiper-container-info", {
-          direction: "vertical",
-          slidesPerView: 1,
-          mousewheel: {
-            invert: true,
-          },
-          loop: true,
-          speed: 800,
-          effect: "fade",
-          fadeEffect: {
-            crossFade: true,
-          },
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: true,
-          },
-          pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-          },
-          navigation: {
-            nextEl: ".swiper-next",
-            prevEl: ".swiper-prev",
-          },
-        });
-      }
-
-      // Add event listeners for navigation buttons
-      const nextBtn = document.querySelector(".faculty-select-btn.swiper-next");
-      const prevBtn = document.querySelector(".faculty-select-btn.swiper-prev");
-
-      if (nextBtn && prevBtn) {
-        nextBtn.addEventListener("click", () => {
-          facultySwiper?.slideNext();
-          infoSwiper?.slideNext();
-        });
-
-        prevBtn.addEventListener("click", () => {
-          facultySwiper?.slidePrev();
-          infoSwiper?.slidePrev();
-        });
-      }
-    } catch (error) {
-      console.error("Error initializing Swiper:", error);
+    // Main slider initialization
+    if (document.querySelector(".swiper-container-1")) {
+      mainSwiper = new Swiper(".swiper-container-1", {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: ".main-slider-btn-right",
+          prevEl: ".main-slider-btn-left",
+        },
+      });
     }
 
+    // Video slider initialization
+    if (document.querySelector(".swiper-container-video")) {
+      videoSwiper = new Swiper(".swiper-container-video", {
+        speed: 400,
+        spaceBetween: 30,
+        initialSlide: 0,
+        autoHeight: true,
+        direction: "horizontal",
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: true,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          type: "bullets",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-video-next",
+          prevEl: ".swiper-video-prev",
+        },
+        effect: "slide",
+        slidesPerView: 2,
+        centeredSlides: true,
+        grabCursor: true,
+        allowTouchMove: true,
+      });
+    }
+
+    // Faculty slider initialization
+    if (document.querySelector(".swiper-container-faculty")) {
+      facultySwiper = new Swiper(".swiper-container-faculty", {
+        direction: "vertical",
+        slidesPerView: 3,
+        spaceBetween: 30,
+        centeredSlides: true,
+        mousewheel: true,
+        grabCursor: true,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".faculty-select-btn.swiper-next",
+          prevEl: ".faculty-select-btn.swiper-prev",
+        },
+        on: {
+          slideChange: function(this: Swiper) {
+            // Keep info slider in sync
+            if (infoSwiper) {
+              infoSwiper.slideTo(this.realIndex);
+            }
+          }
+        }
+      });
+    }
+
+    // Info slider initialization
+    if (document.querySelector(".swiper-container-info")) {
+      infoSwiper = new Swiper(".swiper-container-info", {
+        direction: "vertical",
+        slidesPerView: 1,
+        mousewheel: true,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        }
+      });
+    }
+
+    // Add manual button event listeners
+    const nextButton = document.querySelector('.faculty-select-btn.swiper-next');
+    const prevButton = document.querySelector('.faculty-select-btn.swiper-prev');
+
+    if (nextButton) {
+      nextButton.addEventListener('click', () => {
+        if (facultySwiper) {
+          facultySwiper.slideNext();
+        }
+      });
+    }
+
+    if (prevButton) {
+      prevButton.addEventListener('click', () => {
+        if (facultySwiper) {
+          facultySwiper.slidePrev();
+        }
+      });
+    }
+
+    // News menu horizontal scroll
     const newsMenuContainer = document.querySelector(".news-page-menu");
     if (newsMenuContainer) {
       const handleWheel = (event: WheelEvent) => {
@@ -490,49 +482,22 @@ export default function MainSlider() {
         (event.currentTarget as HTMLElement).scrollLeft += event.deltaY;
       };
 
-      newsMenuContainer.addEventListener(
-        "wheel",
-        handleWheel as unknown as EventListener
-      );
+      newsMenuContainer.addEventListener("wheel", handleWheel as unknown as EventListener);
 
-      // Cleanup
+      // Cleanup function
       return () => {
-        try {
-          if (mainSwiper) mainSwiper.destroy();
-          if (videoSwiper) videoSwiper.destroy();
-          if (facultySwiper) {
-            const nextBtn = document.querySelector(
-              ".faculty-select-btn.swiper-next"
-            );
-            const prevBtn = document.querySelector(
-              ".faculty-select-btn.swiper-prev"
-            );
-
-            if (nextBtn && prevBtn) {
-              nextBtn.removeEventListener("click", () =>
-                facultySwiper?.slideNext()
-              );
-              prevBtn.removeEventListener("click", () =>
-                facultySwiper?.slidePrev()
-              );
-            }
-
-            facultySwiper.destroy();
-          }
-          if (infoSwiper) infoSwiper.destroy();
-        } catch (error) {
-          console.error("Error destroying Swiper instances:", error);
-        }
-
+        // Cleanup event listeners and destroy Swiper instances
+        if (mainSwiper) mainSwiper.destroy();
+        if (videoSwiper) videoSwiper.destroy();
+        if (facultySwiper) facultySwiper.destroy();
+        if (infoSwiper) infoSwiper.destroy();
+        
         if (newsMenuContainer) {
-          newsMenuContainer.removeEventListener(
-            "wheel",
-            handleWheel as unknown as EventListener
-          );
+          newsMenuContainer.removeEventListener("wheel", handleWheel as unknown as EventListener);
         }
       };
     }
-  }, []);
+  }, []); // Empty dependency array means this effect runs once on mount
 
   const slides = news.map((item) => (
     <div className="swiper-slide" key={item.id}>
