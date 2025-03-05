@@ -1,4 +1,4 @@
-    import { Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Metadata } from 'next';
 import I18nProvider from '../i18n/provider';
 import Header from '../components/Header';
@@ -109,16 +109,16 @@ export default async function RootLayout({
   return (
     <html
       lang={language}
-    //   className={`
-    //     ${nunito.variable} 
-    //     ${roboto.variable}
-    //     ${cabin.variable}
-    //     ${sourceSans3.variable}
-    //     ${biryani.variable}
-    //     ${sofiaSans.variable}
-    //     ${satisfy.variable}
-    //     ${greatVibes.variable}
-    //   `}
+      className={`
+        ${nunito.variable} 
+        ${roboto.variable}
+        ${cabin.variable}
+        ${sourceSans3.variable}
+        ${biryani.variable}
+        ${sofiaSans.variable}
+        ${satisfy.variable}
+        ${greatVibes.variable}
+      `}
     >
       <head>
         <link 
