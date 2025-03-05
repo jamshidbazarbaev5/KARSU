@@ -30,7 +30,7 @@ export default function SingleAnnouncementPage() {
     const fetchAnnouncement = async () => {
       try {
         const response = await axios.get(
-          `https://debttracker.uz/${i18n.language}/announcements/${slug}/`
+          `https://debttracker.uz/announcements/${slug}/`
         );
         setAnnouncement(response.data);
       } catch (error) {

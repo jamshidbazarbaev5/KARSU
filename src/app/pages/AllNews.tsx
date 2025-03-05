@@ -55,7 +55,7 @@ const AllNews = () => {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await fetch(`https://debttracker.uz/${language}/news/posts/?page=${activePage}`);
+                const response = await fetch(`https://debttracker.uz/news/posts/?page=${activePage}`);
                 const data: NewsResponse = await response.json();
                 setNews(data.results);
                 setTotalPages(Math.max(2, Math.ceil(data.count / 6)));

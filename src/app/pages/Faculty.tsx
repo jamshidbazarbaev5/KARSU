@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 interface FacultyProps {
   facultyData: {
@@ -23,15 +22,6 @@ interface FacultyProps {
 const Faculty = ({ facultyData }: FacultyProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
-
-  useEffect(() => {
-    // Get the current language's slug
-    const currentSlug = facultyData.translations[i18n.language]?.slug;
-    if (currentSlug) {
-      // Update URL without reloading the page
-      router.replace(`/faculty/${currentSlug}`);
-    }
-  }, [i18n.language, facultyData.translations, router]);
 
   const getTranslatedContent = (field: keyof typeof facultyData.translations[string]) => {
     return facultyData.translations[i18n.language]?.[field] || facultyData.translations['en']?.[field] || '';

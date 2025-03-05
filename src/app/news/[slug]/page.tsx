@@ -45,8 +45,8 @@ export default function NewsPage() {
     const fetchData = async () => {
       try {
         const [newsResponse, goalsResponse] = await Promise.all([
-          axios.get<NewsItem>(`https://debttracker.uz/${i18n.language}/news/posts/${slug}/`),
-          axios.get<Goal[]>('https://debttracker.uz/en/news/goals/')
+          axios.get<NewsItem>(`https://debttracker.uz/news/posts/${slug}/`),
+          axios.get<Goal[]>('https://debttracker.uz/news/goals/')
         ]);
         
         // Filter goalsData to only include goals that are in newsData.goals

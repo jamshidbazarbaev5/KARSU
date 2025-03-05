@@ -15,7 +15,7 @@ export default function MenuPage() {
     useEffect(() => {
         const fetchMenuData = async () => {
             try {
-                const response = await fetch(`https://debttracker.uz/en/menus/main/${slug}/`);
+                const response = await fetch(`https://debttracker.uz/menus/main/${slug}/`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch menu data');
                 }

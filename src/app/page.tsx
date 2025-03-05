@@ -65,15 +65,20 @@ interface VideoTranslation {
 interface FacultyTranslation {
   name: string;
   description: string;
+  slug?: string;  // Make optional if not always present
+  history_of_faculty?: string;  // Make optional if not always present
+  email?: string;  // Make optional if not always present
 }
 
 interface Faculty {
   id: number;
+  email?: string;  // Make email optional
   logo: string;
   translations: {
     [key: string]: FacultyTranslation;
   };
 }
+
 
 // Add interface for quantities
 interface QuantityTranslation {
@@ -167,7 +172,7 @@ const getValidImagePath = (path: string | undefined) => {
 };
 
 // Update the FACULTY_DATA constant with the full structure
-const FACULTY_DATA = [
+const FACULTY_DATA: Faculty[] = [
   {
     id: 1,
     logo: "content/image_2024-09-16_14-55-28.png",
@@ -182,7 +187,7 @@ const FACULTY_DATA = [
     id: 2,
     logo: "content/image_2024-09-16_14-55-28.png",
     translations: {
-      ru: {
+      ru: { 
         name: "Факультет Физики",
         description: "Сегодня изучение иностранных языков стало чрезвычайно важным направлением государственной политики в Республике Узбекистан. Согласно постановлению Президента Ш.М. Мирзиёева «О мерах по поднятию на качественно новый уровень деятельности по популяризации изучения иностранных языков в Республике Узбекистан» от 19 мая 2021 года."
       }
@@ -227,7 +232,7 @@ export default function MainSlider() {
   useEffect(() => {
     const fetchFaculties = async () => {
       try {
-        const response = await axios.get(`https://debttracker.uz/${i18n.language}/menus/faculty/`);
+        const response = await axios.get(`https://debttracker.uz/menus/faculty/`);
         setFaculties(response.data);
       } catch (error) {
         console.error("Error fetching faculties:", error);
@@ -240,7 +245,7 @@ export default function MainSlider() {
     const fetchNews = async () => {
       try {
         const response = await axios.get<NewsItem[]>(
-          `https://debttracker.uz/${i18n.language}/news/recent-posts/`
+          `https://debttracker.uz/news/recent-posts/`
         );
         setNews(response.data);
       } catch (error) {
@@ -256,7 +261,7 @@ export default function MainSlider() {
     const fetchAnnouncements = async () => {
       try {
         const response = await axios.get(
-          `https://debttracker.uz/${i18n.language}/announcements/`
+          `https://debttracker.uz/announcements/`
         );
         setAnnouncements(response.data.results);
       } catch (error) {
@@ -267,12 +272,12 @@ export default function MainSlider() {
     fetchAnnouncements();
   }, [i18n.language]);
 
-  // Add videos fetching effect
+  // Update videos fetching effect
   useEffect(() => {
     const fetchVideos = async () => {
       try {
         const response = await axios.get<Video[]>(
-          `https://debttracker.uz/${i18n.language}/publications/videos/`
+          `https://debttracker.uz/publications/recent-videos/`
         );
         setVideos(response.data);
       } catch (error) {
@@ -288,7 +293,7 @@ export default function MainSlider() {
     const fetchQuantities = async () => {
       try {
         const response = await axios.get<Quantity[]>(
-          `https://debttracker.uz/${i18n.language}/publications/quantities/`
+          `https://debttracker.uz/publications/quantities/`
         );
         setQuantities(response.data);
       } catch (error) {
@@ -304,7 +309,7 @@ export default function MainSlider() {
     const fetchServices = async () => {
       try {
         const response = await axios.get<Service[]>(
-          `https://debttracker.uz/${i18n.language}/references/services/`
+          `https://debttracker.uz/references/services/`
         );
         setServices(response.data);
       } catch (error) {
@@ -320,7 +325,7 @@ export default function MainSlider() {
     const fetchGoals = async () => {
       try {
         const response = await axios.get<Goal[]>(
-          `https://debttracker.uz/${i18n.language}/news/goals/`
+          `https://debttracker.uz/news/goals/`
         );
         setGoals(response.data);
       } catch (error) {
@@ -336,7 +341,7 @@ export default function MainSlider() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get<Category[]>(
-          `https://debttracker.uz/${i18n.language}/news/category/`
+          `https://debttracker.uz/news/category/`
         );
         setCategories(response.data);
       } catch (error) {
@@ -537,7 +542,7 @@ export default function MainSlider() {
             <div className="header-logo-bg">
               <div className="header-logo">
                 <div className="header-logo-svg-bg">
-                  <Image
+                  <Image 
                     src={getValidImagePath("/icon.png")}
                     alt="University logo"
                     width={100}
@@ -734,7 +739,8 @@ export default function MainSlider() {
                             <span
                               className="number"
                               style={{
-                                background: goalItem?.color || "#002B6A"
+                                backgroundColor: `#${goalItem?.color || 'gray'}`,
+                                color: goalItem?.color === 'ffffff' ? '#000' : '#fff'
                               }}
                             >
                               {goalItem?.goals || goalId}
@@ -883,7 +889,7 @@ export default function MainSlider() {
                       )}
                     </Link>
                   </div>
-                  <div className="main-event-info">
+                  {/* <div className="main-event-info">
                     <span className="main-event-info-span">
                       {getTranslatedText(
                         announcement.translations,
@@ -891,7 +897,7 @@ export default function MainSlider() {
                         "description"
                       ).replace(/<[^>]*>/g, "")}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="main-event-date">
                   <span className="main-event-time-span">
@@ -954,17 +960,18 @@ export default function MainSlider() {
             <div className="all-videos-cards">
               {videos.map((video) => (
                 <div className="video-card" key={video.id}>
+                 
                   <iframe
                     width="350"
                     height="200"
-                    className="swiper-slide iframe"
                     src={video.video_url}
-                    title={video.translations[i18n.language]?.title || ""}
+                    title={getTranslatedText(video.translations, i18n.language, "title")}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
+                 
                 </div>
               ))}
             </div>
@@ -1069,9 +1076,9 @@ export default function MainSlider() {
                             {faculty.translations[i18n.language]?.description.replace(/<[^>]*>/g, '')}
                           </span>
                         </div>
-                        <a href="#" className='faculty-info-details-btn'>
+                        <Link href={`/faculty/${faculty.translations['ru']?.slug}`} className='faculty-info-details-btn'>
                           {t("buttons.more")}
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

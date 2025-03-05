@@ -30,7 +30,7 @@ const Header = () => {
     const router = useRouter();
     
     useEffect(() => {
-        fetch('https://debttracker.uz/en/menus/main/')
+        fetch('https://debttracker.uz/menus/main/')
             .then(res => res.json())
             .then(data => setMenuItems(data))
             .catch(err => console.error('Error fetching menu items:', err));
