@@ -4,15 +4,21 @@ import { useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { MenuItem } from '@/app/types/menu';
 import { MenuPostList } from '@/app/components/MenuPost/MenuPostList';
-import '@/app/menus/main.css'
+import '../../main.css'
+
 export default function MenuPage() {
-    const { slug } = useParams();
+    const { slug, lang } = useParams();
     const { i18n } = useTranslation();
     const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        // Set the language based on the URL parameter
+        if (lang && typeof lang === 'string') {
+            i18n.changeLanguage(lang);
+        }
+
         const fetchMenuData = async () => {
             try {
                 const response = await fetch(`https://debttracker.uz/menus/main/${slug}/`);
@@ -29,7 +35,7 @@ export default function MenuPage() {
         };
 
         fetchMenuData();
-    }, [slug]);
+    }, [slug, lang, i18n]);
 
     if (loading) {
         return <div>Loading...</div>;

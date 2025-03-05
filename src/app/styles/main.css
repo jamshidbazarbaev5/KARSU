@@ -1214,7 +1214,7 @@ input:checked + label .arrow-card i {
   align-items: center;
   justify-content: space-evenly;
   border-radius: 15px;
-  background: url("../../content/MIT-Computer-Announce-01.png");
+  background: url("../content/MIT-Computer-Announce-01.png");
 }
 
 .partner-card-bg {
@@ -3428,7 +3428,7 @@ input:checked + label .arrow-card i {
     align-items: center;
     justify-content: space-evenly;
     border-radius: 15px;
-    background: url("../../content/MIT-Computer-Announce-01.png");
+    background: url("../content/MIT-Computer-Announce-01.png");
   }
 
   .partner-card-bg {

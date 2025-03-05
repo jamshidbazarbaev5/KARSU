@@ -2169,7 +2169,7 @@ input:checked + label .arrow-card i {
   }
 
   .service-logo {
-    width: 50px;
+    /* width: 50px; */
     height: 50px;
     display: flex;
     align-items: center;
@@ -3140,7 +3140,7 @@ input:checked + label .arrow-card i {
   }
 
   .service-logo {
-    width: 50px;
+    /* width: 50px; */
     height: 50px;
     display: flex;
     align-items: center;

@@ -37,8 +37,20 @@ const Header = () => {
             .catch(err => console.error('Error fetching menu items:', err));
     }, []);
 
-    const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
+    const changeLanguage = (newLang: string) => {
+        const currentPath = window.location.pathname
+        const segments = currentPath.split('/')
+        
+        if (segments.length >= 2) {
+            // If we have a language segment, replace it
+            segments[1] = newLang
+        } else {
+            // If we don't have a language segment, add it
+            segments.splice(1, 0, newLang)
+        }
+        
+        const newPath = segments.join('/')
+        window.location.href = newPath || '/'
     };
 
     useEffect(() => {
@@ -103,7 +115,7 @@ const Header = () => {
             e.preventDefault();
             const menuSlug = translation.slug;
             if (menuSlug) {
-                router.push(`/menus/main/${menuSlug}/`);
+                router.push(`/${i18n.language}/menus/main/${menuSlug}/`);
             }
         };
 
@@ -155,7 +167,7 @@ const Header = () => {
                                                 return (
                                                     <Link 
                                                         key={subItem.id}
-                                                        href={`/menus/main/${subTranslation.slug}/`}
+                                                        href={`/${i18n.language}/menus/main/${subTranslation.slug}/`}
                                                         className="header-block-flex-link"
                                                     >
                                                         {subTranslation.name}
@@ -193,7 +205,7 @@ const Header = () => {
                             .map(subItem => {
                                 const subTranslation = subItem.translations[i18n.language as keyof typeof subItem.translations] || subItem.translations.en;
                                 return (
-                                    <a key={subItem.id} href={`/menus/main/${subTranslation.slug}`}>
+                                    <a key={subItem.id} href={`/${i18n.language}/menus/main/${subTranslation.slug}`}>
                                         <li>{subTranslation.name}</li>
                                     </a>
                                 );

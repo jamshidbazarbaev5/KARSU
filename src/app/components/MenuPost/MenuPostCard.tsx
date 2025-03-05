@@ -20,8 +20,8 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
             <main className="main">
                 <div className="container">
                     <div className="main-news-pages">
-                        <Link href="/">Asosiy</Link>
-                        <Link href="/menus">Menus</Link>
+                        <Link href={`/${i18n.language}`}>Asosiy</Link>
+                        <Link href={`/${i18n.language}/menus`}>Menus</Link>
                         <span>{translation.title}</span>
                     </div>
                     <div className="main-news">

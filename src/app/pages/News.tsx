@@ -128,8 +128,8 @@ export default function News({ newsData, goalsData }: NewsProps) {
         <main className="main">
             <div className="container">
                 <div className="main-news-pages">
-                    <Link href="/">Asosiy</Link>
-                    <Link href="/news">Yangiliklar</Link>
+                    <Link href={`/${i18n.language}`}>Asosiy</Link>
+                    <Link href={`/${i18n.language}/news`}>Yangiliklar</Link>
                     <span>{getTranslatedContent('title')}</span>
                 </div>
                 <div className="main-news">

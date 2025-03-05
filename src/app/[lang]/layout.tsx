@@ -1,15 +1,14 @@
-import Header from './components/Header'
-import Footer from './components/Footer'
-import './styles/main.css'
-import './styles/mormalize.css'
-import Script from 'next/script'
-import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes } from 'next/font/google'
-import I18nProvider from './i18n/provider'
-import '../app/i18n/config'
-import { EffectFade, EffectCube, EffectCoverflow } from 'swiper/modules';
-import 'swiper/css/effect-fade';
-import 'swiper/css/effect-cube';
-import 'swiper/css/effect-coverflow';
+    import { Inter } from "next/font/google";
+import { Metadata } from 'next';
+import I18nProvider from '../i18n/provider';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import '../styles/main.css';
+import '../styles/mormalize.css';
+import Script from 'next/script';
+import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes } from 'next/font/google';
+import '../i18n/config';
+import ClientLanguageProvider from '../components/ClientLanguageProvider'
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -70,24 +69,58 @@ const greatVibes = Great_Vibes({
   variable: '--font-great-vibes',
 })
 
-export default function RootLayout({
+const inter = Inter({ subsets: ["latin"] });
+
+// Validate language parameter
+export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+  const language = await lang;
+  return {
+    title: `Your Site - ${language.toUpperCase()}`,
+    alternates: {
+      languages: {
+        'en': '/en',
+        'ru': '/ru',
+        'uz': '/uz',
+        'kk': '/kk',
+      },
+    },
+  }
+}
+
+// Add type validation for supported languages
+export async function generateStaticParams() {
+  return [
+    { lang: 'uz' },
+    { lang: 'ru' },
+    { lang: 'en' },
+    { lang: 'kk' },
+  ]
+}
+
+export default async function RootLayout({
   children,
-}: Readonly<{
+  params: { lang },
+}: {
   children: React.ReactNode;
-}>) {
+  params: { lang: string };
+}) {
+  const language = await lang;
+  
   return (
-    <html lang="en" className={`
-      ${nunito.variable} 
-      ${roboto.variable}
-      ${cabin.variable}
-      ${sourceSans3.variable}
-      ${biryani.variable}
-      ${sofiaSans.variable}
-      ${satisfy.variable}
-      ${greatVibes.variable}
-    `}>
+    <html
+      lang={language}
+    //   className={`
+    //     ${nunito.variable} 
+    //     ${roboto.variable}
+    //     ${cabin.variable}
+    //     ${sourceSans3.variable}
+    //     ${biryani.variable}
+    //     ${sofiaSans.variable}
+    //     ${satisfy.variable}
+    //     ${greatVibes.variable}
+    //   `}
+    >
       <head>
-        {/* Font Awesome */}
         <link 
           rel="stylesheet" 
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
@@ -95,11 +128,7 @@ export default function RootLayout({
           crossOrigin="anonymous" 
           referrerPolicy="no-referrer" 
         />
-        
-        {/* Swiper */}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-        
-        {/* Slick Slider */}
         <link 
           rel="stylesheet" 
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" 
@@ -115,11 +144,13 @@ export default function RootLayout({
           referrerPolicy="no-referrer" 
         />
       </head>
-      <body suppressHydrationWarning>
+      <body>
         <I18nProvider>
-          <Header />
-          {children}
-          <Footer />
+          <ClientLanguageProvider>
+            <Header />
+            {children}
+            <Footer />
+          </ClientLanguageProvider>
         </I18nProvider>
 
         <Script src="https://code.jquery.com/jquery-3.6.0.min.js" strategy="beforeInteractive" />

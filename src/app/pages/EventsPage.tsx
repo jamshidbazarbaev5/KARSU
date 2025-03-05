@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Pagination from '../components/Pagination';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n/config';
 
 interface Event {
   id: number;
@@ -26,7 +27,7 @@ const EventCard = ({ title, description, date, slug }: {
     <div className="main-event-card">
       <div className="main-event-top">
         <div className="main-event-title">
-          <a href={`/event/${slug}`} className="main-event-title-link">
+          <a href={`/${i18n.language}/event/${slug}`} className="main-event-title-link">
             {title}
           </a>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import NewsDetail from '@/app/pages/News';
@@ -36,12 +36,26 @@ interface Goal {
 }
 
 export default function NewsPage() {
-  const { slug } = useParams();
+  const params = useParams();
+  const router = useRouter();
+  const { slug } = params;
   const [newsData, setNewsData] = useState<NewsItem | null>(null);
   const [goalsData, setGoalsData] = useState<Goal[]>([]);
   const { i18n } = useTranslation();
 
   useEffect(() => {
+    // Redirect to the correct language path if language prefix is missing
+    if (!params.lang) {
+      const defaultLang = 'en'; // or whatever your default language is
+      router.replace(`/${defaultLang}/news/${params.slug}`);
+    }
+
+    // Set the language based on the URL parameter
+    const lang = params.lang as string;
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang);
+    }
+
     const fetchData = async () => {
       try {
         const [newsResponse, goalsResponse] = await Promise.all([
@@ -64,7 +78,7 @@ export default function NewsPage() {
     if (slug) {
       fetchData();
     }
-  }, [slug, i18n.language]);
+  }, [slug, params.lang, i18n, router]);
 
   if (!newsData) {
     return <div>Loading...</div>;
