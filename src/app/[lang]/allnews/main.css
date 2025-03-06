@@ -7,7 +7,57 @@
 }
 
 /* <-----------HEADER--------------> */
+/* Add this after your existing styles */
 
+.news-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.news-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #eceef1;
+  border-top: 4px solid #002b6a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.news-loading-text {
+  color: #002b6a;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Media query adjustments */
+@media only screen and (min-width: 768px) {
+  .news-loading-spinner {
+      width: 60px;
+      height: 60px;
+  }
+  
+  .news-loading-text {
+      font-size: 18px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .news-loading-container {
+      min-height: 300px;
+  }
+}
 .header-main {
   background: #002b6a;
   padding: 0 10px;

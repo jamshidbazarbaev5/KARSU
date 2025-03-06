@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import axios from 'axios';
-import { useTranslation } from 'react-i18next';
-import NewsDetail from '@/app/pages/News';
-import '../main.css'
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
+import NewsDetail from "@/app/pages/News";
+import "../main.css";
 
 interface NewsItem {
   id: number;
@@ -42,11 +42,13 @@ export default function NewsPage() {
   const [newsData, setNewsData] = useState<NewsItem | null>(null);
   const [goalsData, setGoalsData] = useState<Goal[]>([]);
   const { i18n } = useTranslation();
+  const [loading, setLoading] = useState(true);
 
+ 
   useEffect(() => {
     // Redirect to the correct language path if language prefix is missing
     if (!params.lang) {
-      const defaultLang = 'en'; // or whatever your default language is
+      const defaultLang = "en"; // or whatever your default language is
       router.replace(`/${defaultLang}/news/${params.slug}`);
     }
 
@@ -57,21 +59,24 @@ export default function NewsPage() {
     }
 
     const fetchData = async () => {
+      setLoading(true);
+
       try {
         const [newsResponse, goalsResponse] = await Promise.all([
           axios.get<NewsItem>(`https://debttracker.uz/news/posts/${slug}/`),
-          axios.get<Goal[]>('https://debttracker.uz/news/goals/')
+          axios.get<Goal[]>("https://debttracker.uz/news/goals/"),
         ]);
-        
+
         // Filter goalsData to only include goals that are in newsData.goals
-        const filteredGoals = goalsResponse.data.filter(goal => 
+        const filteredGoals = goalsResponse.data.filter((goal) =>
           newsResponse.data.goals.includes(goal.id)
         );
-        
         setNewsData(newsResponse.data);
         setGoalsData(filteredGoals);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+        } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -79,6 +84,14 @@ export default function NewsPage() {
       fetchData();
     }
   }, [slug, params.lang, i18n, router]);
+  if (loading) {
+    return (
+        <div className="news-loading-container">
+            <div className="news-loading-spinner"></div>
+            <span className="news-loading-text">Loading...</span>
+        </div>
+    );
+}
 
   if (!newsData) {
     return <div>Loading...</div>;

@@ -57,7 +57,7 @@ export default function News({ newsData, goalsData }: NewsProps) {
     const slider1 = useRef<Slider | null>(null);
     const slider2 = useRef<Slider | null>(null);
 
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
 
     useEffect(() => {
         setNav1(slider1.current);
@@ -65,7 +65,7 @@ export default function News({ newsData, goalsData }: NewsProps) {
     }, []);
 
     const mainSettings: Settings = {
-        dots: false,
+        dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
@@ -74,6 +74,15 @@ export default function News({ newsData, goalsData }: NewsProps) {
         asNavFor: nav2 || undefined,
         fade: true,
         cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)',
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    dots: false
+                }
+            }
+        ]
     };
 
     const thumbnailSettings: Settings = {
@@ -93,30 +102,38 @@ export default function News({ newsData, goalsData }: NewsProps) {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
+                    arrows: true,
                 }
             },
             {
                 breakpoint: 768,
                 settings: {
+                    slidesToShow: 3,
+                    arrows: false,
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
                     slidesToShow: 2,
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
                 }
             }
         ]
     };
 
-    // Create a function to get translated content
     const getTranslatedContent = (field: 'title' | 'description') => {
         const content = newsData.translations[i18n.language]?.[field] || newsData.translations['en']?.[field] || '';
         return field === 'description' ? DOMPurify.sanitize(content) : content;
     };
 
-    // Modify the sliderImages to use the images from newsData
     const sliderImages = newsData.images.map((img, index) => ({
         src: img.image,
         alt: `Slide ${index + 1}`
     }));
 
-    // Add a function to get translated goal name
     const getGoalName = (goal: typeof goalsData[0]) => {
         return goal.translations[i18n.language]?.name || 
                goal.translations['en']?.name || 
@@ -128,9 +145,9 @@ export default function News({ newsData, goalsData }: NewsProps) {
         <main className="main">
             <div className="container">
                 <div className="main-news-pages">
-                    <Link href={`/${i18n.language}`}>Asosiy</Link>
-                    <Link href={`/${i18n.language}/news`}>Yangiliklar</Link>
-                    <span>{getTranslatedContent('title')}</span>
+                    <a href={`/${i18n.language}`}>{t('common.home', )}</a>
+                    <a href={`/${i18n.language}/news`}>{t('common.news', )}</a>
+                    <a href="#">{getTranslatedContent('title')}</a>
                 </div>
                 <div className="main-news">
                     <div className="main-news-block">
@@ -158,7 +175,8 @@ export default function News({ newsData, goalsData }: NewsProps) {
                             </div>
                         </div>
 
-                        <div className="main-news-block-photo">
+                        {/* Move the main image above the slider */}
+                        <div className="main-news-block-photo" style={{ position: 'relative', zIndex: 2 }}>
                             <Image 
                                 src={newsData.main_image}
                                 alt={getTranslatedContent('title')}
@@ -173,9 +191,9 @@ export default function News({ newsData, goalsData }: NewsProps) {
                             dangerouslySetInnerHTML={{ __html: getTranslatedContent('description') }}
                         />
 
-                        {/* Image gallery - only show if there are additional images */}
+                        {/* Image gallery with adjusted z-index */}
                         {newsData.images.length > 0 && (
-                            <div className="main-news-block-slider">
+                            <div className="main-news-block-slider" style={{ position: 'relative', zIndex: 1 }}>
                                 <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
                                     {sliderImages.map((img, index) => (
                                         <div key={index} className="slide">
@@ -213,7 +231,7 @@ export default function News({ newsData, goalsData }: NewsProps) {
                             </div>
                         )}
 
-                        {/* Goals section */}
+                        {/* Goals section
                         <div className="main-news-block-goals">
                             <h3>Related Goals:</h3>
                             <div className="goals-list">
@@ -223,7 +241,7 @@ export default function News({ newsData, goalsData }: NewsProps) {
                                     </span>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="main-news-block-social">
                             {/* Social media links */}

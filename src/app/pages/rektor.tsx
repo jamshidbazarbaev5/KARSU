@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import '../../app/[lang]/rektor/main.css'
 
 interface FormData {
   name: string;

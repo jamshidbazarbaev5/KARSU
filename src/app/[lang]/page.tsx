@@ -371,6 +371,7 @@ export default function MainSlider() {
           prevEl: ".main-slider-btn-left",
         },
       });
+      setMainSwiper(mainSwiper);
     }
 
     // Video slider initialization
@@ -565,7 +566,11 @@ export default function MainSlider() {
                 <div className="main-slider-arrows-div">
                   <button 
                     className="main-slider-btn-left"
-                    onClick={() => mainSwiper?.slidePrev()}
+                    onClick={() => {
+                      if (mainSwiper) {
+                        mainSwiper.slidePrev();
+                      }
+                    }}
                   >
                     {/* Left arrow SVG */}
                     <svg
@@ -592,7 +597,11 @@ export default function MainSlider() {
                   </button>
                   <button 
                     className="main-slider-btn-right"
-                    onClick={() => mainSwiper?.slideNext()}
+                    onClick={() => {
+                      if (mainSwiper) {
+                        mainSwiper.slideNext();
+                      }
+                    }}
                   >
                     {/* Right arrow SVG */}
                     <svg

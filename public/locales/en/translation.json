@@ -30,6 +30,8 @@
       "economics": "Faculty of Economics"
     },
     "common": {
+      "home": "Home",
+      "news": "News",
       "event": "Event",
       "relatedGoals": "Related Goals",
       "moreDetails": "More Details",
@@ -108,4 +110,6 @@
         "cooperation": "Academic Cooperation"
       }
     }
+   
   }
+

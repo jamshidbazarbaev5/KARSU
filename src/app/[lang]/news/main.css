@@ -5,8 +5,73 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* Add this after your existing styles */
 
+.news-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.news-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #eceef1;
+  border-top: 4px solid #002b6a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.news-loading-text {
+  color: #002b6a;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Media query adjustments */
+@media only screen and (min-width: 768px) {
+  .news-loading-spinner {
+      width: 60px;
+      height: 60px;
+  }
+  
+  .news-loading-text {
+      font-size: 18px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .news-loading-container {
+      min-height: 300px;
+  }
+}
 /* <-----------HEADER--------------> */
+.main-news-block-photo {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 20px; /* Add some space between main image and slider */
+}
+
+.main-news-block-slider {
+    position: relative;
+    z-index: 1;
+}
+
+.slide-image-wrapper {
+    position: relative;
+    z-index: 1;
+}
 
 .header-main {
   background: #002b6a;
@@ -714,7 +779,9 @@ input#search_call:checked ~ .header-main-left-search-input {
 .main-news-rubric li:hover a::before {
     background-color: white;
 }
-
+/* .thumbnail-slider {
+    margin-top: -20px;
+} */
 
 
 
@@ -1143,6 +1210,9 @@ input#search_call:checked ~ .header-main-left-search-input {
 .header-main-center {
   width: 1215px;
   margin: auto;
+}
+.thumbnail-slider {
+    margin-top: -80px;
 }
 .header-main-left {
   gap: 15px;
@@ -2075,9 +2145,7 @@ input#search_call:checked ~ .header-main-left-search-input {
     object-fit: contain;
 }
 
-.thumbnail-slider {
-    margin-top: -80px;
-}
+
 
 .thumbnail {
     padding: 0 5px;
@@ -2182,4 +2250,9 @@ input#search_call:checked ~ .header-main-left-search-input {
 .slick-prev:hover,
 .slick-next:hover {
     opacity: 0.8;
+}
+.slick-list {
+    /* z-index: 1;
+     */
+    padding: 103px 43px;
 }

@@ -4,11 +4,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Pagination from '@/app/components/Pagination';
+import axios from "axios";
+import { useTranslation } from 'react-i18next';
+// import i18n from '../i18n/config';
 
 interface NewsTranslation {
   title: string;
   description: string;
   slug: string;
+  name: string;
 }
 
 interface NewsImage {
@@ -17,17 +21,19 @@ interface NewsImage {
 
 interface NewsItem {
   id: number;
+  name: string;
   category: number;
   goals: number[];
   main_image: string;
-  images: NewsImage[];
+  images: { image: string }[];
   views_count: number;
   date_posted: string;
   translations: {
-    ru: NewsTranslation;
-    en: NewsTranslation;
-    uz: NewsTranslation;
-    kk: NewsTranslation;
+    [key: string]: {
+      title: string;
+      description: string;
+      slug: string;
+    };
   };
 }
 
@@ -38,22 +44,60 @@ interface NewsResponse {
   results: NewsItem[];
 }
 
+interface GoalTranslation {
+  name: string;
+  slug: string;
+}
+
+interface Goal {
+  id: number;
+  translations: {
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
+  };
+  goals: number;
+  color: string;
+}
+
+interface CategoryTranslation {
+  name: string;
+  slug: string;
+}
+
+interface Category {
+  id: number;
+  translations: {
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
+  };
+}
+
 const AllNews = () => {
     const [activePage, setActivePage] = useState(1);
     const [activeCategory, setActiveCategory] = useState('Все Новости');
     const [news, setNews] = useState<NewsItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [language, setLanguage] = useState('ru');
     const [totalPages, setTotalPages] = useState(2);
+    const [goals, setGoals] = useState<Goal[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const { i18n } = useTranslation();
 
-    const categories = [
+    const categoriesList = [
         'Все Новости', 'Научные', 'Сообщество', 'Посещения',
         'События', 'Новости спорта', 'Поздравления'
     ];
 
+    useEffect(() => {
+        setActivePage(1);
+    }, [i18n.language]);
 
     useEffect(() => {
         const fetchNews = async () => {
+            setLoading(true);
             try {
                 const response = await fetch(`https://debttracker.uz/news/posts/?page=${activePage}`);
                 const data: NewsResponse = await response.json();
@@ -67,17 +111,90 @@ const AllNews = () => {
         };
 
         fetchNews();
-    }, [language, activePage]);
+    }, [activePage, i18n.language]);
+
+    useEffect(() => {
+        const fetchGoals = async () => {
+            try {
+                const response = await axios.get<Goal[]>(
+                    `https://debttracker.uz/news/goals/`
+                );
+                setGoals(response.data);
+            } catch (error) {
+                console.error("Error fetching goals:", error);
+            }
+        };
+
+        fetchGoals();
+    }, [i18n.language]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get<Category[]>(
+                    `https://debttracker.uz/news/category/`
+                );
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, [i18n.language]);
 
     const handlePageChange = (page: number) => {
         setActivePage(page);
         window.scrollTo(0, 0); // Scroll to top when page changes
     };
 
-    const getTranslation = (item: NewsItem) => item.translations[language as keyof typeof item.translations];
+    const getTranslation = (item: NewsItem) => {
+        if (!item.translations) return null;
+        
+        if (i18n.language in item.translations) {
+            return item.translations[i18n.language];
+        }
+        
+        // Fallback to Russian if current language is not available
+        if ('ru' in item.translations) {
+            return item.translations.ru;
+        }
+        
+        // If no translation is available, return the first available translation
+        const availableTranslations = Object.values(item.translations);
+        return availableTranslations.length > 0 ? availableTranslations[0] : null;
+    };
+
+    // Add this helper function to get goal color
+    const getGoalColor = (goalId: number) => {
+        const goal = goals.find(g => g.id === goalId);
+        return goal ? `#${goal.color}` : '#808080'; // Default to gray if goal not found
+    };
+
+    const getCategoryName = (categoryId: number) => {
+        const category = categories.find(cat => cat.id === categoryId);
+        if (!category || !category.translations) return 'Unknown Category';
+
+        // Get translation for current language, fallback to Russian, then first available
+        if (i18n.language in category.translations) {
+            return category.translations[i18n.language].name;
+        }
+        
+        if ('ru' in category.translations) {
+            return category.translations.ru.name;
+        }
+        
+        const availableTranslations = Object.values(category.translations);
+        return availableTranslations.length > 0 ? availableTranslations[0].name : 'Unknown Category';
+    };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="news-loading-container">
+                <div className="news-loading-spinner"></div>
+                <span className="news-loading-text">Loading...</span>
+            </div>
+        );
     }
 
     return (
@@ -88,7 +205,7 @@ const AllNews = () => {
                         <span className='news-page-title-span'>НОВОСТИ</span>
                     </div>
                     <div className='news-page-menu'>
-                        {categories.map((category) => (
+                        {categoriesList?.map((category) => (
                             <button
                                 key={category}
                                 className={`news-page-menu-btn ${activeCategory === category ? 'actived' : ''}`}
@@ -101,7 +218,7 @@ const AllNews = () => {
                 </div>
 
                 {/* Main Featured News */}
-                {news.length > 0 && (
+                {news?.length > 0 && (
                     <div className='news-card-main'>
                         <div className='news-photo-main-div'>
                             <div className='news-main-category'>
@@ -112,7 +229,7 @@ const AllNews = () => {
                             <Image
                                 className='news-main-photo'
                                 src={news[0].main_image}
-                                alt={getTranslation(news[0]).title}
+                                alt={getTranslation(news[0])?.title || ''}
                                 width={800}
                                 height={400}
                             />
@@ -120,15 +237,15 @@ const AllNews = () => {
                         <div className='news-main-info'>
                             <div className='news-main-title'>
                                 <span className='news-main-title-span'>
-                                    {getTranslation(news[0]).title}
+                                    {getTranslation(news[0])?.title || ''}
                                 </span>
                             </div>
                             <div className='news-main-description'>
-                                <span className='news-main-description-span'>
-                                    {getTranslation(news[0]).description}
-                                </span>
+                                <span className='news-main-description-span' 
+                                    dangerouslySetInnerHTML={{ __html: getTranslation(news[0])?.description || '' }} 
+                                />
                             </div>
-                            <div className='news-main-post-date'>
+                            <div className='news-main-post-date' style={{ margin: '0px' }}>
                                 <span className='news-main-post-time-span'>
                                     {new Date(news[0].date_posted).toLocaleTimeString('ru-RU', {
                                         hour: '2-digit',
@@ -149,18 +266,18 @@ const AllNews = () => {
 
                 {/* News Cards Grid */}
                 <div className='news-all-cards-div'>
-                    {news.slice(1).map((item) => (
+                    {news?.slice(1).map((item) => (
                         <div key={item.id} className='news-card'>
                             <div className='news-photo-div'>
                                 <div className='news-category'>
                                     <span className='news-category-span'>
-                                        {item.category === 1 ? 'Научный' : 'Событие'}
+                                        {getCategoryName(item.category)}
                                     </span>
                                 </div>
                                 <Image
                                     className='news-photo'
                                     src={item.main_image}
-                                    alt={getTranslation(item).title}
+                                    alt={getTranslation(item)?.title || ''}
                                     width={300}
                                     height={200}
                                 />
@@ -169,23 +286,28 @@ const AllNews = () => {
                                 <div className="news-info-types">
                                     <p>Tegishli maqsadlar:</p>
                                     <div>
-                                        {item.goals.map((goal) => (
-                                            <Link key={goal} href="#">
-                                                <span 
-                                                    className="number"
-                                                    style={{
-                                                        background: goal === 1 ? 'rgb(197, 25, 45)' : 'rgb(19, 73, 107)'
+                                        {item.goals.map((goalId) => {
+                                            return (
+                                                <a href='#'  
+                                                    key={goalId} 
+                                                    className='number'
+                                                    style={{ 
+                                                        backgroundColor: getGoalColor(goalId),
+                                                        color: '#ffffff',
                                                     }}
                                                 >
-                                                    {goal}
-                                                </span>
-                                            </Link>
-                                        ))}
+                                                    {goals.find(g => g.id === goalId)?.goals || 'Unknown Goal'}
+                                                </a>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                                 <div className='news-title'>
-                                    <Link href={`/news/${getTranslation(item).slug}`} className='news-title-span'>
-                                        {getTranslation(item).title}
+                                    <Link 
+                                        href={`/${i18n.language}/news/${item.translations[i18n.language]?.slug}`}
+                                        className='news-title-span'
+                                    >
+                                        {item.translations[i18n.language]?.title || ''}
                                     </Link>
                                 </div>
                                 <div className='news-post-date'>
@@ -208,7 +330,6 @@ const AllNews = () => {
                     ))}
                 </div>
 
-                {/* Add Pagination component at the bottom */}
                 <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
                     <Pagination 
                         currentPage={activePage}
