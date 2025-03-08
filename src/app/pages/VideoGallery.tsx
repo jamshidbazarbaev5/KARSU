@@ -10,6 +10,7 @@ interface VideoItem {
   translations: {
     [key: string]: {
       title: string;
+      description?: string;
     };
   };
   date_posted: string;
@@ -75,11 +76,14 @@ const VideoGalleryPage = () => {
     fetchVideos();
   }, [i18n.language]); // Refetch when language changes
 
- 
   const getTranslatedContent = (field: 'title' | 'description') => {
-    const content = videos.translations?.[i18n.language]?.[field] || videos.translations?.[field] || '';
-    return field === 'description' ? DOMPurify.sanitize(content) : content;
-};
+    const currentVideo = videos[0];
+    if (!currentVideo) return '';
+    
+    return field === 'description' 
+      ? DOMPurify.sanitize(currentVideo.translations[i18n.language]?.[field] || currentVideo.translations['en']?.[field] || '')
+      : currentVideo.translations[i18n.language]?.[field] || currentVideo.translations['en']?.[field] || '';
+  };
   
   return (
     <main className="main">
