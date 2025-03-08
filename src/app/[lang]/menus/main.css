@@ -16,6 +16,70 @@
   align-items: center;
   justify-content: space-between;
 }
+.main-news-pages {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+  width: 100%;
+  overflow: auto;
+  padding: 10px 20px;    
+}
+
+.main-news-pages a {
+  flex: 0 0 auto; 
+  color: rgb(187, 187, 187);
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px; 
+  padding: 10px 15px; 
+  text-align: center; 
+  position: relative;   
+}
+.main-news-pages a::after{
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: rgba(205, 205, 205);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 7px;
+}
+
+
+/* <---------------MAIN NEWS------------------> */
+.main-news-pages {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+  width: 100%;
+  overflow: auto;
+  padding: 10px 20px;    
+}
+
+.main-news-pages a {
+  flex: 0 0 auto; 
+  color: rgb(187, 187, 187);
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px; 
+  padding: 10px 15px; 
+  text-align: center; 
+  position: relative;   
+}
+.main-news-pages a::after{
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: rgba(205, 205, 205);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 7px;
+}
+
 
 .header-main-center {
   position: relative;
@@ -2015,7 +2079,6 @@ input#search_call:checked ~ .header-main-left-search-input {
   
     .footer-info-students-link {
       text-decoration: none;
-  
       color: #ffffff;
       font-family: "Nunito Sans", sans-serif;
       font-weight: 300;
@@ -2182,4 +2245,95 @@ input#search_call:checked ~ .header-main-left-search-input {
 .slick-prev:hover,
 .slick-next:hover {
     opacity: 0.8;
+}
+
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 95%;
+}
+
+.menu-post-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu-post-card:hover {
+    transform: translateY(-5px);
+}
+
+.menu-post-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.menu-post-image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.menu-post-content {
+    padding: 1.5rem;
+}
+
+.menu-post-content h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.menu-post-date {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.menu-post-content h2.truncate-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 3em;
+    line-height: 1.5;
+}
+
+.menu-post-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-post-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Add responsive adjustments */
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        width: 90%;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        width: 85%;
+        gap: 1rem;
+    }
 }

@@ -303,8 +303,6 @@ export default function MainSlider() {
 
     fetchQuantities();
   }, [i18n.language]);
-
-  // Add services fetching effect
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -320,7 +318,6 @@ export default function MainSlider() {
     fetchServices();
   }, [i18n.language]);
 
-  // Add goals fetching effect
   useEffect(() => {
     const fetchGoals = async () => {
       try {
@@ -336,7 +333,6 @@ export default function MainSlider() {
     fetchGoals();
   }, [i18n.language]);
 
-  // Add categories fetching effect
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -358,7 +354,6 @@ export default function MainSlider() {
     let facultySwiper: Swiper | null = null;
     let infoSwiper: Swiper | null = null;
 
-    // Main slider initialization
     if (document.querySelector(".swiper-container-1")) {
       mainSwiper = new Swiper(".swiper-container-1", {
         loop: true,
@@ -374,7 +369,6 @@ export default function MainSlider() {
       setMainSwiper(mainSwiper);
     }
 
-    // Video slider initialization
     if (document.querySelector(".swiper-container-video")) {
       videoSwiper = new Swiper(".swiper-container-video", {
         speed: 400,
@@ -404,7 +398,6 @@ export default function MainSlider() {
       });
     }
 
-    // Faculty slider initialization
     if (document.querySelector(".swiper-container-faculty")) {
       facultySwiper = new Swiper(".swiper-container-faculty", {
         direction: "vertical",
@@ -428,7 +421,6 @@ export default function MainSlider() {
         },
         on: {
           slideChange: function(this: Swiper) {
-            // Keep info slider in sync
             if (infoSwiper) {
               infoSwiper.slideTo(this.realIndex);
             }
@@ -437,7 +429,6 @@ export default function MainSlider() {
       });
     }
 
-    // Info slider initialization
     if (document.querySelector(".swiper-container-info")) {
       infoSwiper = new Swiper(".swiper-container-info", {
         direction: "vertical",
@@ -455,7 +446,6 @@ export default function MainSlider() {
       });
     }
 
-    // Add manual button event listeners
     const nextButton = document.querySelector('.faculty-select-btn.swiper-next');
     const prevButton = document.querySelector('.faculty-select-btn.swiper-prev');
 
@@ -475,7 +465,6 @@ export default function MainSlider() {
       });
     }
 
-    // News menu horizontal scroll
     const newsMenuContainer = document.querySelector(".news-page-menu");
     if (newsMenuContainer) {
       const handleWheel = (event: WheelEvent) => {
@@ -485,9 +474,7 @@ export default function MainSlider() {
 
       newsMenuContainer.addEventListener("wheel", handleWheel as unknown as EventListener);
 
-      // Cleanup function
       return () => {
-        // Cleanup event listeners and destroy Swiper instances
         if (mainSwiper) mainSwiper.destroy();
         if (videoSwiper) videoSwiper.destroy();
         if (facultySwiper) facultySwiper.destroy();
@@ -498,7 +485,7 @@ export default function MainSlider() {
         }
       };
     }
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []); 
 
   const slides = news.map((item) => (
     <div className="swiper-slide" key={item.id}>
@@ -897,9 +884,9 @@ export default function MainSlider() {
                 </div>
               </div>  
             ))}
-            <div className="all-events-page-link-div">
-              <Link href={`/${i18n.language}/events`} className="all-events-page-link">
-                {t("navigation.allEvents")}
+            <div className="all-events-page-link-div-3">
+              <Link href={`/${i18n.language}/videos`} className="all-events-page-link">
+                {t("navigation.allVideos")}
               </Link>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

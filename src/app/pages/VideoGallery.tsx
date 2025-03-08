@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface VideoItem {
   id: number;
@@ -74,21 +75,19 @@ const VideoGalleryPage = () => {
     fetchVideos();
   }, [i18n.language]); // Refetch when language changes
 
-  const breadcrumbs = [
-    { title: 'Asosiy', href: '#' },
-    { title: 'Barqaror rivojlanish Maqsadlari', href: '#' },
-    { title: 'Barqaror rivojlanish Maqsadlari', href: '#' },
-    { title: 'Asosiy', href: '#' }
-  ];
-
+ 
+  const getTranslatedContent = (field: 'title' | 'description') => {
+    const content = videos.translations?.[i18n.language]?.[field] || videos.translations?.[field] || '';
+    return field === 'description' ? DOMPurify.sanitize(content) : content;
+};
   
   return (
     <main className="main">
       <div className="container">
         <div className="main-news-pages">
-          {breadcrumbs.map((item, index) => (
-            <a key={index} href={item.href}>{item.title}</a>
-          ))}
+                    <a href={`/${i18n.language}`}>{t('common.home', )}</a>
+                    <a href={`/${i18n.language}/allnews`}>{t('common.news', )}</a>
+                    <a href="#">{getTranslatedContent('title')}</a>
         </div>
         
         <div className="main-video">

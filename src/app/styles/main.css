@@ -699,11 +699,14 @@ input#search_call:checked ~ .header-main-left-search-input {
   margin-right: 5px;
 }
 
-.all-events-page-link-div {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 10px;
+.all-events-page-link-div-3 {
+  margin-right: 23px;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  /* right: -972px; */
+
 }
 
 .all-events-page-link {
@@ -2407,6 +2410,14 @@ input:checked + label .arrow-card i {
   .header-main-center {
     width: 1215px;
     margin: auto;
+  }
+  .all-events-page-link-div-3 {
+    margin-right: 23px;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    right: -972px;
   }
   .header-main-left {
     gap: 15px;

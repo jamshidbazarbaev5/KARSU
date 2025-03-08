@@ -1,6 +1,6 @@
 'use client'
 import { MenuPost } from '@/app/types/menu';
-import { MenuPostCard } from './MenuPostCard';
+import  {MenuPostCard}  from './MenuPostCard';
 import Link from 'next/link';
 import Image from 'next/image';
 

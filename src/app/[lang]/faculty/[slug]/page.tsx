@@ -15,40 +15,41 @@ interface FacultyData {
   translations: { [key: string]: FacultyTranslation };
 }
 
+async function getDepartments(): Promise<any[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+  const response = await fetch(`${baseUrl}/menus/department/`, {
+    next: { revalidate: 3600 },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  return response.json();
+}
+
 async function getFacultyData(slug: string): Promise<FacultyData> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
-    const url = `${baseUrl}/menus/faculty/${slug}`;
-    console.log('Fetching faculty data from:', url);
+    const [facultyResponse, departmentsResponse] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz'}/menus/faculty/${slug}`),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz'}/menus/department/`)
+    ]);
 
-    const response = await fetch(url, {
-      next: { revalidate: 3600 },
-    });
+    const facultyData = await facultyResponse.json();
+    const departments = await departmentsResponse.json();
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Server response:', {
-        status: response.status,
-        statusText: response.statusText,
-        body: errorText,
-      });
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-    }
+    console.log('API Response - Faculty:', facultyData);
+    console.log('API Response - Departments:', departments);
 
-    const data = await response.json();
-
+    // Filter departments for this faculty
+    const facultyDepartments = departments.filter((dept: any) => dept.faculty === facultyData.id);
+    
     return {
-      id: data.id,
-      email: data.email,
-      logo: data.logo,
-      translations: data.translations,
+      ...facultyData,
+      departments: facultyDepartments
     };
   } catch (error) {
-    console.error('Detailed error fetching faculty data:', {
-      error,
-      slug,
-      baseUrl: process.env.NEXT_PUBLIC_API_URL,
-    });
+    console.error('Error fetching faculty data:', error);
     throw error;
   }
 }

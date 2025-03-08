@@ -419,76 +419,107 @@ input#search_call:checked ~ .header-main-left-search-input {
 
 /*<-------------ONE PAGE------------->*/
 
-.main {
+.main-2 {
   width: 100%;
   padding: 20px;
   font-family: "Nunito Sans", sans-serif;
   box-sizing: border-box;
 }
 
-.main a:hover{
+.main-2 a:hover{
     text-decoration: none;
 }
 
-.all-events-page-link-div {
+.all-events-page-link-div-2 {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.all-events-page-link-div svg {
+.all-events-page-link-div-2 svg {
   margin-right: 10px;
 }
+.main-news-pages {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+  width: 100%;
+  overflow: auto;
+  padding: 10px 20px;    
+}
 
-.all-events-page-link {
+.main-news-pages a {
+  flex: 0 0 auto; 
+  color: rgb(187, 187, 187);
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px; 
+  padding: 10px 15px; 
+  text-align: center; 
+  position: relative;   
+}
+.main-news-pages a::after{
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: rgba(205, 205, 205);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 7px;
+}
+
+
+.all-events-page-link-2 {
   text-decoration: none;
   color: #002b6a;
   font-size: 18px;
   font-weight: bold;
 }
 
-.all-events-page-link:hover {
+.all-events-page-link-2:hover {
   text-decoration: underline;
 }
 
-.main-event-page {
+.main-event-page-2 {
   width: 100%;
 }
 
-.main-event-card {  
+.main-event-card-2 {  
   padding: 20px;
   margin-bottom: 20px;
 }
 
-.main-event-title {
+.main-event-title-2 {
   font-size: 24px;
   margin-bottom: 10px;
   font-family: "Source Sans 3", system-ui;
 }
 
-.main-event-title-link {
+.main-event-title-link-2 {
   text-decoration: none;
   color: #002b6a;
   font-weight: bold;
   text-align: justify;
 }
 
-.main-event-title-link:hover {
+.main-event-title-link-2:hover {
   text-decoration: underline;
 }
 
-.main-event-info {
+.main-event-info-2 {
   margin-bottom: 20px;
 }
 
-.main-event-info-span {
-    display: block;
+.main-event-info-span-2 {
+  display: block;
   font-size: 16px;
   line-height: 1.6;
   text-align: justify;
 }
 
-.main-event-date-span {
+.main-event-date-span-2 {
   font-size: 14px;
   color: #777;
 }
@@ -771,11 +802,11 @@ input#search_call:checked ~ .header-main-left-search-input {
 }
 
 @media only screen and (min-width: 1024px) {
-  .main-event-card {
+  .main-event-card-2 {
     background-color: transparent;
   }
 
-  .main {
+  .main-2 {
     max-width: 1215px;
     margin: auto;
   }
@@ -792,6 +823,15 @@ input#search_call:checked ~ .header-main-left-search-input {
   }
   .header-main-left {
     gap: 15px;
+  }
+  .main-news-pages {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 5px;
+    width: 100%;
+    overflow: auto;
+    padding: 10px 150px;    
   }
   .header-main-left-search-input {
     width: 450px;

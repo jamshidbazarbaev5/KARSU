@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface MenuTranslation {
     name: string;
     title: string;
@@ -18,9 +20,10 @@ export interface PostTranslation {
 }
 
 export interface MenuPost {
+    views_count: ReactNode | Iterable<ReactNode>;
     id: number;
     menu: number;
-    footer_menu: number | null;
+    footer_menu?: number | null;
     main_image: string;
     images: string[];
     date_posted: string;

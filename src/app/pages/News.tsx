@@ -146,7 +146,7 @@ export default function News({ newsData, goalsData }: NewsProps) {
             <div className="container">
                 <div className="main-news-pages">
                     <a href={`/${i18n.language}`}>{t('common.home', )}</a>
-                    <a href={`/${i18n.language}/news`}>{t('common.news', )}</a>
+                    <a href={`/${i18n.language}/allnews`}>{t('common.news', )}</a>
                     <a href="#">{getTranslatedContent('title')}</a>
                 </div>
                 <div className="main-news">

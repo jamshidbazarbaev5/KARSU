@@ -32,11 +32,13 @@
     "common": {
       "home": "Home",
       "news": "News",
-      "event": "Event",
+      "events": "Events",
       "relatedGoals": "Related Goals",
       "moreDetails": "More Details",
       "allVideos": "All Videos",
-      "attention": "ATTENTION!!! ATTENTION!!! URGENT!!!!"
+      "attention": "ATTENTION!!! ATTENTION!!! URGENT!!!!",
+      "berdakh":"I Would Search For Enlightenment, Berdakh"
+
     },
     "header": {
       "languages": {

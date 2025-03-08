@@ -32,12 +32,15 @@
     "common": {
       "home": "Asosiy",
       "news": "Yangiliklar",
-      "event": "Tadbir",
+      "events": "Tadbir",
       "relatedGoals": "Tegishli maqsadlar",
       "moreDetails": "Batafsil",
       "allVideos": "Barcha videolar",
-      "attention": "DIQQAT!!! DIQQAT!!! TEZKOR!!!!"
+      "attention": "DIQQAT!!! DIQQAT!!! TEZKOR!!!",
+      "berdakh": "Men Marifat Izlar Edim, Berdah",
+      "menus":"Postlar"
     },
+
     "header": {
       "languages": {
         "uz": "O'zbek",

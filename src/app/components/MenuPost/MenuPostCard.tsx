@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
+import { useRouter } from 'next/navigation';
 
 interface MenuPostCardProps {
     post: MenuPost;
@@ -11,17 +12,24 @@ interface MenuPostCardProps {
 }
 
 export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
+    const router = useRouter();
     const baseSlug = post.translations.en.slug;
     const translation = post.translations[i18n.language as keyof typeof post.translations] || post.translations.en;
+
+    const handleClick = () => {
+        if (!isSinglePost) {
+            router.push(`/${i18n.language}/menus/main/posts/${translation.slug}`);
+        }
+    };
 
     if (isSinglePost) {
         return (
             <main className="main">
                 <div className="container">
                     <div className="main-news-pages">
-                        <Link href={`/${i18n.language}`}>Asosiy</Link>
-                        <Link href={`/${i18n.language}/menus`}>Menus</Link>
+                        <Link href={`/${i18n.language}`}>{t('common.home')}</Link>
+                        <Link href={`/${i18n.language}/menus`}>{t('common.menus')}</Link>
                         <span>{translation.title}</span>
                     </div>
                     <div className="main-news">
@@ -63,19 +71,11 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                                     __html: DOMPurify.sanitize(translation.description)
                                 }}
                             />
-
-                           
-
-                            
-
-
-
-                            
                         </div>
                         <div className="main-news-rubric">
                                 <div className="main-news-rubric-logo">
                                     <Image 
-                                        src="/mainpage/content/icon.png"
+                                        src="/content/icon.png"
                                         alt="Logo"
                                         width={50}
                                         height={50}
@@ -83,10 +83,8 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                                     <h1>Axborotlar xizmati</h1>
                                 </div>
                                 <ul>
-                                    <li><Link href="#">Yangiliklar</Link></li>
-                                    <li><Link href="#">Events</Link></li>
-                                    <li><Link href="#">Lorem</Link></li>
-                                    <li className="last"><Link href="#">ipsum</Link></li>
+                                    <li><Link href={`/${i18n.language}/allnews`}>Yangiliklar</Link></li>
+                                  
                                 </ul>
                             </div>
                     </div>
@@ -96,7 +94,10 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
     }
 
     return (
-        <div className="menu-post-card">
+        <div 
+            className={`menu-post-card ${!isSinglePost ? 'clickable' : ''}`} 
+            onClick={handleClick}
+        >
             <div className="menu-post-image">
                 <Image 
                     src={post.main_image} 
@@ -107,11 +108,18 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                 />
             </div>
             <div className="menu-post-content">
-                <h2>{translation.title}</h2>
-                <div dangerouslySetInnerHTML={{ __html: translation.description }} />
-                <div className="menu-post-date">
-                    {new Date(post.date_posted).toLocaleDateString()}
-                </div>
+                <h2 className="truncate-text">{translation.title}</h2>
+                {isSinglePost ? (
+                    <div className="post-description" 
+                         dangerouslySetInnerHTML={{ 
+                             __html: DOMPurify.sanitize(translation.description) 
+                         }} 
+                    />
+                ) : (
+                    <div className="menu-post-date">
+                        {new Date(post.date_posted).toLocaleDateString()}
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -41,16 +41,20 @@ const Header = () => {
         const currentPath = window.location.pathname
         const segments = currentPath.split('/')
         
-        if (segments.length >= 2) {
-            // If we have a language segment, replace it
-            segments[1] = newLang
-        } else {
-            // If we don't have a language segment, add it
-            segments.splice(1, 0, newLang)
-        }
+        // Remove empty segments and ensure we have clean path segments
+        const cleanSegments = segments.filter(segment => segment)
         
-        const newPath = segments.join('/')
-        window.location.href = newPath || '/'
+        // If we have segments, replace the language segment (first segment)
+        if (cleanSegments.length > 0) {
+            // Remove the current language segment (first segment)
+            cleanSegments.shift()
+            // Create new path with new language
+            const newPath = `/${newLang}/${cleanSegments.join('/')}`
+            window.location.href = newPath
+        } else {
+            // If no segments, just add the new language
+            window.location.href = `/${newLang}`
+        }
     };
 
     useEffect(() => {
@@ -353,14 +357,13 @@ const Header = () => {
                         <div className="header-main-nav-row">
                             <div className="header-main-nav-row-1">
                                 <Image src="/icon.png" alt='icons'  width={20} height={20} />
-                                <a href="#"
+                                <a href={`/${i18n.language}/`}
                                     className="header-row-title">КАРАКАЛПАКСКИЙ
                                     ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
                                 </a>
                             </div>
                             <div className="header-main-nav-row-2">
-                                <p>Просвещение искал я благое</p>
-                                <p>Berdakh</p>
+                                <p>{t('common.berdakh')}</p>
                                 <span className="quote-span">Call Markaz:
                                     &nbsp;&nbsp;&nbsp;+998 61 223 60 78
                                     &nbsp;&nbsp;&nbsp;+99861-223-59-25</span>

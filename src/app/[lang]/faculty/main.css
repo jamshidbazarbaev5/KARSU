@@ -17,6 +17,23 @@
   justify-content: space-between;
 }
 
+/* Add to your CSS file */
+.content-with-tables table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.content-with-tables td,
+.content-with-tables th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.content-with-tables tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 .header-main-center {
   position: relative;
   overflow: hidden;

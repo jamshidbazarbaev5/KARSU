@@ -5,6 +5,22 @@ interface FacultyData {
   id: number;
   email: string;
   logo: string;
+  phone?: string;
+  dean?: {
+    name: string;
+    title: string;
+  };
+  departments?: Array<{
+    id: number;
+    faculty: number;
+    translations: {
+      [key: string]: {
+        name: string;
+        slug: string;
+        description: string;
+      };
+    };
+  }>;
   translations: {
     [key: string]: {
       name: string;
@@ -20,5 +36,5 @@ interface FacultyClientProps {
 }
 
 export default function FacultyClient({ facultyData }: FacultyClientProps) {
-  return <Faculty facultyData={facultyData} />;
+  return <Faculty facultyData={facultyData}  />;
 }

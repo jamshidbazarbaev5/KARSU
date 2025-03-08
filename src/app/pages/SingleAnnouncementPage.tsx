@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
+import { t } from "i18next";
 
 interface AnnouncementTranslation {
   title: string;
@@ -65,8 +66,19 @@ export default function SingleAnnouncementPage() {
           </div>
         </div>
       </div>
-      <main className="main">
-        <div className="all-events-page-link-div">
+      <div className="main-news-pages">
+        <a href={`/${i18n.language}`}>{t("common.home")}</a>
+        <a href={`/${i18n.language}/events`}>{t("common.events")}</a>
+        <a href="#">
+          {getTranslatedText(
+            announcement?.translations,
+            i18n.language,
+            "title"
+          )}
+        </a>
+      </div>
+      <main className="main-2">
+        <div className="all-events-page-link-div-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -81,26 +93,26 @@ export default function SingleAnnouncementPage() {
               fill="#002B6A"
             />
           </svg>
-          <Link href="/" className="all-events-page-link">
+          <Link href="/" className="all-events-page-link-2">
             Back to Home
           </Link>
         </div>
 
         {announcement && (
-          <div className="main-event-page">
-            <div className="main-event-card">
-              <div className="main-event-title">
-                <h1 className="main-event-title-link">
+          <div className="main-event-page-2">
+            <div className="main-event-card-2">
+              <div className="main-event-title-2">
+                <a href="#" className="main-event-title-link-2">
                   {getTranslatedText(
                     announcement.translations,
                     i18n.language,
                     "title"
                   )}
-                </h1>
+                </a>
               </div>
-              <div className="main-event-info">
-                <div
-                  className="main-event-info-span"
+              <div className="main-event-info-2">
+                <span
+                  className="main-event-info-span-2"
                   dangerouslySetInnerHTML={{
                     __html: getTranslatedText(
                       announcement.translations,
@@ -111,7 +123,7 @@ export default function SingleAnnouncementPage() {
                 />
               </div>
               <div className="main-event-date">
-                <span className="main-event-date-span">
+                <span className="main-event-date-span-2">
                   {new Date(announcement.date_post).toLocaleDateString(
                     i18n.language,
                     {
