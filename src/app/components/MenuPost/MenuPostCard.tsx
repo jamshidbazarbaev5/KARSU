@@ -98,8 +98,8 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
 
     const sliderImages = post.images ? [
         { src: post.main_image, alt: translation.title },
-        ...post.images.map((imgUrl, index) => ({
-            src: imgUrl,
+        ...(post.images as any[]).map((img: any, index) => ({
+            src: img.image,
             alt: `${translation.title} - ${index + 1}`
         }))
     ] : [];
@@ -156,14 +156,13 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                             {/* Additional Images Slider */}
                             {post.images && post.images.length > 0 && (
                                 <div className="main-news-block-slider" style={{ position: "relative", zIndex: 1 }}>
-                                   
                                     <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
-                                        {post.images.map((imgUrl, index) => (
+                                        {sliderImages.map((image, index) => (
                                             <div key={index} className="slide">
                                                 <div className="slide-image-wrapper">
                                                     <Image
-                                                        src={imgUrl}
-                                                        alt={`${translation.title} - ${index + 1}`}
+                                                        src={image.src}
+                                                        alt={image.alt}
                                                         fill
                                                         sizes="(max-width: 800px) 100vw, 800px"
                                                         className="slider-image"
@@ -175,12 +174,12 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
 
                                     {post.images.length > 1 && (
                                         <Slider {...thumbnailSettings} ref={slider2} className="thumbnail-slider">
-                                            {post.images.map((imgUrl, index) => (
+                                            {sliderImages.map((image, index) => (
                                                 <div key={index} className="thumbnail">
                                                     <div className="thumbnail-image-wrapper">
                                                         <Image
-                                                            src={imgUrl}
-                                                            alt={`Thumbnail ${index + 1}`}
+                                                            src={image.src}
+                                                            alt={image.alt}
                                                             fill
                                                             sizes="(max-width: 150px) 100vw, 150px"
                                                             className="thumbnail-image"
