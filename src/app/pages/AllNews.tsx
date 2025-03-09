@@ -379,7 +379,7 @@ const AllNews = () => {
                   <div className="news-info-types">
                     <p>Tegishli maqsadlar:</p>
                     <div>
-                      {item.goals.map((goalId) => {
+                      {item?.goals?.map((goalId) => {
                         return (
                           <a
                             href="#"
