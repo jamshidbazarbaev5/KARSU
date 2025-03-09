@@ -134,7 +134,7 @@ const GoalNews = () => {
         </div>
         <div className="main-news">
           <div className="main-news-block">
-            <div className="main-news-block-title">
+            <div className="main-news-block-title" style={{ background: `#${goalInfo?.color}` }}>
               <div className="main-block-title-up">
                 <span>{goalInfo?.goals}</span>
                 <h1>{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name}</h1>
