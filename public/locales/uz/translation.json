@@ -46,6 +46,7 @@
     },
     "common": {
       "readMore":"Batafsil",
+      "noNewsAvailable":"Yangiliklar topilmadi",  
       "nameOfBerdakh":"Berdax nomidagi",
       "videos":"Vidiolar",
       "backToHome":"Asosiy sahifaga qaytish",

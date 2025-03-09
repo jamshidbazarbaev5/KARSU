@@ -834,8 +834,8 @@ export default function MainSlider() {
               </div>
             ))}
             {news.length === 0 && (
-              <div className="no-news-message">
-                <p>{t("common.noNewsAvailable")}</p>
+              <div className="no-news-message" style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100%", margin:"0 auto"}} >
+                <p style={{color: '#002B6A', textAlign:"center",fontSize:"20px", fontWeight:"700"}}>{t("common.noNewsAvailable")}</p>
               </div>
             )}
           </div>

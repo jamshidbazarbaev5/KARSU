@@ -44,6 +44,7 @@
       "economics": "Faculty of Economics"
     },
     "common": {
+      "noNewsAvailable":"No news available",
       "readMore":"More",
       "nameOfBerdakh":"Named after Berdakh",
       "vidios":"Videos",
