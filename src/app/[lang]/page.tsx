@@ -554,7 +554,7 @@ export default function MainSlider() {
                 </div>
                 <div className="header-logo-title-bg">
                   <Link href="/" className="header-logo-title">
-                    КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
+                   {t('common.University')}
                   </Link>
                 </div>
               </div>

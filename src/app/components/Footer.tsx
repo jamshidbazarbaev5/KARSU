@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import i18n from '../i18n/config';
+import { t } from 'i18next';
 
 interface MenuTranslation {
     name: string;
@@ -54,11 +55,11 @@ const Footer = () => {
                                 <img src="/logo.png" alt="University Logo" />
                             </div>
                             <div className='footer-title'>
-                                <a href="../mainpage/index.html" className='footer-title-span'>
-                                    Каракалпакский государственный университет
+                                <a href={`/${i18n.language}`} className='footer-title-span'>
+                                    {t('common.University')}
                                 </a>
                                 <span className='footer-title-mini-span'>
-                                    имени Бердаха
+                                  {t('common.nameOfBerdakh')}
                                 </span>
                             </div>
                         </div>
