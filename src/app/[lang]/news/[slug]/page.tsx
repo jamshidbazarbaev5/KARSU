@@ -21,6 +21,7 @@ interface NewsItem {
       slug: string;
     };
   };
+  display_goals: Goal[];
 }
 
 interface Goal {
@@ -40,7 +41,6 @@ export default function NewsPage() {
   const router = useRouter();
   const { slug } = params;
   const [newsData, setNewsData] = useState<NewsItem | null>(null);
-  const [goalsData, setGoalsData] = useState<Goal[]>([]);
   const { i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
 
@@ -62,18 +62,12 @@ export default function NewsPage() {
       setLoading(true);
 
       try {
-        const [newsResponse, goalsResponse] = await Promise.all([
-          axios.get<NewsItem>(`https://debttracker.uz/news/posts/${slug}/`),
-          axios.get<Goal[]>("https://debttracker.uz/news/goals/"),
-        ]);
-
-        // Filter goalsData to only include goals that are in newsData.goals
-        const filteredGoals = goalsResponse.data.filter((goal) =>
-          newsResponse.data.goals.includes(goal.id)
-        );
+        // Since the news response already includes display_goals, we don't need to fetch goals separately
+        const newsResponse = await axios.get<NewsItem>(`https://debttracker.uz/news/posts/${slug}/`);
+        
         setNewsData(newsResponse.data);
-        setGoalsData(filteredGoals);
-        } catch (error) {
+        // We can remove setGoalsData since we're not using it
+      } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
@@ -97,5 +91,5 @@ export default function NewsPage() {
     return <div>Loading...</div>;
   }
 
-  return <NewsDetail newsData={newsData} goalsData={goalsData} />;
+  return <NewsDetail newsData={newsData} />;
 }

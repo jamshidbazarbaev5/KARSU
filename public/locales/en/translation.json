@@ -44,6 +44,7 @@
       "economics": "Faculty of Economics"
     },
     "common": {
+      "readMore":"More",
       "vidios":"Videos",
       "home": "Home",
       "backToHome":"Back to home",
@@ -53,7 +54,9 @@
       "moreDetails": "More Details",
       "allVideos": "All Videos",
       "attention": "ATTENTION!!! ATTENTION!!! URGENT!!!!",
-      "berdakh":"I Would Search For Enlightenment, Berdakh"
+      "berdakh":"I Would Search For Enlightenment, Berdakh",
+      "allNews":"All News",
+      "University":"KARAKALPAK STATE UNIVERSITY"
 
     },
     "buttons": {

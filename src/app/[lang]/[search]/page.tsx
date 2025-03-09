@@ -5,8 +5,34 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import axios from 'axios';
 import Image from 'next/image';
-import { NewsItem, Category, Goal } from '../types/types'
+import {  Category, Goal } from '../types/types'
 import '../[search]/main.css'
+
+interface DisplayGoal {
+  id: number;
+  translations: {
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
+  };
+  goals: number;
+  color: string;
+}
+
+interface NewsItem {
+  id: number;
+  display_goals: DisplayGoal[];
+  category: number;
+  main_image: string;
+  translations: {
+    [key: string]: {
+      title: string;
+      slug: string;
+    };
+  };
+  date_posted: string;
+}
 
 export default function SearchResults() {
   const { t, i18n } = useTranslation();
@@ -86,29 +112,31 @@ export default function SearchResults() {
                     />
                   </div>
                   <div className='news-info'>
-                    {news.goals && news.goals.length > 0 && (
+                    {news.display_goals && news.display_goals.length > 0 && (
                       <div className="news-info-types">
                         <p>{t('news.relatedGoals')}:</p>
                         <div>
-                          {news.goals.map((goalId: number, index: number) => {
-                            const goalItem = goals.find(g => g.id === goalId);
-                            const backgroundColor = goalItem?.color?.startsWith('#') 
-                              ? goalItem.color 
-                              : `#${goalItem?.color}`;
+                          {news.display_goals.map((goal: DisplayGoal) => {
+                            const backgroundColor = goal.color?.startsWith('#') 
+                              ? goal.color 
+                              : `#${goal.color}`;
                             return (
                               <a 
                                 href="#" 
-                                key={goalId}
+                                key={goal.id}
                               >
                                 <span
                                   className="number"
                                   style={{
                                     backgroundColor: backgroundColor,
-                                    color: goalItem?.color === 'ffffff' ? '#000' : '#fff'
+                                    color: goal.color === 'ffffff' ? '#000' : '#fff'
                                   }}
                                 >
-                                  {goalId}
+                                  {goal.goals}
                                 </span>
+                                {/* <span className="goal-name">
+                                  {goal.translations[i18n.language]?.name}
+                                </span> */}
                               </a>
                             );
                           })}

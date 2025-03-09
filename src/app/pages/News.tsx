@@ -35,7 +35,17 @@ interface NewsProps {
   newsData: {
     id: number;
     category: number;
-    goals: number[];
+    display_goals: {
+      id: number;
+      translations: {
+        [key: string]: {
+          name: string;
+          slug: string;
+        };
+      };
+      goals: number;
+      color: string;
+    }[];
     main_image: string;
     images: { image: string }[];
     views_count: number;
@@ -48,17 +58,6 @@ interface NewsProps {
       };
     };
   };
-  goalsData: {
-    id: number;
-    translations: {
-      [key: string]: {
-        name: string;
-        slug: string;
-      };
-    };
-    goals: number;
-    color: string;
-  }[];
 }
 
 interface NewsCategory {
@@ -71,7 +70,7 @@ interface NewsCategory {
   };
 }
 
-export default function News({ newsData, goalsData }: NewsProps) {
+export default function News({ newsData }: NewsProps) {
   const [nav1, setNav1] = useState<Slider | null>(null);
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [showAllButtons, setShowAllButtons] = useState(false);
@@ -177,14 +176,6 @@ export default function News({ newsData, goalsData }: NewsProps) {
     alt: `Slide ${index + 1}`,
   }));
 
-  const getGoalName = (goal: (typeof goalsData)[0]) => {
-    return (
-      goal.translations[i18n.language]?.name ||
-      goal.translations["en"]?.name ||
-      "Unknown Goal"
-    );
-  };
-
   const getShareUrl = () => {
     if (typeof window !== 'undefined') {
       return encodeURIComponent(window.location.href);
@@ -216,7 +207,9 @@ export default function News({ newsData, goalsData }: NewsProps) {
   };
 
   return (
-    <main className="main">
+    <>
+    
+     <main className="main">
       <div className="container">
         <div className="main-news-pages">
           <a href={`/${i18n.language}`}>{t("common.home")}</a>
@@ -357,44 +350,66 @@ export default function News({ newsData, goalsData }: NewsProps) {
             </div>
 
             <div className="main-news-block-buttons">
-              {goalsData.map((goal) => (
-                <a
-                  key={goal.id}
-                  href="#"
-                  style={{
-                    backgroundColor: goal.color.startsWith("#")
-                      ? goal.color
-                      : `#${goal.color}`,
-                  }}
-                >
-                  <span className="buttons-number">{goal.goals}</span>
-                  <p>{getGoalName(goal)}</p>
-                </a>
-              ))}
+              {newsData.display_goals.map((goal) => {
+                const formatColor = (color: string) => {
+                  color = color.replace('#', '');
+                  
+                  if (color.length <= 3) {
+                    color = color.split('').map(char => char + char).join('');
+                  }
+                  
+                  return '#' + color.padStart(6, '0');
+                };
 
-              <div className="hidden-buttons">
-                {goalsData.slice(4).map((goal) => (
+                return (
                   <a
                     key={goal.id}
-                    href="#"
+                    href={`/${i18n.language}/goals/${goal.translations[i18n.language]?.slug || goal.translations["en"]?.slug || ''}`}
                     style={{
-                      backgroundColor: goal.color.startsWith("#")
-                        ? goal.color
-                        : `#${goal.color}`,
+                      backgroundColor: formatColor(goal.color)
                     }}
                   >
                     <span className="buttons-number">{goal.goals}</span>
-                    <p>{getGoalName(goal)}</p>
+                    <p>
+                      {goal.translations[i18n.language]?.name || 
+                       goal.translations["en"]?.name || 
+                       "Unknown Goal"}
+                    </p>
                   </a>
-                ))}
-              </div>
+                );
+              })}
+
+              {newsData.display_goals.length > 4 && (
+                <>
+                  <div className={`hidden-buttons ${showAllButtons ? 'show' : ''}`}>
+                    {newsData.display_goals.slice(4).map((goal) => (
+                      <a
+                        key={goal.id}
+                        href={`/${i18n.language}/goals/${goal.translations[i18n.language]?.slug || goal.translations["en"]?.slug || ''}`}
+                        style={{
+                          backgroundColor: goal.color.startsWith("#") 
+                            ? goal.color 
+                            : `#${goal.color.padStart(6, '0')}`,
+                        }}
+                      >
+                        <span className="buttons-number">{goal.goals}</span>
+                        <p>
+                          {goal.translations[i18n.language]?.name || 
+                           goal.translations["en"]?.name || 
+                           "Unknown Goal"}
+                        </p>
+                      </a>
+                    ))}
+                  </div>
+                  <span 
+                    className="show-all-text"
+                    onClick={() => setShowAllButtons(!showAllButtons)}
+                  >
+                    {showAllButtons ? "Show Less" : "Show All"}
+                  </span>
+                </>
+              )}
             </div>
-            <span
-              className="show-all-text"
-              onClick={() => setShowAllButtons(!showAllButtons)}
-            >
-              {showAllButtons ? "Show Less" : "Show All"}
-            </span>
           </div>
 
           <div className="main-news-rubric">
@@ -405,15 +420,15 @@ export default function News({ newsData, goalsData }: NewsProps) {
             <ul>
               {categories.map((category) => (
                 <li key={category.id}>
-                  <Link 
-                    href={`/${i18n.language}/allnews/${getCategorySlug(category)}`}
+                  <a 
+                    href="#" 
                     onClick={(e) => {
                       e.preventDefault();
-                      handleCategoryClick(getCategorySlug(category));
+                      handleCategoryClick(category.translations[i18n.language]?.slug || '');
                     }}
                   >
                     {getCategoryName(category)}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -421,5 +436,7 @@ export default function News({ newsData, goalsData }: NewsProps) {
         </div>
       </div>
     </main>
+    </>
+   
   );
 }

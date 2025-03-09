@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
 import { useRouter } from 'next/navigation';
+import NewsRubric from '../NewsRubric';
 
 interface MenuPostCardProps {
     post: MenuPost;
@@ -72,21 +73,7 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                                 }}
                             />
                         </div>
-                        <div className="main-news-rubric">
-                                <div className="main-news-rubric-logo">
-                                    <Image 
-                                        src="/content/icon.png"
-                                        alt="Logo"
-                                        width={50}
-                                        height={50}
-                                    />
-                                    <h1>Axborotlar xizmati</h1>
-                                </div>
-                                <ul>
-                                    <li><Link href={`/${i18n.language}/allnews`}>Yangiliklar</Link></li>
-                                  
-                                </ul>
-                            </div>
+                        <NewsRubric/>
                     </div>
                 </div>
             </main>

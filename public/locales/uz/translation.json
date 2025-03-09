@@ -45,6 +45,7 @@
       "economics": "Iqtisodiyot fakulteti"
     },
     "common": {
+      "readMore":"Batafsil",
       "videos":"Vidiolar",
       "backToHome":"Asosiy sahifaga qaytish",
       "home": "Asosiy",
@@ -55,7 +56,9 @@
       "allVideos": "Barcha videolar",
       "attention": "DIQQAT!!! DIQQAT!!! TEZKOR!!!",
       "berdakh": "Men Marifat Izlar Edim, Berdah",
-      "menus":"Postlar"
+      "menus":"Postlar",
+      "allNews":"Barcha Yangiliklar",
+      "University":"QORAQALPOQ DAVLAT UNIVERSITETI"
     },
     "buttons": {
         "more": "Batafsil"

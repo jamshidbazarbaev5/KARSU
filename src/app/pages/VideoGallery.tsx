@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'isomorphic-dompurify';
+import NewsRubric from '../components/NewsRubric';
 
 interface VideoItem {
   id: number;
@@ -129,18 +130,7 @@ const VideoGalleryPage = () => {
             </div>
           </div>
 
-          <div className="main-news-rubric">
-            <div className="main-news-rubric-logo">
-              <img src="../mainpage/content/icon.png" alt="logo" />
-              <h1>Axborotlar xizmati</h1>
-            </div>
-            <ul>
-              <li><a href="#">Yangiliklar</a></li>
-              <li><a href="#">Events</a></li>
-              <li><a href="#">Lorem</a></li>
-              <li className="last"><a href="#">ipsum</a></li>
-            </ul>
-          </div>
+          <NewsRubric/>
         </div>
       </div>
     </main>

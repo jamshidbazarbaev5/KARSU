@@ -2,7 +2,9 @@
 import { t } from 'i18next';
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import i18n from '../i18n/config';
+import { useRouter } from 'next/navigation';
 
 interface DocumentItem {
   id: number;
@@ -20,11 +22,21 @@ interface DocumentItem {
       description: string;
     };
   };
+}interface NewsCategory {
+  id: number;
+  translations: {
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
+  };
 }
 
-const Files = () => {
-  const [documents, setDocuments] = React.useState<DocumentItem[]>([]);
 
+const Files = () => {
+  const router = useRouter();
+  const [documents, setDocuments] = React.useState<DocumentItem[]>([]);
+  const [categories, setCategories] = useState<NewsCategory[]>([]);
   React.useEffect(() => {
     const fetchDocuments = async () => {
       try {
@@ -38,9 +50,43 @@ const Files = () => {
 
     fetchDocuments();
   }, []);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://debttracker.uz/news/category/');
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+  const getCategoryName = (category: NewsCategory) => {
+    return category.translations[i18n.language]?.name || category.translations["en"]?.name || "";
+  };
+
+
+  const handleCategoryClick = (slug: string) => {
+    router.push(`/${i18n.language}/allnews/${slug}`);
+  };
 
   return (
-    <div className="navi-file">
+    <>
+     <div className="header-logo-div">
+        <div className="header-logo-mini">
+          <div className="header-logo-uni">
+            <Image src="/logo.png" alt="logo" width={100} height={100} />
+          </div>
+          <div className="header-logo-uni-name">
+            <a href={`/${i18n.language}`} className="header-logo-uni-name-span">
+              {t("common.University")}
+            </a>
+          </div>
+        </div>
+      </div>
+     <div className="navi-file">
       <div className="container">
         <div className="navi-file-title">
           <span className="nav-file-title-span">{t('sections.file')}</span>
@@ -100,29 +146,32 @@ const Files = () => {
             </div>
           </div>
 
-          <div className="rubric">
-            <div className="main-news-rubric">
-              <div className="main-news-rubric-logo">
-                <Image 
-                  src="/mainpage/content/icon.png" 
-                  alt="Rubric Icon"
-                  width={50}
-                  height={50}
-                />
-                <h1>Axborotlar xizmati</h1>
-              </div>
-              <ul>
-                <li><Link href="#">Yangiliklar</Link></li>
-                <li><Link href="#">Events</Link></li>
-                <li><Link href="#">Lorem</Link></li>
-                <li className="last"><Link href="#">ipsum</Link></li>
-              </ul>
+          <div className="main-news-rubric">
+            <div className="main-news-rubric-logo">
+              <img src="/content/icon.png" alt="" />
+              <h1>Axborotlar xizmati</h1>
             </div>
-            {/* Second rubric section - similar structure */}
+            <ul>
+              {categories.map((category) => (
+                <li key={category.id}>
+                  <a 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleCategoryClick(category.translations[i18n.language]?.slug || '');
+                    }}
+                  >
+                    {getCategoryName(category)}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
     </div>
+    </>
+   
   );
 };
 

@@ -24,7 +24,7 @@ interface NewsTranslation {
 interface NewsItem {
   id: number;
   category: number;
-  goals: number[];
+  display_goals: Goal[];
   main_image: string;
   images: NewsImage[];
   views_count: number;
@@ -117,7 +117,10 @@ interface GoalTranslation {
 interface Goal {
   id: number;
   translations: {
-    [key: string]: GoalTranslation;
+    [key: string]: {
+      name: string;
+      slug: string;
+    };
   };
   goals: number;
   color: string;
@@ -505,7 +508,7 @@ export default function MainSlider() {
   }, [news]);
 
   const slides = Array.isArray(news) && news.length > 0 ? news.map((item) => (
-    <div className="swiper-slide" key={item.id}>
+    <div className="swiper-slide" key={item .id}>
       <div className="main-slider-div">
         <div className="main-slider-div-black">
           <div className="main-slider-div-black-flex">
@@ -660,7 +663,6 @@ export default function MainSlider() {
     fetchNewsByCategory();
   }, [activeCategory]);
 
-  // Handle category click
   const handleCategoryClick = (categorySlug: string | null) => {
     setActiveCategory(categorySlug);
   };
@@ -703,7 +705,7 @@ export default function MainSlider() {
                 className={`news-page-menu-btn ${activeCategory === null ? 'active' : ''}`}
                 onClick={() => handleCategoryClick(null)}
               >
-                {t("navigation.allNews")}
+                {t("common.allNews")}
               </button>
               {categories.map((category) => {
                 const categorySlug = category.translations[i18n.language]?.slug;
@@ -735,30 +737,30 @@ export default function MainSlider() {
                   </div>
                   <img
                     className="news-photo"
-                    src={getValidImagePath(item.main_image)}
+                    src={item.main_image || getValidImagePath("/default-news-image.jpg")}
                     alt={getTranslatedText(item.translations, i18n.language, "title")}
                   />
                 </div>
                 <div className="news-info">
                   <div className="news-info-types">
-                    <p>{t("common.relatedGoals")}:</p>
+                    <p>{t("news.relatedGoals")}:</p>
                     <div>
-                      {item.goals.map((goalId) => {
-                        const goalItem = goals.find(g => g.id === goalId);
-                        return (
-                          <a href="#" key={goalId}>
-                            <span
-                              className="number"
-                              style={{
-                                backgroundColor: `#${goalItem?.color || 'gray'}`,
-                                color: goalItem?.color === 'ffffff' ? '#000' : '#fff'
-                              }}
-                            >
-                              {goalItem?.goals || goalId}
-                            </span>
-                          </a>
-                        );
-                      })}
+                      {Array.isArray(item.display_goals) && item.display_goals.map((goal) => (
+                        <Link 
+                          href={`/${i18n.language}/goals/${goal.translations[i18n.language]?.slug || ''}`} 
+                          key={goal.id}
+                        >
+                          <span
+                            className="number"
+                            style={{
+                              backgroundColor: `#${goal.color || 'gray'}`,
+                              color: goal.color === 'ffffff' ? '#000' : '#fff'
+                            }}
+                          >
+                            {goal.goals}
+                          </span>
+                        </Link>
+                      ))}
                     </div>
                   </div>
                   <div className="news-title">
@@ -855,7 +857,7 @@ export default function MainSlider() {
 
           <div className="all-events-page-link-div">
             <Link href={`/${i18n.language}/allnews`} className="all-events-page-link">
-              {t("navigation.allNews")}
+              {t("common.allNews")}
             </Link>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -940,8 +942,8 @@ export default function MainSlider() {
               </div>  
             ))}
             <div className="all-events-page-link-div-3">
-              <Link href={`/${i18n.language}/videos`} className="all-events-page-link">
-                {t("navigation.allEvents")}
+              <Link href={`/${i18n.language}/events`} className="all-events-page-link">
+                {t("common.allEvents")}
               </Link>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -993,8 +995,8 @@ export default function MainSlider() {
             </div>
 
             <div className="all-events-page-link-div">
-              <Link href={`/${i18n.language}/events`} className="all-events-page-link">
-                {t("navigation.allVideos")}
+              <Link href={`/${i18n.language}/videos`} className="all-events-page-link">
+                {t("common.allVideos")}
               </Link>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

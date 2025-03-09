@@ -83,7 +83,7 @@ export default function SingleAnnouncementPage() {
           </div>
           <div className="header-logo-uni-name">
             <a href={`/${i18n.language}`} className="header-logo-uni-name-span">
-              КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
+              {t("common.University")}
             </a>
           </div>
         </div>

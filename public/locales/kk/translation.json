@@ -8,8 +8,11 @@
         "backToHome":"Asosiy",
         "videos":"Vidiolar",
         "allEvents":"Barliq ilajlar",
-        "allVideos":"Barliq Videolar"
-
+        "allVideos":"Barliq Videolar",
+        "allNews":"Barliq Jańaliqlar",
+        "University":"QARAQALPAG'ISTAN MA'MLEKETLIK UNIVERSITETI",
+        "readMore":"Toliqraq"
+        
 
     },
     "search":{
@@ -26,7 +29,7 @@
         "events":"Ilajlar",
         "videoGallery":"Video galereya",
         "faculties":"Fakultetler",
-        "services":"Interaktiv xizmatlar",
+        "services":"Interaktiv xizmetlar",
         "partners":"Hamkorlar"
     },
     "videoGallery":{
