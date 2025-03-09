@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import Pagination from '@/app/components/Pagination';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
+import { useParams, useRouter } from 'next/navigation';
 // import i18n from '../i18n/config';
 
 interface NewsTranslation {
@@ -85,18 +86,28 @@ const AllNews = () => {
     const [goals, setGoals] = useState<Goal[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const { i18n } = useTranslation();
+    const params = useParams();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchNews = async () => {
             setLoading(true);
             try {
-                const url = activeCategory !== null
-                    ? `https://debttracker.uz/news/category/${activeCategory}/posts/?page=${activePage}`
+                // Handle category parameter safely
+                const categorySlug = Array.isArray(params.category) 
+                    ? params.category[0] 
+                    : params.category;
+                
+                const url = categorySlug
+                    ? `https://debttracker.uz/news/category/${categorySlug}/posts/?page=${activePage}`
                     : `https://debttracker.uz/news/posts/?page=${activePage}`;
                 
                 const response = await axios.get<NewsResponse>(url);
                 setNews(response.data.results);
                 setTotalPages(Math.max(2, Math.ceil(response.data.count / 6)));
+                
+                // Update activeCategory state safely
+                setActiveCategory(categorySlug || null);
             } catch (error) {
                 console.error('Error fetching news:', error);
                 setNews([]);
@@ -106,7 +117,7 @@ const AllNews = () => {
         };
 
         fetchNews();
-    }, [activePage, activeCategory, i18n.language]);
+    }, [activePage, params.category, i18n.language]);
 
     useEffect(() => {
         const fetchGoals = async () => {
@@ -137,6 +148,16 @@ const AllNews = () => {
 
         fetchCategories();
     }, [i18n.language]);
+
+    useEffect(() => {
+        // Handle category parameter safely when setting initial active category
+        if (params.category) {
+            const categorySlug = Array.isArray(params.category) 
+                ? params.category[0] 
+                : params.category;
+            setActiveCategory(categorySlug);
+        }
+    }, [params.category]);
 
     const handlePageChange = (page: number) => {
         setActivePage(page);
@@ -185,7 +206,14 @@ const AllNews = () => {
 
     const handleCategoryClick = (categorySlug: string | null) => {
         setActiveCategory(categorySlug);
-        setActivePage(1); // Reset to first page when changing category
+        setActivePage(1);
+        
+        // Update the URL based on category
+        if (categorySlug) {
+            router.push(`/${i18n.language}/allnews/${categorySlug}`);
+        } else {
+            router.push(`/${i18n.language}/allnews`);
+        }
     };
 
     const getCategorySlug = (category: Category) => {
@@ -220,7 +248,7 @@ const AllNews = () => {
                     </div>
                     <div className='news-page-menu'>
                         <button
-                            className={`news-page-menu-btn ${activeCategory === null ? 'actived' : ''}`}
+                            className={`news-page-menu-btn ${activeCategory === null ? 'active' : ''}`}
                             onClick={() => handleCategoryClick(null)}
                         >
                             Все Новости
@@ -228,7 +256,7 @@ const AllNews = () => {
                         {categories.map((category) => (
                             <button
                                 key={category.id}
-                                className={`news-page-menu-btn ${activeCategory === getCategorySlug(category) ? 'actived' : ''}`}
+                                className={`news-page-menu-btn ${activeCategory === getCategorySlug(category) ? 'active' : ''}`}
                                 onClick={() => handleCategoryClick(getCategorySlug(category))}
                             >
                                 {getCategoryName(category.id)}

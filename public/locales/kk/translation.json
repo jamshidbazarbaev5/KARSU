@@ -1,7 +1,7 @@
 {
     "common":{
-        "home": "Asosiy",
-        "news": "Yangiliklar",
+        "home": "Bas bet",
+        "news": "Jańaliqlar",
         "title": "Sarlavha",
         "events": "Ilajlar",
         "berdakh":"Men Maǵripat Izler Edim, Berdakh",
@@ -9,12 +9,31 @@
         "videos":"Vidiolar",
         "allEvents":"Barliq ilajlar",
         "allVideos":"Barliq Videolar"
+
+
+    },
+    "search":{
+        "results":"Rezultatlar",
+        "noResults":"Rezultatlar tawilmadi"
     },
     "buttons": {
         "more": "Ko'birek"
     },
     "sections":{
         "numbers":"QMU sanlarda",
-        "file":"Normativ hujjetler"
+        "file":"Normativ hujjetler",
+        "news":"Jańaliqlar",
+        "events":"Ilajlar",
+        "videoGallery":"Video galereya",
+        "faculties":"Fakultetler",
+        "services":"Interaktiv xizmatlar",
+        "partners":"Hamkorlar"
+    },
+    "videoGallery":{
+      "title":"Новости"
+    },
+    "news":{
+      "relatedGoals":"Baylanısli maqsetler"
+      
     }
 }

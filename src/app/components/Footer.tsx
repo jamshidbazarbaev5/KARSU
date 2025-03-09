@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import i18n from '../i18n/config';
 
 interface MenuTranslation {
     name: string;
@@ -12,6 +13,9 @@ interface MenuTranslations {
     uz: MenuTranslation;
     kk: MenuTranslation;
 }
+
+// Add this type to ensure type safety when accessing translations
+type LanguageKey = keyof MenuTranslations;
 
 interface MenuItem {
     id: number;
@@ -106,10 +110,10 @@ const Footer = () => {
                                         {getChildMenuItems(parentItem.id).map((childItem) => (
                                             <a 
                                                 key={childItem.id}
-                                                href={`/${childItem.translations.ru.slug}`} 
+                                                href={`/${i18n.language}/${childItem.translations[i18n.language as LanguageKey].slug}`} 
                                                 className="footer-info-university-link"
                                             >
-                                                {childItem.translations.ru.name}
+                                                {childItem.translations[i18n.language as LanguageKey].name}
                                             </a>
                                         ))}
                                     </div>

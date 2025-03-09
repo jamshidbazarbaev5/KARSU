@@ -359,16 +359,28 @@ export default function MainSlider() {
     if (document.querySelector(".swiper-container-1")) {
       mainSwiper = new Swiper(".swiper-container-1", {
         loop: true,
+        effect: "fade",
+        fadeEffect: {
+          crossFade: true
+        },
         autoplay: {
           delay: 5000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         },
+        speed: 1000,
         navigation: {
           nextEl: ".main-slider-btn-right",
           prevEl: ".main-slider-btn-left",
         },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
       });
       setMainSwiper(mainSwiper);
+
+      mainSwiper.autoplay?.start();
     }
 
     if (document.querySelector(".swiper-container-video")) {
@@ -477,7 +489,10 @@ export default function MainSlider() {
       newsMenuContainer.addEventListener("wheel", handleWheel as unknown as EventListener);
 
       return () => {
-        if (mainSwiper) mainSwiper.destroy();
+        if (mainSwiper) {
+          mainSwiper.autoplay?.stop();
+          mainSwiper.destroy();
+        }
         if (videoSwiper) videoSwiper.destroy();
         if (facultySwiper) facultySwiper.destroy();
         if (infoSwiper) infoSwiper.destroy();
@@ -487,7 +502,7 @@ export default function MainSlider() {
         }
       };
     }
-  }, []); 
+  }, [news]);
 
   const slides = Array.isArray(news) && news.length > 0 ? news.map((item) => (
     <div className="swiper-slide" key={item.id}>
@@ -665,6 +680,7 @@ export default function MainSlider() {
               </div>
             )}
           </div>
+          <div className="swiper-pagination"></div>
         </div>
         <div className="main-slider-back">
           <Image
@@ -977,7 +993,7 @@ export default function MainSlider() {
             </div>
 
             <div className="all-events-page-link-div">
-              <Link href={`/${i18n.language}/videos`} className="all-events-page-link">
+              <Link href={`/${i18n.language}/events`} className="all-events-page-link">
                 {t("navigation.allVideos")}
               </Link>
               <svg

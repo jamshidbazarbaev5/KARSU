@@ -7,8 +7,19 @@
       "events": "Tadbirlar",
       "sportsNews": "Sport Yangiliklari",
       "congratulations": "Tabriklar",
-      "allEvents":"Barcha Tabriklar",
+      "allEvents":"Barcha Tadbirlar ",
       "allVideos":"Barcha videolar"
+    },
+    "search":{
+      "results":"Natijalar",
+      "noResults":"Natijalar topilmadi"
+    },
+    "videoGallery":{
+      "title":"Новости"
+    },
+    "news":{
+      "relatedGoals":"Tegishli maqsadlar"
+      
     },
     "sections": {
       "news": "YANGILIKLAR",

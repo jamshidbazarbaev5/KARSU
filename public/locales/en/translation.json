@@ -9,6 +9,17 @@
       "allVideos":"All Videos",
       "congratulations": "Congratulations"
     },
+    "search":{
+      "results":"Results for",
+      "noResults":"No results found"
+    },
+    "videoGallery":{
+      "title":"Новости"
+    },
+    "news":{
+      "relatedGoals":"Related Goals"
+      
+    },
     "sections": {
       "news": "NEWS",
       "events": "EVENTS",

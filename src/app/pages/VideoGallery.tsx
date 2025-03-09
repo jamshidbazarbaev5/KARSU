@@ -90,8 +90,8 @@ const VideoGalleryPage = () => {
       <div className="container">
         <div className="main-news-pages">
                     <a href={`/${i18n.language}`}>{t('common.home', )}</a>
-                    <a href={`/${i18n.language}/allnews`}>{t('common.news', )}</a>
-                    <a href="#">{getTranslatedContent('title')}</a>
+                    <a href={`/${i18n.language}/videos`}>{t('common.videos', )}</a>
+                    {/* <a href="#">{getTranslatedContent('title')}</a> */}
         </div>
         
         <div className="main-video">

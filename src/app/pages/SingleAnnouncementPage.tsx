@@ -52,6 +52,28 @@ export default function SingleAnnouncementPage() {
     return translations?.[language]?.[field] || "No translation available";
   };
 
+  const getShareUrl = () => {
+    if (typeof window !== 'undefined') {
+      return encodeURIComponent(window.location.href);
+    }
+    return '';
+  };
+
+  const getSocialShareUrls = () => {
+    const url = getShareUrl();
+    const title = encodeURIComponent(getTranslatedText(
+      announcement?.translations,
+      i18n.language,
+      "title"
+    ));
+    
+    return {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    };
+  };
+
   return (
     <>
       <div className="header-logo-div">
@@ -121,6 +143,46 @@ export default function SingleAnnouncementPage() {
                     ),
                   }}
                 />
+              </div>
+              <div className="main-news-block-social">
+                <div className="faculty-block-text-social" style={{ padding: "10px" }}>
+                  <a 
+                    href={getSocialShareUrls().facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ margin: "10px" }}
+                  >
+                    <i className="fa-brands fa-square-facebook"></i>
+                  </a>
+                  <a 
+                    href={`https://t.me/share/url?url=${getShareUrl()}&text=${encodeURIComponent(getTranslatedText(
+                      announcement.translations,
+                      i18n.language,
+                      "title"
+                    ))}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ margin: "10px" }}
+                  >
+                    <i className="fa-brands fa-telegram"></i>
+                  </a>
+                  <a 
+                    href={getSocialShareUrls().twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ margin: "10px" }}
+                  >
+                    <i className="fa-brands fa-x-twitter"></i>
+                  </a>
+                  <a 
+                    href={getSocialShareUrls().linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ margin: "10px" }}
+                  >
+                    <i className="fa-brands fa-linkedin"></i>
+                  </a>
+                </div>
               </div>
               <div className="main-event-date">
                 <span className="main-event-date-span-2">
