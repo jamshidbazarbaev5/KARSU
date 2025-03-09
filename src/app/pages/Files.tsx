@@ -123,7 +123,7 @@ const Files = () => {
                       <td data-label="№">{doc.id}</td>
                       <td data-label="Тип документа / кем выдан">{doc.translations.ru.title || doc.translations.en.title}</td>
                       <td data-label="Дата">{new Date(doc.date_post).toLocaleDateString()}</td>
-                      <td data-label="Название документа">{doc.translations.ru.description || doc.translations.en.description}</td>
+                      <td data-label="Название документа" dangerouslySetInnerHTML={{__html:doc.translations.ru.description || doc.translations.en.description}}></td>
                       <td data-label="Скачать">
                         <a href={doc.file} download>
                           <i className="fa-solid fa-download"></i>

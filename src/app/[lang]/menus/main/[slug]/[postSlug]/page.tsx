@@ -21,11 +21,8 @@ export default function PostPage() {
 
     const fetchPost = async () => {
       try {
-        const baseUrl =
-          process.env.NEXT_PUBLIC_API_URL || "https://debttracker.uz";
-        const response = await fetch(
-          `${baseUrl}/publications/posts/${postSlug}`
-        );
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://debttracker.uz";
+        const response = await fetch(`${baseUrl}/menus/main/posts/${postSlug}`);
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(
@@ -33,6 +30,7 @@ export default function PostPage() {
           );
         }
         const data = await response.json();
+        console.log('Fetched post data:', data);
         setPost(data);
       } catch (error) {
         console.error("Error fetching post:", error);

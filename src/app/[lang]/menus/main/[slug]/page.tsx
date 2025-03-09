@@ -32,6 +32,7 @@ interface MenuItem {
   menu_posts?: Array<{
     id: number;
     main_image: string;
+    images?: Array<{ image: string }>;
     translations: MenuTranslations;
   }>;
 }
@@ -85,7 +86,7 @@ export default function MenuPage() {
       date_posted: new Date().toISOString(),
       views_count: 0,
       menu: menuItem.id,
-      images: [],
+      images: post.images?.map(img => img.image) || [],
     })) || [];
 
   if (menuItem.menu_posts?.length === 0) {
