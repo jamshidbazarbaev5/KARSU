@@ -78,7 +78,7 @@ interface Category {
 
 const AllNews = () => {
     const [activePage, setActivePage] = useState(1);
-    const [activeCategory, setActiveCategory] = useState('Все Новости');
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
     const [news, setNews] = useState<NewsItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(2);
@@ -86,32 +86,27 @@ const AllNews = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     const { i18n } = useTranslation();
 
-    const categoriesList = [
-        'Все Новости', 'Научные', 'Сообщество', 'Посещения',
-        'События', 'Новости спорта', 'Поздравления'
-    ];
-
-    useEffect(() => {
-        setActivePage(1);
-    }, [i18n.language]);
-
     useEffect(() => {
         const fetchNews = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`https://debttracker.uz/news/posts/?page=${activePage}`);
-                const data: NewsResponse = await response.json();
-                setNews(data.results);
-                setTotalPages(Math.max(2, Math.ceil(data.count / 6)));
+                const url = activeCategory !== null
+                    ? `https://debttracker.uz/news/category/${activeCategory}/posts/?page=${activePage}`
+                    : `https://debttracker.uz/news/posts/?page=${activePage}`;
+                
+                const response = await axios.get<NewsResponse>(url);
+                setNews(response.data.results);
+                setTotalPages(Math.max(2, Math.ceil(response.data.count / 6)));
             } catch (error) {
                 console.error('Error fetching news:', error);
+                setNews([]);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchNews();
-    }, [activePage, i18n.language]);
+    }, [activePage, activeCategory, i18n.language]);
 
     useEffect(() => {
         const fetchGoals = async () => {
@@ -188,14 +183,33 @@ const AllNews = () => {
         return availableTranslations.length > 0 ? availableTranslations[0].name : 'Unknown Category';
     };
 
-    if (loading) {
-        return (
-            <div className="news-loading-container">
-                <div className="news-loading-spinner"></div>
-                <span className="news-loading-text">Loading...</span>
-            </div>
-        );
-    }
+    const handleCategoryClick = (categorySlug: string | null) => {
+        setActiveCategory(categorySlug);
+        setActivePage(1); // Reset to first page when changing category
+    };
+
+    const getCategorySlug = (category: Category) => {
+        // Get translation for current language, fallback to Russian, then first available
+        if (i18n.language in category.translations) {
+            return category.translations[i18n.language].slug;
+        }
+        
+        if ('ru' in category.translations) {
+            return category.translations.ru.slug;
+        }
+        
+        const availableTranslations = Object.values(category.translations);
+        return availableTranslations.length > 0 ? availableTranslations[0].slug : '';
+    };
+
+        // if (loading) {
+        //     return (
+        //         <div className="news-loading-container">
+        //             <div className="news-loading-spinner"></div>
+        //             <span className="news-loading-text">Loading...</span>
+        //         </div>
+        //     );
+        // }
 
     return (
         <div className='main-news-page'>
@@ -205,13 +219,19 @@ const AllNews = () => {
                         <span className='news-page-title-span'>НОВОСТИ</span>
                     </div>
                     <div className='news-page-menu'>
-                        {categoriesList?.map((category) => (
+                        <button
+                            className={`news-page-menu-btn ${activeCategory === null ? 'actived' : ''}`}
+                            onClick={() => handleCategoryClick(null)}
+                        >
+                            Все Новости
+                        </button>
+                        {categories.map((category) => (
                             <button
-                                key={category}
-                                className={`news-page-menu-btn ${activeCategory === category ? 'actived' : ''}`}
-                                onClick={() => setActiveCategory(category)}
+                                key={category.id}
+                                className={`news-page-menu-btn ${activeCategory === getCategorySlug(category) ? 'actived' : ''}`}
+                                onClick={() => handleCategoryClick(getCategorySlug(category))}
                             >
-                                {category}
+                                {getCategoryName(category.id)}
                             </button>
                         ))}
                     </div>
@@ -223,7 +243,7 @@ const AllNews = () => {
                         <div className='news-photo-main-div'>
                             <div className='news-main-category'>
                                 <span className='news-main-category-span'>
-                                    {news[0].category === 1 ? 'Научный' : 'Событие'}
+                                    {getCategoryName(news[0].category)}
                                 </span>
                             </div>
                             <Image

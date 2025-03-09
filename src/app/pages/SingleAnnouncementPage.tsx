@@ -94,7 +94,7 @@ export default function SingleAnnouncementPage() {
             />
           </svg>
           <Link href="/" className="all-events-page-link-2">
-            Back to Home
+            {t('common.backToHome')}
           </Link>
         </div>
 

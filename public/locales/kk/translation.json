@@ -4,6 +4,17 @@
         "news": "Yangiliklar",
         "title": "Sarlavha",
         "events": "Ilajlar",
-        "berdakh":"Men Maǵripat Izler Edim, Berdakh"
+        "berdakh":"Men Maǵripat Izler Edim, Berdakh",
+        "backToHome":"Asosiy",
+        "videos":"Vidiolar",
+        "allEvents":"Barliq ilajlar",
+        "allVideos":"Barliq Videolar"
+    },
+    "buttons": {
+        "more": "Ko'birek"
+    },
+    "sections":{
+        "numbers":"QMU sanlarda",
+        "file":"Normativ hujjetler"
     }
 }

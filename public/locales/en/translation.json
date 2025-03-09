@@ -6,6 +6,7 @@
       "visits": "Visits",
       "events": "Events",
       "sportsNews": "Sports News",
+      "allVideos":"All Videos",
       "congratulations": "Congratulations"
     },
     "sections": {
@@ -14,7 +15,9 @@
       "videoGallery": "VIDEO GALLERY",
       "faculties": "FACULTIES",
       "services": "INTERACTIVE SERVICES",
-      "partners": "PARTNERS"
+      "partners": "PARTNERS",
+      "numbers":"Ksu in numbers",
+      "file":"Documents"
     },
     "university": {
       "name": "KARAKALPAK STATE UNIVERSITY",
@@ -30,7 +33,9 @@
       "economics": "Faculty of Economics"
     },
     "common": {
+      "vidios":"Videos",
       "home": "Home",
+      "backToHome":"Back to home",
       "news": "News",
       "events": "Events",
       "relatedGoals": "Related Goals",
@@ -39,6 +44,9 @@
       "attention": "ATTENTION!!! ATTENTION!!! URGENT!!!!",
       "berdakh":"I Would Search For Enlightenment, Berdakh"
 
+    },
+    "buttons": {
+      "more": "More"
     },
     "header": {
       "languages": {

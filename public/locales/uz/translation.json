@@ -6,7 +6,9 @@
       "visits": "Tashriflar",
       "events": "Tadbirlar",
       "sportsNews": "Sport Yangiliklari",
-      "congratulations": "Tabriklar"
+      "congratulations": "Tabriklar",
+      "allEvents":"Barcha Tabriklar",
+      "allVideos":"Barcha videolar"
     },
     "sections": {
       "news": "YANGILIKLAR",
@@ -14,7 +16,9 @@
       "videoGallery": "VIDEO GALEREYA",
       "faculties": "FAKULTETLAR",
       "services": "INTERAKTIV XIZMATLAR",
-      "partners": "HAMKORLAR"
+      "partners": "HAMKORLAR",
+      "numbers":"QMU RAQAMLARDA",
+      "file":"Hujjatlar"
     },
     "university": {
       "name": "QORAQALPOQ DAVLAT UNIVERSITETI",
@@ -30,6 +34,8 @@
       "economics": "Iqtisodiyot fakulteti"
     },
     "common": {
+      "videos":"Vidiolar",
+      "backToHome":"Asosiy sahifaga qaytish",
       "home": "Asosiy",
       "news": "Yangiliklar",
       "events": "Tadbir",
@@ -40,7 +46,9 @@
       "berdakh": "Men Marifat Izlar Edim, Berdah",
       "menus":"Postlar"
     },
-
+    "buttons": {
+        "more": "Batafsil"
+    },
     "header": {
       "languages": {
         "uz": "O'zbek",

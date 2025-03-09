@@ -1,53 +1,49 @@
+'use client'
+import { t } from 'i18next';
 import Image from 'next/image'
 import Link from 'next/link'
+import React from 'react'
 
 interface DocumentItem {
   id: number;
-  type: string;
-  date: string;
-  name: string;
+  menu: number;
+  footer_menu: null;
+  file: string;
+  date_post: string;
+  translations: {
+    en: {
+      title: string;
+      description: string;
+    };
+    ru: {
+      title: string | null;
+      description: string;
+    };
+  };
 }
 
 const Files = () => {
-  const documents: DocumentItem[] = [
-    {
-      id: 1,
-      type: "Odob axloq kodeksi",
-      date: "2024, 19 Сентябрь",
-      name: "Odob axloq kodeksi"
-    },
-    {
-        id: 2,
-        type: "Odob axloq kodeksi",
-        date: "2024, 19 Сентябрь",
-        name: "Odob axloq kodeksi"
-      },
+  const [documents, setDocuments] = React.useState<DocumentItem[]>([]);
 
-      {
-        id: 3,
-        type: "Odob axloq kodeksi",
-        date: "2024, 19 Сентябрь",
-        name: "Odob axloq kodeksi"
-      },
-      {
-        id: 4,
-        type: "Odob axloq kodeksi",
-        date: "2024, 19 Сентябрь",
-        name: "Odob axloq kodeksi"
-      },
-      {
-        id: 5,
-        type: "Odob axloq kodeksi",
-        date: "2024, 19 Сентябрь",
-        name: "Odob axloq kodeksi"
-      },
-  ];
+  React.useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const response = await fetch('https://debttracker.uz/menus/document/');
+        const data = await response.json();
+        setDocuments(data);
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
 
   return (
     <div className="navi-file">
       <div className="container">
         <div className="navi-file-title">
-          <span className="nav-file-title-span">Normative Documents</span>
+          <span className="nav-file-title-span">{t('sections.file')}</span>
         </div>
 
         <div className="navi-flex">
@@ -67,11 +63,13 @@ const Files = () => {
                   {documents.map((doc) => (
                     <tr key={doc.id}>
                       <td data-label="№">{doc.id}</td>
-                      <td data-label="Тип документа / кем выдан">{doc.type}</td>
-                      <td data-label="Дата">{doc.date}</td>
-                      <td data-label="Название документа">{doc.name}</td>
+                      <td data-label="Тип документа / кем выдан">{doc.translations.ru.title || doc.translations.en.title}</td>
+                      <td data-label="Дата">{new Date(doc.date_post).toLocaleDateString()}</td>
+                      <td data-label="Название документа">{doc.translations.ru.description || doc.translations.en.description}</td>
                       <td data-label="Скачать">
-                        <i className="fa-solid fa-download"></i>
+                        <a href={doc.file} download>
+                          <i className="fa-solid fa-download"></i>
+                        </a>
                       </td>
                     </tr>
                   ))}

@@ -10,6 +10,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-cube";
 import "swiper/css/effect-coverflow";
 import axios from "axios";
+import "../[lang]/main.css"
 interface NewsImage {
   image: string;
 }
@@ -229,6 +230,8 @@ export default function MainSlider() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [mainSwiper, setMainSwiper] = useState<Swiper | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  
   useEffect(() => {
     const fetchFaculties = async () => {
       try {
@@ -240,16 +243,16 @@ export default function MainSlider() {
     };
     fetchFaculties();
   }, [i18n.language]);
-  // Update news fetching effect to handle the direct response format
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const response = await axios.get<NewsItem[]>(
           `https://debttracker.uz/news/recent-posts/`
         );
-        setNews(response.data);
+        setNews(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Error fetching news:", error);
+        setNews([]);
       }
     };
 
@@ -288,7 +291,6 @@ export default function MainSlider() {
     fetchVideos();
   }, [i18n.language]);
 
-  // Add quantities fetching effect
   useEffect(() => {
     const fetchQuantities = async () => {
       try {
@@ -487,7 +489,7 @@ export default function MainSlider() {
     }
   }, []); 
 
-  const slides = news.map((item) => (
+  const slides = Array.isArray(news) && news.length > 0 ? news.map((item) => (
     <div className="swiper-slide" key={item.id}>
       <div className="main-slider-div">
         <div className="main-slider-div-black">
@@ -527,7 +529,7 @@ export default function MainSlider() {
                 </div>
                 <div className="main-slider-btn-div">
                   <Link
-                    href={`/news/${getTranslatedText(
+                    href={`${i18n.language}/news/${getTranslatedText(
                       item.translations,
                       i18n.language,
                       "slug"
@@ -621,13 +623,48 @@ export default function MainSlider() {
         </div>
       </div>
     </div>
-  ));
+  )) : [];
+
+  // Fetch news by category when activeCategory changes
+  useEffect(() => {
+    const fetchNewsByCategory = async () => {
+      try {
+        const url = activeCategory 
+          ? `https://debttracker.uz/news/category/${activeCategory}/recent-posts/`
+          : `https://debttracker.uz/news/recent-posts/`;
+          
+        const response = await axios.get(url);
+        const newsData = Array.isArray(response.data) ? response.data : response.data.results || [];
+        setNews(newsData);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setNews([]);
+      }
+    };
+
+    fetchNewsByCategory();
+  }, [activeCategory]);
+
+  // Handle category click
+  const handleCategoryClick = (categorySlug: string | null) => {
+    setActiveCategory(categorySlug);
+  };
 
   return (
     <>
       <div className="main-slider-div-bg">
         <div className="swiper-container swiper-container-1">
-          <div className="swiper-wrapper">{slides}</div>
+          <div className="swiper-wrapper">
+            {Array.isArray(news) && news.length > 0 ? slides : (
+              <div className="swiper-slide">
+                <div className="main-slider-div">
+                  <div className="main-slider-div-black">
+                    <p>{t("common.noNewsAvailable")}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div className="main-slider-back">
           <Image
@@ -646,27 +683,24 @@ export default function MainSlider() {
               <span className="news-page-title-span">{t("sections.news")}</span>
             </div>
             <div className="news-page-menu">
-              <a href="#" className="news-page-menu-btn active">
+              <button 
+                className={`news-page-menu-btn ${activeCategory === null ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(null)}
+              >
                 {t("navigation.allNews")}
-              </a>
-              <a href="#" className="news-page-menu-btn">
-                {t("navigation.scientific")}
-              </a>
-              <a href="#" className="news-page-menu-btn">
-                {t("navigation.community")}
-              </a>
-              <a href="#" className="news-page-menu-btn">
-                {t("navigation.visits")}
-              </a>
-              <a href="#" className="news-page-menu-btn">
-                {t("navigation.events")}
-              </a>
-              <a href="#" className="news-page-menu-btn">
-                {t("navigation.sportsNews")}
-              </a>
-              <a href="#" className="news-page-menu-btn">
-                {t("navigation.congratulations")}
-              </a>
+              </button>
+              {categories.map((category) => {
+                const categorySlug = category.translations[i18n.language]?.slug;
+                return (
+                  <button
+                    key={category.id}
+                    className={`news-page-menu-btn ${activeCategory === categorySlug ? 'active' : ''}`}
+                    onClick={() => handleCategoryClick(categorySlug)}
+                  >
+                    {getTranslatedText(category.translations, i18n.language, "name")}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -751,6 +785,11 @@ export default function MainSlider() {
                 </div>
               </div>
             ))}
+            {news.length === 0 && (
+              <div className="no-news-message">
+                <p>{t("common.noNewsAvailable")}</p>
+              </div>
+            )}
           </div>
 
           {/* <div className="news-page-numbers">
@@ -886,7 +925,7 @@ export default function MainSlider() {
             ))}
             <div className="all-events-page-link-div-3">
               <Link href={`/${i18n.language}/videos`} className="all-events-page-link">
-                {t("navigation.allVideos")}
+                {t("navigation.allEvents")}
               </Link>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -1033,8 +1072,7 @@ export default function MainSlider() {
                       </div>
                       <div className='faculty-info-text-btn-div'>
                         <div className='faculty-info-text'>
-                          <span className='faculty-info-text-span'>
-                            {faculty.translations[i18n.language]?.description.replace(/<[^>]*>/g, '')}
+                          <span  className='faculty-info-text-span' dangerouslySetInnerHTML={{__html:faculty.translations[i18n.language]?.description.replace(/<[^>]*>/g, '')}}>
                           </span>
                         </div>
                         <Link href={`/${i18n.language}/faculty/${faculty.translations['ru']?.slug}`} className='faculty-info-details-btn'>

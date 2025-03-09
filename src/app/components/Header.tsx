@@ -119,7 +119,7 @@ const Header = () => {
             e.preventDefault();
             const menuSlug = translation.slug;
             if (menuSlug) {
-                router.push(`/${i18n.language}/menus/main/${menuSlug}/`);
+                window.location.href = `/${i18n.language}/menus/main/${menuSlug}/`;
             }
         };
 
@@ -171,7 +171,13 @@ const Header = () => {
                                                 return (
                                                     <Link 
                                                         key={subItem.id}
-                                                        href={`/${i18n.language}/menus/main/${subTranslation.slug}/`}
+                                                        href={
+                                                            subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'руководство' || subTranslation.slug === 'adminstraciya'
+                                                                ? `/${i18n.language}/administration/`
+                                                                : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
+                                                                    ? `/${i18n.language}/file/`
+                                                                    : `/${i18n.language}/menus/main/${subTranslation.slug}/`
+                                                        }
                                                         className="header-block-flex-link"
                                                     >
                                                         {subTranslation.name}
@@ -194,7 +200,7 @@ const Header = () => {
         
         return (
             <ul key={item.id}>
-                <a href="#" className="main-title">
+                <a href={`/${i18n.language}/menus/main/${translation.slug}`} className="main-title">
                     <span>{translation.name}</span>
                     {hasChildren && (
                         <span className="non-active">
@@ -218,6 +224,15 @@ const Header = () => {
                 )}
             </ul>
         );
+    };
+
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const query = formData.get('query');
+        if (query) {
+            router.push(`/${i18n.language}/search?query=${encodeURIComponent(query.toString())}`);
+        }
     };
 
     return (
@@ -304,8 +319,7 @@ const Header = () => {
                             </select>
                            
                         </div>
-                        <form action="/search" method="GET"
-                            className='header-main-left-search'>
+                        <form onSubmit={handleSearch} className='header-main-left-search'>
                             <input type="checkbox" id="search_call" />
                             <label htmlFor="search_call"
                                 className="header-main-left-search-label">

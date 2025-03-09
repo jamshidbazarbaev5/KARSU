@@ -244,7 +244,12 @@ export default function News({ newsData, goalsData }: NewsProps) {
                         </div> */}
 
                         <div className="main-news-block-social">
-                            {/* Social media links */}
+                        <div className="faculty-block-text-social " style={{padding:'10px'}}>
+                                <a href="https://www.instagram.com/" style={{margin:'10px'}}><i className="fa-brands fa-square-facebook"></i></a>
+                                <a href="https://www.twitter.com/" style={{margin:'10px'}}><i className="fa-brands fa-instagram"></i></a>
+                                <a href="https://www.x.com/" style={{margin:'10px'}}><i className="fa-brands fa-x-twitter"></i></a>
+                                <a href="https://www.linkedin.com/" style={{margin:'10px'}}><i className="fa-brands fa-linkedin"></i></a>
+                            </div>  
                         </div>
 
                         <div className="main-news-block-buttons">

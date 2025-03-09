@@ -6,7 +6,9 @@
       "visits": "Посещения",
       "events": "События",
       "sportsNews": "Новости спорта",
-      "congratulations": "Поздравления"
+      "allEvents":"Все события",
+      "congratulations": "Поздравления",
+      "allVideos":"Все видео"
     },
     "sections": {
       "news": "НОВОСТИ",
@@ -14,7 +16,9 @@
       "videoGallery": "ВИДЕО ГАЛЕРЕЯ",
       "faculties": "ФАКУЛЬТЕТЫ",
       "services": "ИНТЕРАКТИВНЫЕ УСЛУГИ",
-      "partners": "ПАРТНЕРЫ"
+      "partners": "ПАРТНЕРЫ",
+      "file":"Нормативные документы",
+      "numbers":"КГУ В ЧИСЛАХ"
     },
     "university": {
       "name": "КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ",
@@ -30,6 +34,8 @@
       "economics": "Факультет экономики"
     },
     "common": {
+      "videos":"Видео",
+      "backToHome":"Вернутс в главную страницу",
       "events": "Событие",
       "relatedGoals": "Связанные цели",
       "moreDetails": "Подробнее",
@@ -39,6 +45,9 @@
       "news": "Новости",
       "berdakh": "Просвещение Искал Я благое, Бердак",
       "menus":"Посты"
+    },
+    "buttons": {
+        "more": "Подробнее"
     },
     "header": {
       "languages": {
