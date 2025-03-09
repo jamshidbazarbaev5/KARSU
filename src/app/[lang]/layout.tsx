@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import '../styles/main.css';
 import '../styles/mormalize.css';
 import Script from 'next/script';
-import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes } from 'next/font/google';
+import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes, Archivo } from 'next/font/google';
 import '../i18n/config';
 import ClientLanguageProvider from '../components/ClientLanguageProvider'
 
@@ -69,6 +69,14 @@ const greatVibes = Great_Vibes({
   variable: '--font-great-vibes',
 })
 
+const archivo = Archivo({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-archivo',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
+});
+
 const inter = Inter({ subsets: ["latin"] });
 
 // Validate language parameter
@@ -118,6 +126,7 @@ export default async function RootLayout({
         ${sofiaSans.variable}
         ${satisfy.variable}
         ${greatVibes.variable}
+        ${archivo.variable}
       `}
     >
       <head>

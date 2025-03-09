@@ -138,6 +138,20 @@ interface Category {
   };
 }
 
+// First, add the interface for partners
+interface PartnerTranslation {
+  name: string;
+}
+
+interface Partner {
+  id: number;
+  url: string;
+  img: string;
+  translations: {
+    [key: string]: PartnerTranslation;
+  };
+}
+
 // Add this helper function at the top level
 const decodeHtmlEntities = (text: string) => {
   const textarea = document.createElement('textarea');
@@ -234,6 +248,7 @@ export default function MainSlider() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [mainSwiper, setMainSwiper] = useState<Swiper | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [partners, setPartners] = useState<Partner[]>([]);
   
   useEffect(() => {
     const fetchFaculties = async () => {
@@ -351,6 +366,21 @@ export default function MainSlider() {
     };
 
     fetchCategories();
+  }, [i18n.language]);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await axios.get<Partner[]>(
+          `https://debttracker.uz/references/links`
+        );
+        setPartners(response.data);
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      }
+    };
+
+    fetchPartners();
   }, [i18n.language]);
 
   useEffect(() => {
@@ -1321,46 +1351,32 @@ export default function MainSlider() {
           </div>
         </div>
         <div className="all-partners-card-page">
-          {[1, 2, 3, 4].map((rowIndex) => (
+          {Array.from({ length: Math.ceil(partners.length / 3) }).map((_, rowIndex) => (
             <div className="partners-card" key={rowIndex}>
-              <div className="partner-card withphoto">
-                <div className="partner-card-bg">
-                  <div className="partner-logo">
-                    <Image
-                      className="partner-logo-photo"
-                      src={getValidImagePath("/Mask group.png")}
-                      alt="Partner logo"
-                      width={150}
-                      height={150}
-                    />
+              {partners.slice(rowIndex * 3, (rowIndex + 1) * 3).map((partner, index) => (
+                <div className={`partner-card ${index === 0 ? 'withphoto' : ''}`} key={partner.id}>
+                  <div className={index === 0 ? 'partner-card-bg' : ''}>
+                    <div className={`partner-logo ${index === 2 ? 'notabs' : ''}`}>
+                      <Link href={partner.url} target="_blank">
+                        <Image
+                          className="partner-logo-photo"
+                          src={getValidImagePath(partner.img)}
+                          alt={getTranslatedText(partner.translations, i18n.language, "name")}
+                          width={150}
+                          height={150}
+                        />
+                      </Link>
+                    </div>
                   </div>
+                  {index === 2 && (
+                    <div className="partner-name">
+                      <span className="partner-name-span">
+                        {getTranslatedText(partner.translations, i18n.language, "name")}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div className="partner-card">
-                <div className="partner-logo">
-                  <Image
-                    className="partner-logo-photo"
-                    src={getValidImagePath("/Mask group (1).png")}
-                    alt="Partner logo"
-                    width={150}
-                    height={150}
-                  />
-                </div>
-              </div>
-              <div className="partner-card">
-                <div className="partner-logo notabs">
-                  <Image
-                    className="partner-logo-photo"
-                    src={getValidImagePath("/Group 1 (1).png")}
-                    alt="Partner logo"
-                    width={150}
-                    height={150}
-                  />
-                </div>
-                <div className="partner-name">
-                  <span className="partner-name-span">{t("common.event")}</span>
-                </div>
-              </div>
+              ))}
             </div>
           ))}
         </div>

@@ -9,33 +9,6 @@ import Link from "next/link";
 import i18n from "@/app/i18n/config";
 import { t } from "i18next";
 
-// Add this CSS block after the existing imports
-const styles = {
-  '.main-block-cards-card': {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '200px', 
-    width:'1000px',
-    padding: '20px',
-    marginBottom: '20px',
-  },
-  '.main-cards-card-title': {
-    flex: '1',
-    marginBottom: '15px',
-  },
-  '.main-cards-card-title h2': {
-    margin: '0',
-    fontSize: '18px',
-    lineHeight: '1.4',
-  },
-  '.main-cards-card-belongs': {
-    marginTop: 'auto'
-  },
-  '.main-cards-card-bottom': {
-    marginTop: '15px',
-  }
-} as const;
-
 interface Translation {
   title: string;
   description: string;
@@ -156,7 +129,7 @@ const GoalNews = () => {
       <div className="container">
         <div className="main-news-pages">
           <a href={`/${i18n.language}`}>{t('common.home')}</a>
-          {/* <a href="#">Barqaror rivojlanish Maqsadlari</a> */}
+          {/* <a href="#">{t('common.sustainableDevelopmentGoals')}</a> */}
           <a href="#">{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name || ''}</a>
         </div>
         <div className="main-news">
@@ -167,7 +140,7 @@ const GoalNews = () => {
                 <h1>{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name}</h1>
               </div>
               <div className="main-block-title-down">
-                <p>Sifatli ta'lim lorem</p>
+                <p>{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name}</p>
               </div>
             </div>
             
@@ -175,13 +148,11 @@ const GoalNews = () => {
               {newsData?.results.map((item) => {
                 const date = formatDate(item.date_posted);
                 return (
-                  <div key={item.id} className="main-block-cards-card" style={styles['.main-block-cards-card']}>
-                    <div className="main-cards-card-title" style={styles['.main-cards-card-title']}>
-                        <Link href={`/${i18n.language}/news/${item.translations[i18n.language as keyof typeof item.translations]?.slug}`} style={{textDecoration:"none"}}>
-                      <h2 style={styles['.main-cards-card-title h2']}>{item.translations[params.lang as keyof typeof item.translations]?.title}</h2>
-                        </Link>
+                  <div key={item.id} className="main-block-cards-card">
+                    <div className="main-cards-card-title">
+                      <h2>{item.translations[params.lang as keyof typeof item.translations]?.title}</h2>
                     </div>
-                    <div className="main-cards-card-belongs" style={styles['.main-cards-card-belongs']}>
+                    <div className="main-cards-card-belongs">
                       <p>Tegishli maqsadlar:</p>
                       {item.display_goals.map((goal) => (
                         <a
@@ -195,7 +166,7 @@ const GoalNews = () => {
                       ))}
                     </div>
 
-                    <div className="main-cards-card-bottom" style={styles['.main-cards-card-bottom']}>
+                    <div className="main-cards-card-bottom">
                       <div className="main-cards-card-date">
                         <span className="day">{date.day}</span>
                         <span className="month">{date.month}</span>
@@ -212,15 +183,17 @@ const GoalNews = () => {
             </div>
 
             {newsData && (
-              <Pagination 
-                currentPage={currentPage}
-                totalPages={Math.ceil(newsData.count / itemsPerPage)}
-                onPageChange={handlePageChange}
-              />
+            
+                <Pagination 
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(newsData.count / itemsPerPage)}
+                  onPageChange={handlePageChange}
+                />
+               
             )}
           </div>
 
-        <NewsRubric/>
+          <NewsRubric/>
         </div>
       </div>
     </main>
