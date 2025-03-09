@@ -6,10 +6,6 @@ import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
 import { useRouter } from 'next/navigation';
 import NewsRubric from '../NewsRubric';
-import { useState, useRef, useEffect } from 'react';
-import Slider, { Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 interface MenuPostCardProps {
     post: MenuPost;
@@ -17,79 +13,10 @@ interface MenuPostCardProps {
 }
 
 export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
-    const [nav1, setNav1] = useState<Slider | null>(null);
-    const [nav2, setNav2] = useState<Slider | null>(null);
-    const slider1 = useRef<Slider | null>(null);
-    const slider2 = useRef<Slider | null>(null);
     const { i18n, t } = useTranslation();
     const router = useRouter();
     const baseSlug = post.translations.en.slug;
     const translation = post.translations[i18n.language as keyof typeof post.translations] || post.translations.en;
-
-    useEffect(() => {
-        setNav1(slider1.current);
-        setNav2(slider2.current);
-    }, []);
-
-    const mainSettings: Settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        asNavFor: nav2 || undefined,
-        fade: true,
-        cssEase: "cubic-bezier(0.7, 0, 0.3, 1)",
-        responsive: [
-            {
-                breakpoint: 768,
-                settings: {
-                    arrows: false,
-                    dots: false,
-                },
-            },
-        ],
-    };
-
-    const thumbnailSettings: Settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        arrows: true,
-        focusOnSelect: true,
-        asNavFor: nav1 || undefined,
-        swipeToSlide: true,
-        centerMode: true,
-        centerPadding: "0px",
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    arrows: true,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 3,
-                    arrows: false,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 2,
-                    arrows: false,
-                    centerMode: true,
-                    centerPadding: "40px",
-                },
-            },
-        ],
-    };
 
     const handleClick = () => {
         if (!isSinglePost) {
@@ -145,45 +72,6 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                                     __html: DOMPurify.sanitize(translation.description)
                                 }}
                             />
-
-                            {post.images && post.images.length > 0 && (
-                                <div className="main-news-block-slider" style={{ position: "relative", zIndex: 1 }}>
-                                    <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
-                                        {post.images.map((img, index) => (
-                                            <div key={index} className="slide">
-                                                <div className="slide-image-wrapper">
-                                                    <Image
-                                                        src={img.image}
-                                                        alt={`Slide ${index + 1}`}
-                                                        fill
-                                                        sizes="(max-width: 800px) 100vw, 800px"
-                                                        priority={index === 0}
-                                                        className="slider-image"
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </Slider>
-
-                                    {post.images.length > 1 && (
-                                        <Slider {...thumbnailSettings} ref={slider2} className="thumbnail-slider">
-                                            {post.images.map((img, index) => (
-                                                <div key={index} className="thumbnail">
-                                                    <div className="thumbnail-image-wrapper">
-                                                        <Image
-                                                            src={img.image}
-                                                            alt={`Thumbnail ${index + 1}`}
-                                                            fill
-                                                            sizes="(max-width: 150px) 100vw, 150px"
-                                                            className="thumbnail-image"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </Slider>
-                                    )}
-                                </div>
-                            )}
                         </div>
                         <NewsRubric/>
                     </div>
