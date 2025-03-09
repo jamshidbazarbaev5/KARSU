@@ -288,22 +288,20 @@ export default function News({ newsData, goalsData }: NewsProps) {
                     </div>
 
                     <div className="main-news-rubric">
-                        <div className="main-news-rubric-logo">
-                            <Image 
-                                src="/mainpage/content/icon.png"
-                                alt="Logo"
-                                width={50}
-                                height={50}
-                            />
-                            <h1>Axborotlar xizmati</h1>
-                        </div>
-                        <ul>
-                            <li><Link href="#">Yangiliklar</Link></li>
-                            <li><Link href="#">Events</Link></li>
-                            <li><Link href="#">Lorem</Link></li>
-                            <li className="last"><Link href="#">ipsum</Link></li>
-                        </ul>
-                    </div>
+                                <div className="main-news-rubric-logo">
+                                    <Image 
+                                        src="/content/icon.png"
+                                        alt="Logo"
+                                        width={50}
+                                        height={50}
+                                    />
+                                    <h1>Axborotlar xizmati</h1>
+                                </div>
+                                <ul>
+                                    <li><Link href={`/${i18n.language}/allnews`}>Yangiliklar</Link></li>
+                                  
+                                </ul>
+                            </div>
                 </div>
             </div>
         </main>
