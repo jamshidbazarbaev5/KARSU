@@ -948,16 +948,16 @@ export default function MainSlider() {
                   </div> */}
                 </div>
                 <div className="main-event-date">
-                  <span className="main-event-time-span">
-                    {new Date(announcement.date_post).toLocaleTimeString(
-                      i18n.language,
-                      {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      }
-                    )}
-                  </span>
+                  {/*<span className="main-event-time-span">*/}
+                  {/*  {new Date(announcement.date_post).toLocaleTimeString(*/}
+                  {/*    i18n.language,*/}
+                  {/*    {*/}
+                  {/*      hour: "2-digit",*/}
+                  {/*      minute: "2-digit",*/}
+                  {/*      hour12: false,*/}
+                  {/*    }*/}
+                  {/*  )}*/}
+                  {/*</span>*/}
                   <span className="main-event-date-span">
                     {new Date(announcement.date_post).toLocaleDateString(
                       i18n.language,

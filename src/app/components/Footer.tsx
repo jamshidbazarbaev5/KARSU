@@ -63,7 +63,7 @@ const Footer = () => {
                                 {/*</span>*/}
                             </div>
                         </div>
-                        <a href="karsu_info@edu.uz" className='footer-connect-btn'>
+                        <a href="mailto:karsu_info@edu.uz" className='footer-connect-btn'>
                             {t('common.connect')}
                         </a>
                         <div className='footer-social'>
@@ -126,7 +126,7 @@ const Footer = () => {
                 <div className="footer-inc-copyright-big">
                     <div className="footer-inc-copyright">
                         <span className="footer-copyright">Все права защищены.</span>
-                        <span className="footer-inc">Разработчик сайта: <a href="https://www.softium.uz" className="inc-bold">Softuim</a></span>
+                        <span className="footer-inc">Разработчик сайта: <a href="https://www.softium.uz" className="inc-bold">Softium</a></span>
                     </div>
                 </div>
             </div>

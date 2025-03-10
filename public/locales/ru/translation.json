@@ -145,6 +145,15 @@
       "namePlaceholder": "Введите ваше имя",
       "emailLabel": "Email",
       "emailPlaceholder": "Введите email",
-      "emailDisclaimer": "Мы никогда не передадим вашу электронную почту кому-либо еще."
+      "emailDisclaimer": "Мы никогда не передадим вашу электронную почту кому-либо еще.",
+      "submit":"Отправить",
+      "submitting":"Отправка...",
+      "successMessage":"Ваш комментарий отправлен",
+      "errorMessage":"Что-то пошло не так, попробуйте позже",
+      "messageLabel": "Комментарий или сообщение",
+      "messagePlaceholder": "Введите ваш комментарий",
+      "messageDisclaimer": "Мы никогда не передадим ваш комментарий кому-либо еще."
     }
+
+
   }

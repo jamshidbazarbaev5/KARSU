@@ -247,7 +247,7 @@ const Header = () => {
                 <div className='header-main-center'>
                     <div className='header-main-right'>
                         <ul className='header-main-right-ul'>
-                            <li className='header-main-right-li'>
+                            <a href='https://dist.karsu.uz/' className='header-main-right-li'>
                                 <svg className="top-links__svg" viewBox="0 0 48 48"
                                     width="20" height="20">
                                     <path
@@ -269,8 +269,8 @@ const Header = () => {
                                         fill="#ffffff"></path>
                                 </svg>
                                 <span>{t('header.topLinks.moodle')}</span>
-                            </li>
-                            <li className='header-main-right-li'>
+                            </a>
+                            <a href='https://karsu.uz/roundcube/' className='header-main-right-li'>
                                 <svg className="top-links__svg"
                                     viewBox="0 0 230.17 230.17" width="17"
                                     height="15">
@@ -289,7 +289,7 @@ const Header = () => {
                                         fill="#ffffff"></path>
                                 </svg>
                                 <span>{t('header.topLinks.corporateEmail')}</span>
-                            </li>
+                            </a>
                             <a href={`/${i18n.language}/rektor`}
                                 className='header-main-right-li'>
                                 <svg className="top-links__svg"
@@ -317,6 +317,7 @@ const Header = () => {
                                 id="language"
                                 onChange={(e) => changeLanguage(e.target.value.toLowerCase())}
                                 value={i18n.language?.toUpperCase()}
+                                style={{ border: 'none', outline: 'none' }}
                             >
                                 <option value="UZ">{t('header.languages.uz')}</option>
                                 <option value="KK">{t('header.languages.kk')}</option>
@@ -376,7 +377,7 @@ const Header = () => {
                     <div className="nav-container">
                         <div className="header-main-nav-row">
                             <div className="header-main-nav-row-1">
-                                <Image src="/icon.png" alt='icons'  width={20} height={20} />
+                                <Image src="/logo.png" alt='icons' priority unoptimized={true} width={20} height={20} />
                                 <a href={`/${i18n.language}/`}
                                     className="header-row-title">КАРАКАЛПАКСКИЙ
                                     ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
