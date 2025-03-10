@@ -290,7 +290,7 @@ const Header = () => {
                                 </svg>
                                 <span>{t('header.topLinks.corporateEmail')}</span>
                             </li>
-                            <a href="../rektor/rektor.html"
+                            <a href={`/${i18n.language}/rektor`}
                                 className='header-main-right-li'>
                                 <svg className="top-links__svg"
                                     xmlns="http://www.w3.org/2000/svg"

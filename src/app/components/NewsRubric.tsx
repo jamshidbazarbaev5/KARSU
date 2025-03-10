@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import { t } from 'i18next';
 
 interface NewsCategory {
   id: number;
@@ -44,7 +45,7 @@ export default function NewsRubric() {
     <div className="main-news-rubric">
       <div className="main-news-rubric-logo">
         <img src="/content/icon.png" alt="" />
-        <h1>Axborotlar xizmati</h1>
+        <h1>{t('common.rubric')}</h1>
       </div>
       <ul>
         {categories.map((category) => (

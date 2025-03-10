@@ -824,10 +824,10 @@ export default function MainSlider() {
                         i18n.language,
                         {
                           year: "numeric",
-                          month: "long",
-                          day: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
                         }
-                      )}
+                      ).replace(/\//g, '.')}
                     </span>
                   </div>
                 </div>
@@ -962,11 +962,11 @@ export default function MainSlider() {
                     {new Date(announcement.date_post).toLocaleDateString(
                       i18n.language,
                       {
-                        day: "numeric",
-                        month: "long",
+                        day: "2-digit",
+                        month: "2-digit",
                         year: "numeric",
                       }
-                    )}
+                    ).replace(/\//g, '.')}
                   </span>
                 </div>
               </div>  

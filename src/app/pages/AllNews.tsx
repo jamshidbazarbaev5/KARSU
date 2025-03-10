@@ -94,7 +94,6 @@ const AllNews = () => {
     const fetchNews = async () => {
       setLoading(true);
       try {
-        // Handle category parameter safely
         const categorySlug = Array.isArray(params.category)
           ? params.category[0]
           : params.category;
@@ -105,13 +104,24 @@ const AllNews = () => {
 
         const response = await axios.get<NewsResponse>(url);
         setNews(response.data.results);
-        setTotalPages(Math.max(2, Math.ceil(response.data.count / 6)));
+        
+        // Calculate total pages and ensure current page is valid
+        const calculatedTotalPages = Math.ceil(response.data.count / 6);
+        setTotalPages(calculatedTotalPages);
+        
+        // If current page is greater than total pages, reset to page 1
+        if (activePage > calculatedTotalPages) {
+          setActivePage(1);
+        }
 
-        // Update activeCategory state safely
         setActiveCategory(categorySlug || null);
       } catch (error) {
         console.error("Error fetching news:", error);
         setNews([]);
+        // Reset to page 1 on error
+        if (activePage > 1) {
+          setActivePage(1);
+        }
       } finally {
         setLoading(false);
       }

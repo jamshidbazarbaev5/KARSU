@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "isomorphic-dompurify";
 import { useParams, useRouter } from "next/navigation";
+import NewsRubric from "@/app/components/NewsRubric";
 
 interface GoalType {
   id: number;
@@ -412,27 +413,7 @@ export default function News({ newsData }: NewsProps) {
             </div>
           </div>
 
-          <div className="main-news-rubric">
-            <div className="main-news-rubric-logo">
-              <img src="/content/icon.png" alt="" />
-              <h1>Axborotlar xizmati</h1>
-            </div>
-            <ul>
-              {categories.map((category) => (
-                <li key={category.id}>
-                  <a 
-                    href="#" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleCategoryClick(category.translations[i18n.language]?.slug || '');
-                    }}
-                  >
-                    {getCategoryName(category)}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+         <NewsRubric/>
         </div>
       </div>
     </main>

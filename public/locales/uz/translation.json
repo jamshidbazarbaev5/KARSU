@@ -44,6 +44,21 @@
       "history": "Tarix fakulteti",
       "economics": "Iqtisodiyot fakulteti"
     },
+    "feedback": {
+      "title": "Bog'lanish",
+      "nameLabel": "Ism",
+      "namePlaceholder": "Ismingizni kiriting",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Emailingizni kiriting",
+      "emailDisclaimer": "Biz sizning elektron pochtangizni hech kimga bermaymiz",
+      "messageLabel": "Xabar yoki izoh",
+      "messagePlaceholder": "Xabaringizni kiriting",
+      "messageDisclaimer": "Biz sizning xabaringizni hech kimga bermaymiz",
+      "errorMessage":"Qa'telik boldi birazdan soń qaytadan urinip koriń",
+      "successMessage":"Xabarnama jiberildi",
+      "submit":"Yuborish",
+      "submitting":"Yuborish..."
+    },
     "common": {
       "readMore":"Batafsil",
       "noNewsAvailable":"Yangiliklar topilmadi",  
@@ -60,7 +75,9 @@
       "berdakh": "Men Marifat Izlar Edim, Berdah",
       "menus":"Postlar",
       "allNews":"Barcha Yangiliklar",
-      "University":"QORAQALPOQ DAVLAT UNIVERSITETI"
+      "University":"QORAQALPOQ DAVLAT UNIVERSITETI",
+      "connect": "Universitet bilan bog'lanish",
+      "rubric": "Axboratlar xizmati"
     },
     "buttons": {
         "more": "Batafsil"

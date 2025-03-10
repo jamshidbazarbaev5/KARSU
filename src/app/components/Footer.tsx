@@ -58,13 +58,13 @@ const Footer = () => {
                                 <a href={`/${i18n.language}`} className='footer-title-span'>
                                     {t('common.University')}
                                 </a>
-                                <span className='footer-title-mini-span'>
-                                  {t('common.nameOfBerdakh')}
-                                </span>
+                                {/*<span className='footer-title-mini-span'>*/}
+                                {/*  {t('common.nameOfBerdakh')}*/}
+                                {/*</span>*/}
                             </div>
                         </div>
-                        <a href="#" className='footer-connect-btn'>
-                            Связь с университетом
+                        <a href="karsu_info@edu.uz" className='footer-connect-btn'>
+                            {t('common.connect')}
                         </a>
                         <div className='footer-social'>
                             <a href="https://www.instagram.com/karakalpak_state_university_" className='footer-social-btn' target="_blank" rel="noopener noreferrer">

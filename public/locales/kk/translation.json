@@ -13,8 +13,25 @@
         "University":"QARAQALPAG'ISTAN MA'MLEKETLIK UNIVERSITETI",
         "readMore":"Toliqraq",
         "nameOfBerdakh":"Berdax atindag'i",
-        "noNewsAvailable":"Jańaliqlar joq"
+        "noNewsAvailable":"Jańaliqlar joq",
+        "connect": "Universitet penen Baylanisiw",
+        "rubric": "Kategoriya"
 
+    },
+    "feedback": {
+      "title": "Baylanisiw",
+      "nameLabel": "At",
+      "namePlaceholder": "Atińizdi kiritiń",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Email",
+      "emailDisclaimer": "Biz sizdinizdi emailińizdi eshkimge bermeymiz",
+      "messageLabel": "Kommentariya",
+      "messagePlaceholder": "Kommentariya",
+      "messageDisclaimer": "Biz sizdinizdi kommentariyanyzdi eshkimge bermeymiz",
+      "errorMessage":"Qa'telik boldi birazdan soń qaytadan urinip koriń",
+      "successMessage":"Xabarnama jiberildi",
+      "submit":"Jiberiw",
+      "submitting":"Jiberiw..."
     },
     "search":{
         "results":"Rezultatlar",

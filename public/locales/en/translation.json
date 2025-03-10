@@ -58,7 +58,9 @@
       "attention": "ATTENTION!!! ATTENTION!!! URGENT!!!!",
       "berdakh":"I Would Search For Enlightenment, Berdakh",
       "allNews":"All News",
-      "University":"KARAKALPAK STATE UNIVERSITY"
+      "University":"KARAKALPAK STATE UNIVERSITY",
+      "connect": "Connect with University",
+      "rubric": "Category"
 
     },
     "buttons": {
@@ -135,7 +137,21 @@
         "research": "International Research",
         "cooperation": "Academic Cooperation"
       }
+    },
+    "feedback": {
+      "title": "Feedback",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email",
+      "emailDisclaimer": "We will never share your email with anyone else.",
+      "messageLabel": "Comment or Message",
+      "messagePlaceholder": "Enter your message",
+      "messageDisclaimer": "We will never share your message with anyone else.",
+      "errorMessage":"Something went wrong, please try again later",
+      "successMessage":"Message sent",
+      "submit":"Submit",
+      "submitting":"Submitting..."
     }
-   
   }
 
