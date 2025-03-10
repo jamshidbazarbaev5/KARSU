@@ -155,12 +155,7 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
                 }}
               />
             </div>
-            <div className="faculty-block-text-social">
-              <a href="#"><i className="fa-brands fa-square-facebook"></i></a>
-              <a href="#"><i className="fa-brands fa-instagram"></i></a>
-              <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
-              <a href="#"><i className="fa-brands fa-linkedin"></i></a>
-            </div>
+           
           </div>
         </div>
       </div>
