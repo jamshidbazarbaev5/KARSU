@@ -132,7 +132,7 @@ const AdministrationPage = () => {
                 name={admin.translations[language].full_name}
                 phone={admin.phone_number}
                 email={admin.email}
-                isMain={admin.position === 1}
+                isMain={admin.position === 4}
                 biography={admin.translations[language].biography}
               />
             ))

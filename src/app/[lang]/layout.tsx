@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import I18nProvider from '../i18n/provider';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -9,6 +9,7 @@ import Script from 'next/script';
 import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes, Archivo } from 'next/font/google';
 import '../i18n/config';
 import ClientLanguageProvider from '../components/ClientLanguageProvider'
+import { NextWebVitalsMetric } from 'next/app';
 
 const nunito = Nunito({
   subsets: ['latin'],
@@ -79,20 +80,102 @@ const archivo = Archivo({
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Validate language parameter
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
+// Enhanced metadata configuration
 export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
   const language = await lang;
+  const title = {
+    en: 'Karakalpak State University',
+    ru: 'Каракалпакский Государственный Университет',
+    uz: 'Qoraqalpoq Davlat Universiteti',
+    kk: 'Qaraqalpaq Mamleketlik Universiteti'
+  };
+
+  const description = {
+    en: 'Karakalpak State University offers high-quality education, research opportunities, and diverse academic programs. Join our prestigious institution for excellence in higher education.',
+    ru: 'Каракалпакский государственный университет предлагает качественное образование, возможности для исследований и разнообразные академические программы.',
+    uz: 'Qoraqalpoq Davlat Universiteti sifatli ta\'lim, tadqiqot imkoniyatlari va xilma-xil akademik dasturlarni taqdim etadi.',
+    kk: 'Qaraqalpaq Mamleketlik Universiteti joqari sapali bilim'
+  };
+
   return {
-    title: `Your Site - ${language.toUpperCase()}`,
+    title: {
+      default: title[language as keyof typeof title],
+      template: '%s | KarSU'
+    },
+    description: description[language as keyof typeof description],
+    keywords: [
+      'Kara-Kalpak State University',
+      'higher education Uzbekistan',
+      'university Nukus',
+      'KarSU',
+      'academic programs',
+      'research university',
+      'international education',
+      'bachelor degrees',
+      'master degrees',
+      'PhD programs',
+      'student life',
+      'university admissions',
+    ],
+    authors: [{ name: 'Kara-Kalpak State University' }],
+    creator: 'Softium',
+    publisher: 'Softium',
+    metadataBase: new URL('https://karsu.uz'),
     alternates: {
+      canonical: '/',
       languages: {
         'en': '/en',
         'ru': '/ru',
         'uz': '/uz',
         'kk': '/kk',
       },
+    },  
+    openGraph: {
+      type: 'website',
+      locale: language,
+      url: 'https://karsu.uz',
+      siteName: 'Kara-Kalpak State University',
+      images: [
+        {
+          url: '/images/karsu-og.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Kara-Kalpak State University Campus',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title[language as keyof typeof title],
+      description: description[language as keyof typeof description],
+      images: ['/images/karsu-twitter.jpg'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: 'your-google-verification-code',
+      yandex: 'your-yandex-verification-code',
     },
   }
+}
+
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  console.log(metric);
 }
 
 // Add type validation for supported languages
@@ -112,11 +195,9 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { lang: string };
 }) {
-  const language = await lang;
-  
   return (
     <html
-      lang={language}
+      lang={lang}
       className={`
         ${nunito.variable} 
         ${roboto.variable}
@@ -152,14 +233,8 @@ export default async function RootLayout({
           crossOrigin="anonymous" 
           referrerPolicy="no-referrer" 
         />
-        {/* <link 
-          rel="stylesheet" 
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" 
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
-          crossOrigin="anonymous" 
-        /> */}
       </head>
-      <body>
+      <body suppressHydrationWarning={true}>
         <I18nProvider>
           <ClientLanguageProvider>
             <Header />

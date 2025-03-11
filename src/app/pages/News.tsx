@@ -104,6 +104,21 @@ export default function News({ newsData }: NewsProps) {
     fetchCategories();
   }, []);
 
+  // Add effect to handle language changes
+  useEffect(() => {
+    const currentLang = i18n.language;
+    const currentSlug = newsData.translations[currentLang]?.slug || newsData.translations["en"]?.slug;
+    const currentPath = window.location.pathname;
+    
+    // Check if we need to update the URL
+    if (currentPath.includes('/news/')) {
+      const newPath = `/${currentLang}/news/${currentSlug}`;
+      if (currentPath !== newPath) {
+        router.replace(newPath, { scroll: false });
+      }
+    }
+  }, [i18n.language, newsData.translations, router]);
+
   const mainSettings: Settings = {
     dots: true,
     infinite: true,

@@ -5,6 +5,8 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import NewsDetail from "@/app/pages/News";
 import "../main.css";
+import { Metadata } from 'next';
+import Head from 'next/head';
 
 interface NewsItem {
   id: number;
@@ -44,7 +46,6 @@ export default function NewsPage() {
   const { i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
 
- 
   useEffect(() => {
     // Redirect to the correct language path if language prefix is missing
     if (!params.lang) {
@@ -52,21 +53,29 @@ export default function NewsPage() {
       router.replace(`/${defaultLang}/news/${params.slug}`);
     }
 
-    // Set the language based on the URL parameter
     const lang = params.lang as string;
+    
+    // Update language if it differs from current
     if (i18n.language !== lang) {
       i18n.changeLanguage(lang);
     }
 
     const fetchData = async () => {
       setLoading(true);
-
       try {
-        // Since the news response already includes display_goals, we don't need to fetch goals separately
         const newsResponse = await axios.get<NewsItem>(`https://debttracker.uz/news/posts/${slug}/`);
         
+        // Check if we should redirect to the correct slug for current language
+        const currentLang = i18n.language;
+        const correctSlug = newsResponse.data.translations[currentLang]?.slug || 
+                          newsResponse.data.translations["en"]?.slug;
+        
+        if (correctSlug && correctSlug !== slug) {
+          router.replace(`/${currentLang}/news/${correctSlug}`, { scroll: false });
+          return;
+        }
+        
         setNewsData(newsResponse.data);
-        // We can remove setGoalsData since we're not using it
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -78,6 +87,7 @@ export default function NewsPage() {
       fetchData();
     }
   }, [slug, params.lang, i18n, router]);
+
   if (loading) {
     return (
         <div className="news-loading-container">
@@ -85,7 +95,7 @@ export default function NewsPage() {
             <span className="news-loading-text">Loading...</span>
         </div>
     );
-}
+  }
 
   if (!newsData) {
     return <div>Loading...</div>;
