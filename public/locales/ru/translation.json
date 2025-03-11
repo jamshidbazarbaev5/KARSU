@@ -47,6 +47,7 @@
     "common": {
       "readMore":"Подробнее",
       "videos":"Видео",
+      "allEvents":"Все события",
       "noNewsAvailable":"Новости не найдены",
       "nameOfBerdakh":"имени Бердаха",
       "backToHome":"Вернутс в главную страницу",
@@ -62,7 +63,14 @@
       "allNews":"Все новости",
       "University":"КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ",
       "connect": "Связь с университетом",
-      "rubric": "Категория"
+      "rubric": "Категория",
+      "adminsistration": "Aдминистрация",
+      "departments": "Отдели",
+      "otdely": "Кафедры",
+      "faculties": "Факультет",
+      "facultyDepartment": "Кафедры факультета"
+
+
     },
     "buttons": {
         "more": "Подробнее"

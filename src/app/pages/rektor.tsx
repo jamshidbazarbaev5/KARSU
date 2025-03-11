@@ -21,10 +21,15 @@ export const FeedbackForm = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notification, setNotification] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setNotification({ type: null, message: '' });
 
     try {
       const response = await fetch(
@@ -42,12 +47,18 @@ export const FeedbackForm = () => {
 
       if (response.ok) {
         setFormData({ name: '', email: '', message: '' });
-        alert(t('feedback.successMessage'));
+        setNotification({
+          type: 'success',
+          message: t('feedback.successMessage')
+        });
       } else {
         throw new Error('Failed to submit');
       }
     } catch (error) {
-      alert(t('feedback.errorMessage'));
+      setNotification({
+        type: 'error',
+        message: t('feedback.errorMessage')
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -78,6 +89,12 @@ export const FeedbackForm = () => {
       <div className={styles.container}>
         
       <h1 className={styles.heading}>{t('feedback.title')}</h1>
+
+      {notification.type && (
+        <div className={`${styles.notification} ${styles[notification.type]}`}>
+          {notification.message}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>

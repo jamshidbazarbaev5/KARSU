@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import DOMPurify from 'dompurify';
 import { useState, useEffect } from "react";
+import AdminInfoBlock from "../components/AdminInfoBlock";
 // Add this type to specify valid field names
 type TranslationField = 'name' | 'slug' | 'description' | 'history_of_faculty';
 
@@ -87,77 +88,78 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
   return (
     <main className="faculty">
       <div className="container">
+        <nav className="breadcrumb">
+          <Link href="/">{t("common.home")}</Link> •
+          <Link href="/faculties">{t("common.faculties")}</Link> •
+          <span>{getTranslatedContent("name")}</span>
+        </nav>
+
         <div className="faculty-logo">
           <h1>{getTranslatedContent("name")}</h1>
         </div>
-        <div className="faculty-block">
-          <div className="faculty-block-pro">
-            <div className="faculty-block-pro-img">
-              <img src={adminData?.main_image} alt={getTranslatedContent("name")} />
-            </div>
-            <div className="faculty-block-pro-title">
-              <div className="faculty-block-pro-title-info">
-                <h2 className="faculty-course" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(adminData?.translations?.[currentLang]?.biography || '') }} />
-                <p className="faculty-name">
-                  {adminData?.translations?.[currentLang]?.full_name || 
-                   adminData?.translations?.['en']?.full_name || 
-                   t("Not specified")}
-                </p>
-              </div>
-              <div className="faculty-block-pro-title-contact">
-                <div className="faculty-number">
-                  <p>
-                    <i className="fa-solid fa-phone"></i>
-                    {t("Phone")}:
-                  </p>
-                  <a href={`tel:${adminData?.phone_number}`}>
-                    {adminData?.phone_number || t("Not specified")}
-                  </a>
-                </div>
-                <div className="faculty-email">
-                  <p>
-                    <i className="fa-solid fa-envelope"></i>
-                    {t("Email")}:
-                  </p>
-                  <a href={`mailto:${adminData?.email || facultyData.email}`}>
-                    {adminData?.email || facultyData.email}
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="faculty-block-text">
+        
+        {adminData ? (
+          <AdminInfoBlock
+            adminData={adminData}
+            email={facultyData.email}
+            title={t("Faculty History")}
+            description={facultyContent.description}
+          >
             {facultyDepartments && facultyDepartments.length > 0 && (
               <div className="faculty-block-text-links">
                 <h4>{t("Faculty Departments")} ({facultyDepartments.length}):</h4>
                 <ul>
-                  {facultyDepartments.map((dept) => {
-                    console.log('Rendering department:', dept.id, dept.translations[currentLang]?.name);
-                    return (
-                      <li key={dept.id}>
-                        <Link href={`/${i18n.language}/department/${dept.translations[currentLang]?.slug || dept.translations['en']?.slug}`}>
-                          <span dangerouslySetInnerHTML={{ 
-                            __html: DOMPurify.sanitize(dept.translations[currentLang]?.name || dept.translations['en']?.name || '') 
-                          }} />
-                        </Link>
-                      </li>
-                    );
-                  })}
+                  {facultyDepartments.map((dept) => (
+                    <li key={dept.id}>
+                      <Link href={`/${i18n.language}/department/${dept.translations[currentLang]?.slug || dept.translations['en']?.slug}`}>
+                        <span dangerouslySetInnerHTML={{ 
+                          __html: DOMPurify.sanitize(dept.translations[currentLang]?.name || dept.translations['en']?.name || '') 
+                        }} />
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
-            <div className="faculty-block-text-info">
-              <h4>{t("Faculty History")}</h4>
+          </AdminInfoBlock>
+        ) : (
+          <div className="content">
+            {facultyDepartments && facultyDepartments.length > 0 && (
+              <>
+                <h2>{t("common.facultyDepartment")}</h2>
+                <ol className="department-list">
+                  {facultyDepartments.map((dept) => (
+                    <li key={dept.id}>
+                      <Link href={`/${i18n.language}/department/${dept.translations[currentLang]?.slug || dept.translations['en']?.slug}`}>
+                        <span dangerouslySetInnerHTML={{ 
+                          __html: DOMPurify.sanitize(dept.translations[currentLang]?.name || dept.translations['en']?.name || '') 
+                        }} />
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+              </>
+            )}
+            
+            {facultyContent.description && (
               <div 
-                className="faculty-block-text-description"
+                className="paragraph"
                 dangerouslySetInnerHTML={{ 
                   __html: DOMPurify.sanitize(facultyContent.description) 
                 }}
               />
-            </div>
-           
+            )}
+            
+            {facultyContent.history_of_faculty && (
+              <div 
+                className="paragraph"
+                dangerouslySetInnerHTML={{ 
+                  __html: DOMPurify.sanitize(facultyContent.history_of_faculty) 
+                }}
+              />
+            )}
           </div>
-        </div>
+        )}
       </div>
     </main>
   );

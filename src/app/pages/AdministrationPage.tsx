@@ -1,5 +1,6 @@
 'use client';
 
+import { t } from 'i18next';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -116,7 +117,7 @@ const AdministrationPage = () => {
       <div className="administration-page-small">
         <div className="administration-page-title-div">
           <div className="administration-page-title">
-            <span className="administration-page-title-span">АДМИНСТРАЦИЯ</span>
+            <span className="administration-page-title-span">{t('common.administration')}</span>
           </div>
         </div>
         <div className="all-administration-group">

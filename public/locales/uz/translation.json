@@ -77,7 +77,13 @@
       "allNews":"Barcha Yangiliklar",
       "University":"QORAQALPOQ DAVLAT UNIVERSITETI",
       "connect": "Universitet bilan bog'lanish",
-      "rubric": "Axboratlar xizmati"
+      "rubric": "Axboratlar xizmati",
+      "allEvents":"Barcha tadbirlar",
+      "administration": "Administratsiya",
+      "departments": "Bo'limlar",
+      "otdely": "Kafedra",
+      "faculties": "Fakultet",
+      "facultyDepartment": "Fakultet kafedralari"
     },
     "buttons": {
         "more": "Batafsil"

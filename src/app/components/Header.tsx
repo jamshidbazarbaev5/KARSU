@@ -172,7 +172,7 @@ const Header = () => {
                                                     <Link 
                                                         key={subItem.id}
                                                         href={
-                                                            subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'руководство' || subTranslation.slug === 'adminstraciya'
+                                                            subTranslation.slug === 'rukovodstvo' || subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'adminstraciya'
                                                                 ? `/${i18n.language}/administration/`
                                                                 : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
                                                                     ? `/${i18n.language}/file/`

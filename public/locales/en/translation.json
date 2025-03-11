@@ -60,8 +60,13 @@
       "allNews":"All News",
       "University":"KARAKALPAK STATE UNIVERSITY",
       "connect": "Connect with University",
-      "rubric": "Category"
-
+      "rubric": "Category",
+      "administration": "Administration",
+      "departments": "Agency",
+      "otdely": "Depatment",
+      "home": "Main ",
+      "faculties": "Faculty",
+      "facultyDepartment": "Faculty Departments"
     },
     "buttons": {
       "more": "More"

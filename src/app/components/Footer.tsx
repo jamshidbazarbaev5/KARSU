@@ -104,7 +104,7 @@ const Footer = () => {
                                 <div key={parentItem.id} className="footer-info-university">
                                     <div className="footer-info-university-title">
                                         <span className="footer-info-university-title-span">
-                                            {parentItem.translations.ru.name}
+                                            {parentItem.translations[i18n.language as LanguageKey].name}
                                         </span>
                                     </div>
                                     <div className="footer-info-university-links">

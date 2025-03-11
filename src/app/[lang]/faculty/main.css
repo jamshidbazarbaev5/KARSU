@@ -1615,3 +1615,59 @@ input#search_call:checked ~ .header-main-left-search-input {
     font-size: 17px;
   }
 }
+
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+  color: #999;
+}
+
+.breadcrumb a {
+  color: #999;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.content h2 {
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.department-list {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.department-list li {
+  margin-bottom: 8px;
+}
+
+.department-list a {
+  color: #0000ff;
+  text-decoration: none;
+}
+
+.department-list a:hover {
+  text-decoration: underline;
+}
+
+.paragraph {
+  margin-bottom: 20px;
+  text-align: justify;
+}

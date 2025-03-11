@@ -15,7 +15,13 @@
         "nameOfBerdakh":"Berdax atindag'i",
         "noNewsAvailable":"Jańaliqlar joq",
         "connect": "Universitet penen Baylanisiw",
-        "rubric": "Kategoriya"
+        "rubric": "Kategoriya",
+      "administration": "Adminictratsiya",
+      "departments": "Bo'limler",
+      "otdely": "Kafedra",
+      "faculties": "Fakultet",
+      "facultyDepartment": "Fakultet kafedralari"
+
 
     },
     "feedback": {
