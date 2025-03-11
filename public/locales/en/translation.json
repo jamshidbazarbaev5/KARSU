@@ -156,7 +156,8 @@
       "errorMessage":"Something went wrong, please try again later",
       "successMessage":"Message sent",
       "submit":"Submit",
-      "submitting":"Submitting..."
+      "submitting":"Submitting...",
+      "soon":"Soon there will be important information here. Stay tuned!"
     }
   }
 

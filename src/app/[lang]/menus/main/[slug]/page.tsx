@@ -81,11 +81,9 @@ export default function MenuPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Check if current page is departments section or a single department page
   const isDepartmentsSection = slug === 'bolimlar' || slug === 'otdely' || slug === 'departments' || slug === 'bolimler';
   const isSingleDepartment = agencyData?.length === 1;
 
-  // Add className conditionally to main element
   const mainClassName = (isDepartmentsSection || isSingleDepartment) ? 'faculty' : 'menu-content';
 
   useEffect(() => {
@@ -95,7 +93,6 @@ export default function MenuPage() {
         const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
 
         if (isDepartmentsSection) {
-          // Fetch agency and admin data for departments section
           const [agencyResponse, adminResponse] = await Promise.all([
             fetch(`${baseUrl}/menus/agency/`),
             fetch(`${baseUrl}/menus/admin/`)
@@ -111,7 +108,6 @@ export default function MenuPage() {
           setAgencyData(agencyData);
           setAdminData(adminData);
         } else {
-          // Fetch regular menu data for other sections
           const menuResponse = await fetch(`${baseUrl}/menus/main/${slug}/`);
           if (!menuResponse.ok) {
             throw new Error('Failed to fetch menu data');
@@ -130,7 +126,6 @@ export default function MenuPage() {
     fetchData();
   }, [slug, isDepartmentsSection]);
 
-  // Function to find admin for an agency
   const findAgencyAdmin = (agencyId: number) => {
     return adminData.find(admin => admin.agency === agencyId);
   };
@@ -192,7 +187,7 @@ export default function MenuPage() {
             ) : (
               <div className="content">
                 <div className="paragraph">
-                  <p>{t("Soon there will be important information here. Stay tuned!")}</p>
+                  <p>{t("common.soon")}</p>
                 </div>
               </div>
             )}
@@ -224,14 +219,14 @@ export default function MenuPage() {
             <Link href={`/${i18n.language}/menus`}>{t("common.menus")}</Link> •
             <span>
               {menuItem?.translations[i18n.language as SupportedLanguages]
-                ?.title || menuItem?.translations.en?.title || t("common.menus")}
+                ?.title || menuItem?.translations[i18n.language as SupportedLanguages].slug}
             </span>
           </nav>
           
           <div className="content">
             {!menuItem?.menu_posts || menuItem.menu_posts.length === 0 ? (
-              <div className="paragraph">
-                <p>{t("Soon there will be important information here. Stay tuned!")}</p>
+              <div className="paragraph" style={{marginBottom: '20px', fontSize: '30px', fontWeight: 'bold', margin:"0 auto ", textAlign: "center", maxWidth: "800px", padding: "20px"}}>
+                <p>{t("common.soon")}</p>
               </div>
             ) : (
               <div className="cards-container">
