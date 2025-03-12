@@ -90,10 +90,7 @@ const EventsPage = () => {
 
           <div className="main-events-all-cards-div">
             {loading ? (
-              <div className="loading-spinner-container">
-                <div className="loading-spinner"></div>
-                <p className="loading-text">Loading...</p>
-              </div>
+              <div>Loading...</div>
             ) : (
               events.map((event) => (
                 <EventCard
