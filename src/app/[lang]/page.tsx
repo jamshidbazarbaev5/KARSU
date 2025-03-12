@@ -1120,7 +1120,13 @@ export default function MainSlider() {
                       </div>
                       <div className='faculty-info-text-btn-div'>
                         <div className='faculty-info-text'>
-                          <span  className='faculty-info-text-span' dangerouslySetInnerHTML={{__html:faculty.translations[i18n.language]?.description.replace(/<[^>]*>/g, '')}}>
+                          <span className='faculty-info-text-span' dangerouslySetInnerHTML={{
+                            __html: (
+                              faculty.translations[i18n.language]?.description || 
+                              faculty.translations[i18n.language]?.history_of_faculty || 
+                              ''
+                            ).replace(/<[^>]*>/g, '')
+                          }}>
                           </span>
                         </div>
                         <Link href={`/${i18n.language}/faculty/${faculty.translations['ru']?.slug}`} className='faculty-info-details-btn'>
