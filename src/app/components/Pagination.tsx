@@ -11,6 +11,8 @@ interface PaginationProps {
 
 const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
   const getPageNumbers = () => {
+    if (totalPages <= 1) return [];
+    
     const pages = [];
     pages.push(1);
 
@@ -45,7 +47,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
   return (
     <nav className={styles.pagination} aria-label="Pagination">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
         className={styles.arrowButton}
         aria-label="Previous page"
@@ -61,7 +63,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         ) : (
           <button
             key={`page-${page}`}
-            onClick={() => onPageChange(page as number)}
+            onClick={() => onPageChange(Number(page))}
             className={`${styles.pageButton} ${currentPage === page ? styles.active : ""}`}
             aria-current={currentPage === page ? "page" : undefined}
           >
@@ -71,7 +73,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
       )}
 
       <button
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
         className={styles.arrowButton}
         aria-label="Next page"

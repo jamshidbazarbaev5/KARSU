@@ -94,6 +94,16 @@ const AllNews = () => {
     const fetchNews = async () => {
       setLoading(true);
       try {
+        // Calculate maximum possible page based on count
+        const itemsPerPage = 10; // Since we're displaying 6 items per page
+        const maxPage = Math.ceil(151 / itemsPerPage); // 151 is the total count from your API response
+
+        // If current page is beyond max page, adjust it
+        if (activePage > maxPage) {
+          setActivePage(maxPage);
+          return; // Exit early to avoid making invalid API call
+        }
+
         const categorySlug = Array.isArray(params.category)
           ? params.category[0]
           : params.category;
@@ -106,22 +116,15 @@ const AllNews = () => {
         setNews(response.data.results);
         
         // Calculate total pages and ensure current page is valid
-        const calculatedTotalPages = Math.ceil(response.data.count / 6);
+        const calculatedTotalPages = Math.ceil(response.data.count / itemsPerPage);
         setTotalPages(calculatedTotalPages);
-        
-        // If current page is greater than total pages, reset to page 1
-        if (activePage > calculatedTotalPages) {
-          setActivePage(1);
-        }
 
         setActiveCategory(categorySlug || null);
       } catch (error) {
         console.error("Error fetching news:", error);
         setNews([]);
         // Reset to page 1 on error
-        if (activePage > 1) {
-          setActivePage(1);
-        }
+        setActivePage(1);
       } finally {
         setLoading(false);
       }

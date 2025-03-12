@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 let locales = ['uz', 'ru', 'en', 'kk']
-let defaultLocale = 'uz'
+let defaultLocale = 'ru'
 
 // Get the preferred locale from headers
 function getLocale(request: NextRequest) {
