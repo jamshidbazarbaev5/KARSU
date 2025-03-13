@@ -111,7 +111,7 @@ const Footer = () => {
                                         {getChildMenuItems(parentItem.id).map((childItem) => (
                                             <a 
                                                 key={childItem.id}
-                                                href={`/${i18n.language}/${childItem.translations[i18n.language as LanguageKey].slug}`} 
+                                                href={`/${i18n.language}/footer/${childItem.translations[i18n.language as LanguageKey].slug}`} 
                                                 className="footer-info-university-link"
                                             >
                                                 {childItem.translations[i18n.language as LanguageKey].name}

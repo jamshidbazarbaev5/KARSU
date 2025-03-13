@@ -20,9 +20,9 @@ export interface PostTranslation {
 }
 
 export interface MenuPost {
-    views_count: ReactNode | Iterable<ReactNode>;
+    views_count?: number;
     id: number;
-    menu: number;
+    menu?: number;
     footer_menu?: number | null;
     main_image: string;
     images: string[];
