@@ -280,7 +280,7 @@ input#search_call:checked ~ .header-main-left-search-input {
   z-index: 99;
   width: 100vw;
   max-height: 100vh;
-  min-height: 80vh;
+  min-height: 100vh;
   overflow: scroll;
   background: white;
   transform: translateY(-100%);

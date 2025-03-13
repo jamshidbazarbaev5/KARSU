@@ -218,7 +218,7 @@ export default function MenuPage() {
             <Link href={`/${i18n.language}`}>{t("common.home")}</Link> •
             <Link href={`/${i18n.language}/menus`}>{t("common.menus")}</Link> •
             <span>
-              { menuItem?.translations[i18n.language as SupportedLanguages].slug}
+              { menuItem?.translations[i18n.language as SupportedLanguages].title}
             </span>
           </nav>
           

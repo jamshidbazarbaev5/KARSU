@@ -44,11 +44,13 @@
       "economics": "Faculty of Economics"
     },
     "common": {
+      "soon":"Soon there will be important information here. Stay tuned!",
       "noNewsAvailable":"No news available",
       "readMore":"More",
       "nameOfBerdakh":"Named after Berdakh",
       "vidios":"Videos",
       "home": "Home",
+      "menus":"Posts",
       "backToHome":"Back to home",
       "news": "News",
       "events": "Events",

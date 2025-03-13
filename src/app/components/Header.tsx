@@ -114,9 +114,14 @@ const Header = () => {
 
     const renderMenuItem = (item: MenuItem) => {
         const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
+        const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
         
         const handleMenuClick = (e: React.MouseEvent<HTMLLabelElement>) => {
-            e.preventDefault();
+            if (hasChildren) {
+                e.preventDefault();
+                return;
+            }
+            
             const menuSlug = translation.slug;
             if (menuSlug) {
                 window.location.href = `/${i18n.language}/menus/main/${menuSlug}/`;
@@ -206,6 +211,13 @@ const Header = () => {
                     onClick={(e) => {
                         if (hasChildren) {
                             e.preventDefault();
+                            const navList = e.currentTarget.nextElementSibling;
+                            const angle = e.currentTarget.querySelector('.non-active');
+                            
+                            if (navList?.classList.contains('header-main-nav-ul')) {
+                                navList.classList.toggle('open');
+                            }
+                            angle?.classList.toggle('rotate');
                         }
                     }}
                 >
@@ -223,8 +235,8 @@ const Header = () => {
                             .map(subItem => {
                                 const subTranslation = subItem.translations[i18n.language as keyof typeof subItem.translations] || subItem.translations.en;
                                 return (
-                                    <a key={subItem.id}  href={
-                                        subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'administration' || subTranslation.slug === 'adminstraciya  ' || subTranslation.slug === 'rukovodstvo' || subTranslation.slug === 'adminstraciya'
+                                    <a key={subItem.id} href={
+                                        subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'administration' || subTranslation.slug === 'adminstraciya' || subTranslation.slug === 'rukovodstvo'
                                             ? `/${i18n.language}/administration/`
                                             : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
                                                 ? `/${i18n.language}/file/`
