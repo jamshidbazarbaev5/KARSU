@@ -200,7 +200,15 @@ const Header = () => {
         
         return (
             <ul key={item.id}>
-                <a href={`/${i18n.language}/menus/main/${translation.slug}`} className="main-title">
+                <a 
+                    href={hasChildren ? "#" : `/${i18n.language}/menus/main/${translation.slug}`} 
+                    className="main-title"
+                    onClick={(e) => {
+                        if (hasChildren) {
+                            e.preventDefault();
+                        }
+                    }}
+                >
                     <span>{translation.name}</span>
                     {hasChildren && (
                         <span className="non-active">
@@ -216,7 +224,7 @@ const Header = () => {
                                 const subTranslation = subItem.translations[i18n.language as keyof typeof subItem.translations] || subItem.translations.en;
                                 return (
                                     <a key={subItem.id}  href={
-                                        subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'руководство' || subTranslation.slug === 'adminstraciya'
+                                        subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'administration' || subTranslation.slug === 'adminstraciya  ' || subTranslation.slug === 'rukovodstvo' || subTranslation.slug === 'adminstraciya'
                                             ? `/${i18n.language}/administration/`
                                             : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
                                                 ? `/${i18n.language}/file/`
