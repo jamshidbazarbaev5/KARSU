@@ -23,6 +23,7 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
     const [nav2, setNav2] = useState<Slider | null>(null);
     const slider1 = useRef<Slider | null>(null);
     const slider2 = useRef<Slider | null>(null);
+    const hasImages = post.main_image || (post.images && post.images.length > 0);
     const translation = post.translations[i18n.language as keyof typeof post.translations] || post.translations.en;
 
     useEffect(() => {
@@ -113,95 +114,138 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
                         <Link href={`/${i18n.language}/menus`}>{t('common.menus')}</Link>
                         <span>{translation.title}</span>
                     </div>
-                    <div className="main-news">
-                        <div className="main-news-block">
-                            <div className="main-news-block-title">
-                                <h1>{translation.title}</h1>
-                            </div>
-                            
-                            <div className="main-news-block-date">
-                                <div>
-                                    <span className="date-day">
-                                        {new Date(post.date_posted).getDate()}
-                                    </span>
-                                    <span className="date-month">
-                                        {new Date(post.date_posted).toLocaleString(i18n.language, { month: 'long' })}
-                                    </span>
-                                    <span className="date-year">
-                                        {new Date(post.date_posted).getFullYear()}
-                                    </span>
+
+                    {hasImages ? (
+                        <div className="main-news">
+                            <div className="main-news-block">
+                                <div className="main-news-block-title">
+                                    <h1>{translation.title}</h1>
                                 </div>
-                            </div>
+                                
+                                <div className="main-news-block-date">
+                                    <div>
+                                        <span className="date-day">
+                                            {new Date(post.date_posted).getDate()}
+                                        </span>
+                                        <span className="date-month">
+                                            {new Date(post.date_posted).toLocaleString(i18n.language, { month: 'long' })}
+                                        </span>
+                                        <span className="date-year">
+                                            {new Date(post.date_posted).getFullYear()}
+                                        </span>
+                                    </div>
+                                </div>
 
-                            {/* Main Image */}
-                            <div className="main-news-block-photo">
-                                <Image 
-                                    src={post.main_image}
-                                    alt={translation.title}
-                                    width={800}
-                                    height={400}
-                                    priority
-                                    style={{ width: '100%', height: 'auto' }}
+                                {/* Main Image */}
+                                <div className="main-news-block-photo">
+                                    <Image 
+                                        src={post.main_image}
+                                        alt={translation.title}
+                                        width={800}
+                                        height={400}
+                                        priority
+                                        style={{ width: '100%', height: 'auto' }}
+                                    />
+                                </div>
+
+                                {/* Description Text */}
+                                <div 
+                                    className="main-news-block-text"
+                                    dangerouslySetInnerHTML={{ 
+                                        __html: DOMPurify.sanitize(translation.description)
+                                    }}
                                 />
-                            </div>
 
-                            {/* Description Text */}
-                            <div 
-                                className="main-news-block-text"
-                                dangerouslySetInnerHTML={{ 
-                                    __html: DOMPurify.sanitize(translation.description)
-                                }}
-                            />
-
-                            {/* Additional Images Slider */}
-                            {post.images && post.images.length > 0 && (
-                                <div className="main-news-block-slider" style={{ position: "relative", zIndex: 1 }}>
-                                    <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
-                                        {sliderImages.map((image, index) => (
-                                            <div key={index} className="slide">
-                                                <div className="slide-image-wrapper">
-                                                    <Image
-                                                        src={image.src}
-                                                        alt={image.alt}
-                                                        fill
-                                                        sizes="(max-width: 800px) 100vw, 800px"
-                                                        className="slider-image"
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </Slider>
-
-                                    {post.images.length > 1 && (
-                                        <Slider {...thumbnailSettings} ref={slider2} className="thumbnail-slider">
+                                {/* Additional Images Slider */}
+                                {post.images && post.images.length > 0 && (
+                                    <div className="main-news-block-slider" style={{ position: "relative", zIndex: 1 }}>
+                                        <Slider {...mainSettings} ref={slider1} className="main-block-slider-for">
                                             {sliderImages.map((image, index) => (
-                                                <div key={index} className="thumbnail">
-                                                    <div className="thumbnail-image-wrapper">
+                                                <div key={index} className="slide">
+                                                    <div className="slide-image-wrapper">
                                                         <Image
                                                             src={image.src}
                                                             alt={image.alt}
                                                             fill
-                                                            sizes="(max-width: 150px) 100vw, 150px"
-                                                            className="thumbnail-image"
+                                                            sizes="(max-width: 800px) 100vw, 800px"
+                                                            className="slider-image"
                                                         />
                                                     </div>
                                                 </div>
                                             ))}
                                         </Slider>
-                                    )}
-                                </div>
-                            )}
+
+                                        {post.images.length > 1 && (
+                                            <Slider {...thumbnailSettings} ref={slider2} className="thumbnail-slider">
+                                                {sliderImages.map((image, index) => (
+                                                    <div key={index} className="thumbnail">
+                                                        <div className="thumbnail-image-wrapper">
+                                                            <Image
+                                                                src={image.src}
+                                                                alt={image.alt}
+                                                                fill
+                                                                sizes="(max-width: 150px) 100vw, 150px"
+                                                                className="thumbnail-image"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </Slider>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                            <NewsRubric/>
                         </div>
-                        <NewsRubric/>
-                    </div>
+                    ) : (
+                        <div className="content">
+                            <div className="faculty-block">
+                                <div className="faculty-block-title">
+                                    <h1>{translation.title}</h1>
+                                </div>
+                                
+                                <div className="faculty-block-date">
+                                    <span>
+                                        {new Date(post.date_posted).toLocaleDateString(i18n.language, {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
+                                    </span>
+                                </div>
+
+                                <div 
+                                    className="faculty-block-text"
+                                    dangerouslySetInnerHTML={{ 
+                                        __html: DOMPurify.sanitize(translation.description)
+                                    }}
+                                />
+                            </div>
+                            <NewsRubric/>
+                        </div>
+                    )}
                 </div>
             </main>
         );
     }
 
+    if (!hasImages) {
+        return (
+            <div 
+                className="faculty-list-item clickable" 
+                onClick={handleClick}
+            >
+                <h3>{translation.title}</h3>
+                <div className="post-date">
+                    {new Date(post.date_posted).toLocaleDateString()}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div 
-            className={`menu-post-card ${!isSinglePost ? 'clickable' : ''}`} 
+            className="menu-post-card clickable" 
             onClick={handleClick}
         >
             <div className="menu-post-image">
@@ -215,17 +259,9 @@ export const MenuPostCard = ({ post, isSinglePost }: MenuPostCardProps) => {
             </div>
             <div className="menu-post-content">
                 <h2 className="truncate-text">{translation.title}</h2>
-                {isSinglePost ? (
-                    <div className="post-description" 
-                         dangerouslySetInnerHTML={{ 
-                             __html: DOMPurify.sanitize(translation.description) 
-                         }} 
-                    />
-                ) : (
-                    <div className="menu-post-date">
-                        {new Date(post.date_posted).toLocaleDateString()}
-                    </div>
-                )}
+                <div className="menu-post-date">
+                    {new Date(post.date_posted).toLocaleDateString()}
+                </div>
             </div>
         </div>
     );

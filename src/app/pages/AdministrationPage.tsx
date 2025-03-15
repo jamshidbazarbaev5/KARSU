@@ -95,7 +95,14 @@ const AdministrationPage = () => {
           positionResponse.json()
         ]);
         
-        setAdministrators(adminData);
+        // Filter out administrators with agency, faculty, or department
+        const filteredAdmins = adminData.filter((admin: Administrator) => 
+          admin.agency === null && 
+          admin.faculty === null && 
+          admin.department === null
+        );
+        
+        setAdministrators(filteredAdmins);
         setPositions(positionData);
       } catch (error) {
         console.error('Error fetching data:', error);

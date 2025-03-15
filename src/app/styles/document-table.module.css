@@ -33,17 +33,21 @@
   
   .numberColumn {
     width: 40px;
+    font-family: Nunito Sans, sans-serif;
   }
   
   .typeColumn {
     width: 25%;
+   font-family: Nunito Sans, sans-serif;
   }
   
   .dateColumn {
     width: 15%;
+    font-family: Nunito Sans, sans-serif;
   }
   
   .nameColumn {
+    font-family: Nunito Sans, sans-serif;
     width: 50%;
   }
   
@@ -53,22 +57,28 @@
   
   .numberCell {
     color: #666;
+
+    font-family: Nunito Sans, sans-serif;
   }
   
   .typeCell {
     color: #555;
+    font-family: Nunito Sans, sans-serif;
   }
   
   .dateCell {
     color: #666;
+    font-family: Nunito Sans, sans-serif;
     white-space: nowrap;
   }
   
   .nameCell {
+    font-family: Nunito Sans, sans-serif;
     font-weight: 500;
   }
   
   .downloadCell {
+    font-family: Nunito Sans, sans-serif;
     text-align: center;
   }
   

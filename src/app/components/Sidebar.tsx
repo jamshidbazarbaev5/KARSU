@@ -40,7 +40,7 @@ export default function Sidebar() {
     <div className={styles.sidebar}>
       <div className={styles.universityHeader}>
         <div className={styles.universityIcon}>У</div>
-        <h2 className={styles.universityTitle}>УНИВЕРСИТЕТ</h2>
+        <h2 className={styles.universityTitle} style={{fontFamily:'Nunito Sans, sans-serif'}}>УНИВЕРСИТЕТ</h2>
       </div>
       <ul className={styles.sidebarList}>
         {menuItems.map((item) => {
@@ -64,7 +64,7 @@ export default function Sidebar() {
               className={`${styles.sidebarItem} ${isActive ? styles.active : ""}`}
             >
               <ChevronRight size={16} className={styles.itemIcon} />
-              <span>{item.translations[i18n.language]?.name}</span>
+              <span style={{fontFamily:'Nunito Sans, sans-serif'}}>{item.translations[i18n.language]?.name}</span>
             </Link>
           );
         })}

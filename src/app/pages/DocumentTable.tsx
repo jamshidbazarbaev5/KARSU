@@ -75,9 +75,8 @@ export default function DocumentTable() {
               <td className={styles.dateCell}>
                 {getLocalizedDate(doc.date_post)}
               </td>
-              <td className={styles.nameCell}>
-                {doc.translations[i18n.language]?.description || doc.translations.ru?.description}
-              </td>
+              <td className={styles.nameCell} dangerouslySetInnerHTML={{__html:doc.translations[i18n.language]?.description || doc.translations.ru?.description}}/>
+
               <td className={styles.downloadCell}>
                 <a 
                   href={doc.file} 

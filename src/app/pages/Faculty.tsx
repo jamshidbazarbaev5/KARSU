@@ -104,6 +104,7 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
             email={facultyData.email}
             title={t("Faculty History")}
             description={facultyContent.description}
+            
           >
             {facultyDepartments && facultyDepartments.length > 0 && (
               <div className="faculty-block-text-links">

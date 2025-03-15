@@ -12,3 +12,1677 @@
 .breadcrumb a:hover {
     text-decoration: underline;
 }
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* <-----------HEADER--------------> */
+
+.header-main {
+  background: #002b6a;
+  padding: 0 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Add to your CSS file */
+.content-with-tables table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.content-with-tables td,
+.content-with-tables th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.content-with-tables tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.header-main-center {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-main-right {
+  flex-basis: 25%;
+}
+
+.header-main-right-ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  justify-content: space-around;
+}
+
+.header-main-right-li {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 9px;
+  color: white;
+}
+
+.header-main-right-li:hover {
+  text-decoration: none;
+}
+
+.header-main-right-li span {
+  display: none;
+}
+
+.header-main-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-basis: 25%;
+}
+
+.header-main-left-lang {
+  display: flex;
+  align-items: center;
+}
+
+select#language {
+  text-align: center;
+  appearance: none;
+  color: rgb(255, 255, 255);
+  font-size: 13px;
+  font-family: "Nunito Sans", sans-serif;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  background-color: rgb(0, 43, 106);
+  line-height: 1.5;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  outline: none;
+  border-image: initial;
+  margin: 0px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+select#language:focus {
+  outline: none;
+}
+
+select#language::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #ffffff;
+}
+
+.header-main-left-lang:hover {
+  background-color: #004080;
+}
+
+.header-main-left-lang:hover select#language {
+  background-color: #004080;
+}
+
+.header-main-left-lang:hover select#language {
+  background-color: #004080;
+}
+
+select#language option {
+  background-color: #002b6a;
+  color: #ffffff;
+  padding: 12px 20px;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 14px;
+}
+
+select#language option:hover {
+  background-color: #003366;
+}
+
+select#language {
+  background: #002b6a;
+  padding: 10px;
+}
+
+input#search_call {
+  display: none;
+}
+
+.header-main-left-search-input {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 500px;
+  width: 87%;
+  padding: 7px 20px;
+  font-size: 12px;
+  border: 2px solid #ddd;
+  border-radius: 30px;
+  background-color: #002b6a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  outline: none;
+  color: white;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.header-main-left-search-input::placeholder {
+  color: white;
+  opacity: 1;
+}
+
+.header-main-left-search-input:focus {
+  border-color: #5a67d8;
+  box-shadow: 0 4px 12px rgba(90, 103, 216, 0.4);
+  background-color: #002b6a;
+}
+
+.header-main-left-search-input:hover {
+  border-color: #bbb;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+input#search_call:checked ~ .header-main-left-search-input {
+  left: 0%;
+}
+
+.header-main-menu-bg {
+  background: #002b6a;
+  border-top: 1px solid white;
+  height: 50px;
+  padding: 15px 0;
+}
+
+.header-main-menu-burger {
+  position: absolute;
+  right: 10px;
+}
+
+.header-main-menu-list {
+  display: none;
+}
+
+.header-main-menu-list-ul {
+  display: flex;
+  align-items: center;
+  line-height: 30px;
+  list-style: none;
+  padding: 10px;
+}
+
+.header-main-menu-list-li {
+  width: 100%;
+}
+
+.header-main-menu-list-li input {
+  display: none;
+}
+
+.header-main-menu-list-li label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.header-main-nav {
+  padding: 20px 10px;
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  width: 100vw;
+  max-height: 100vh;
+ min-height: 100vh;
+  overflow: scroll;
+  background: white;
+  transform: translateY(-100%);
+  transition: 0.5s all linear;
+}
+
+.active {
+  transform: translateY(0) !important;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  width: 100vw;
+  max-height: 100vh;
+  min-height: 100vh;
+  overflow: scroll;
+  background: white;
+  transition: 0.3s all linear;
+}
+
+.header-main-nav-row-1 {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.header-main-nav-row-1 img {
+  width: 80px;
+  height: 80px;
+}
+.header-row-title {
+  max-width: 250px;
+}
+
+.header-main-nav-row-1 a {
+  text-decoration: none;
+  color: #002b6a;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: bold;
+}
+
+.header-main-nav-row-2 {
+  display: none;
+}
+
+.header-main-nav-column {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  padding: 15px 0;
+  gap: 20px;
+}
+
+.menu-btn button {
+  border: none;
+  background: none;
+}
+
+.menu-btn button i {
+  font-size: 23px;
+}
+
+.header-main-nav-column-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+}
+
+.header-main-nav-column-2 ul {
+  width: 100%;
+  line-height: 30px;
+}
+
+.main-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.main-title span {
+  font-weight: 500;
+  font-size: 19px;
+  color: rgb(20, 20, 20);
+  font-family: "Roboto Slab", serif;
+}
+
+.main-title i {
+  color: black;
+}
+.non-active {
+  transition: 0.3s all linear;
+}
+
+.rotate {
+  transform: rotate(90deg);
+  transition: 0.3s all linear;
+}
+
+.header-main-nav-column-2 ul a {
+  color: gray;
+  font-family: "Cabin", sans-serif;
+  text-decoration: none;
+  font-weight: 300;
+}
+
+.header-main-nav-ul {
+  height: 0;
+  overflow: hidden;
+  transition: 0.3s all linear;
+}
+
+.header-main-nav-ul.open {
+  height: 100%;
+}
+
+.header-nav-footer-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.header-nav-footer-info a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-family: "Nunito Sans", sans-serif;
+}
+.header-nav-footer-info a span {
+  color: black;
+}
+.header-nav-footer-info a i {
+  color: #002b6a;
+}
+
+.header-nav-footer-by {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-family: "Nunito Sans", sans-serif;
+}
+.header-nav-footer-by a {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
+.header-logo-div {
+  background: #002b6a;
+  padding: 0 10px 10px 10px;
+}
+.header-logo-mini {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.header-logo-uni img {
+  width: 100%;
+  height: 100%;
+  max-width: 150px;
+  max-height: 150px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.header-logo-uni-name-span {
+  text-decoration: none;
+  display: block;
+  max-width: 200px;
+  color: white;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: bold;
+}
+.header-logo-uni-name-span:hover {
+  text-decoration: none;
+  color: white;
+}
+
+/* <-------------------------------FACULTIES------------------------------> */
+
+.faculty {
+  padding: 20px 0;
+  background: #f6f8fb;
+}
+.faculty .container {
+  padding: 0 10px;
+  margin: 0 auto;
+  max-width: 1215px;
+}
+
+.faculty-logo {
+  border-bottom: 1px solid gray;
+  margin-bottom: 20px;
+}
+
+.faculty-logo h1 {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 20px;
+  color: #002b6a;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.faculty-block-pro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  gap: 20px;
+  width: 100%;
+  margin: 20px 0;
+  border: 1px solid rgba(159, 171, 185, 0.2);
+}
+
+.faculty-block-pro-img img {
+  width: 100%;
+  height: 100%;
+}
+.faculty-block-pro-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.faculty-block-pro-title-info,
+.faculty-block-pro-title-contact {
+  display: flex;
+  flex-direction: column;
+}
+.faculty-block-pro-title h2 {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  line-height: 25px;
+  font-size: 23px;
+  text-align: center;
+}
+
+.faculty-name {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: bold;
+  font-size: 23px;
+  text-align: center;
+}
+.faculty-number {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 18px;
+}
+.faculty-number i {
+  color: #002b6a;
+}
+.faculty-number a {
+  text-decoration: none;
+  color: black;
+}
+
+.faculty-email {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 18px;
+}
+.faculty-email i {
+  color: #002b6a;
+}
+.faculty-email a {
+  text-decoration: none;
+  color: black;
+}
+
+.faculty-block-text {
+  margin: 20px 0;
+  font-family: "Source Sans 3", sans-serif;
+}
+
+.faculty-block-text-links ul {
+  list-style: decimal;
+  padding: 10px 0px 10px 15px;
+}
+.faculty-block-text-links a {
+  text-decoration: none;
+}
+
+.faculty-block-text-info {
+  margin: 20px 0;
+}
+.faculty-block-text-info p {
+  text-align: justify;
+  padding: 15px 0;
+}
+
+.faculty-block-text-social {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 15px;
+}
+.faculty-block-text-social a {
+  text-decoration: none;
+  font-size: 30px;
+}
+
+.faculty-block-text-social a:nth-child(1) {
+  color: #002b6a;
+  width: 34px;
+  height: 36px;
+}
+.faculty-block-text-social a:nth-child(1) i {
+  font-size: 38px;
+}
+
+.faculty-block-text-social a:nth-child(2) {
+  background: linear-gradient(
+    45deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  );
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 36px;
+  color: white;
+}
+.faculty-block-text-social a:nth-child(3) {
+  background: rgb(22, 22, 22);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 36px;
+  color: white;
+  font-size: 20px;
+}
+.faculty-block-text-social a:nth-child(4) {
+  color: #002b6a;
+  height: 36px;
+  width: 34px;
+}
+.faculty-block-text-social a:nth-child(4) i {
+  font-size: 38px;
+}
+
+/* <---------------FOOTER---------------> */
+
+.footer {
+  background-color: #002b6a;
+}
+.footer-logo img {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.footer-logo-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+}
+
+.footer-title {
+  width: 315px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.footer-title-span {
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 650;
+  font-size: 21px;
+  text-decoration: none;
+}
+.footer-title-span:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.footer-title-mini-span {
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.footer-connect-btn {
+  text-decoration: none;
+  width: 290px;
+  height: 65px;
+  margin: 20px auto;
+  border-radius: 1px;
+  border: 1px #fff solid;
+  background-color: #00000000;
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-connect-btn:hover {
+  background: #001c46;
+}
+
+.footer-social {
+  width: 190px;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+}
+
+.footer-social-btn {
+  width: 43px;
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s all linear;
+}
+
+.footer-map {
+  width: 100%;
+  height: 250px;
+}
+
+.footer-info-links {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px 15px;
+}
+
+.footer-info-university-title,
+.footer-info-activity-title,
+.footer-info-students-title {
+  width: 200px;
+  height: 45px;
+  border-bottom: 1px rgb(255, 255, 255, 0.1) solid;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.footer-info-university-title-span,
+.footer-info-activity-title-span,
+.footer-info-students-title-span {
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 650;
+  font-size: 20px;
+}
+
+.footer-info-university-links,
+.footer-info-activity-links,
+.footer-info-students-links {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  margin-top: 35px;
+}
+
+.footer-info-university-link,
+.footer-info-activity-link,
+.footer-info-students-link {
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 30px;
+  margin-bottom: 8px;
+  line-height: 31px;
+}
+
+.footer-inc-copyright-big {
+  width: 100%;
+  border-top: 1px #fff solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-inc-copyright {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+.footer-copyright {
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+}
+
+.footer-inc {
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+}
+
+.inc-bold {
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 560;
+  font-size: 17px;
+}
+
+.inc-bold:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+@media only screen and (min-width: 768px) {
+  /* <-------------HEADER-----------------------> */
+  .header-main-right {
+    display: flex;
+    justify-content: start;
+    flex-basis: 70%;
+  }
+  .header-main-left-search-input {
+    width: 250px;
+  }
+  input#search_call:checked ~ .header-main-left-search-input {
+    left: 62%;
+  }
+  .header-main-right-ul {
+    gap: 20px;
+  }
+  .header-main-right-li {
+    gap: 10px;
+  }
+  .header-main-right-li span {
+    display: block;
+    font-size: 15px;
+  }
+  .header-main-left {
+    justify-content: end;
+  }
+  .header-logo-div {
+    background: none;
+    padding: 30px 10px;
+  }
+  .header-logo-uni-name-span {
+    color: #002b6a;
+    font-size: 15px;
+    font-weight: 800;
+  }
+  .header-logo-uni-name-span:hover {
+    color: #002b6a;
+  }
+
+  /* <-------------------FACULTIES--------------------------> */
+
+  .faculty-block-pro {
+    flex-direction: row;
+    align-items: start;
+    height: 250px;
+  }
+  .faculty-block-pro-img {
+    height: 100%;
+    width: 240px;
+  }
+  .faculty-block-pro-img img {
+    width: 240px;
+  }
+  .faculty-block-pro-title {
+    align-items: start;
+    padding: 15px 0 10px 0;
+    width: 100%;
+    height: 100%;
+  }
+  .faculty-course {
+    color: #002b6a;
+  }
+  .faculty-block-pro-title h2 {
+    text-align: start;
+  }
+  .faculty-block-pro-title-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .faculty-block-pro-title-contact {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* <------------------------FOOTER------------------------> */
+
+  .footer-social-div-small {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo-title {
+    width: 300px;
+    padding: 15px 0px 15px 15px;
+  }
+
+  .footer-logo img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .footer-title {
+    width: 180px;
+  }
+
+  .footer-connect-btn {
+    width: 215px;
+    font-size: 17px;
+    margin: 5px;
+  }
+
+  .footer-social {
+    width: 170px;
+    margin: 10px;
+  }
+
+  .footer-map {
+    height: 350px;
+  }
+
+  .footer-info-links {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .footer-info-university-link,
+  .footer-info-activity-link,
+  .footer-info-students-link {
+    line-height: 30px;
+  }
+
+  .footer-inc-copyright {
+    display: flex;
+    padding: 30px 15px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  /* <-------------FACULTY-------------------> */
+  .faculty-block-pro {
+    width: 1000px;
+    max-width: 100%;
+    height: 250px;
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px #939393 solid;
+  }
+  .faculty-block-pro-img {
+    width: 240px;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    margin: 5px;
+  }
+  .faculty-block-pro-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+    border: 1px #939393 solid;
+  }
+  .faculty-block-pro-title {
+    width: 930px;
+    height: 248px;
+    padding: 20px;
+    background: url(/bgblack.png);
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* <----------------FOOTER-------------------> */
+  .footer-info-links {
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  /* <----------------HEADER----------------> */
+
+  .header-main-center {
+    width: 1215px;
+    margin: auto;
+  }
+  .header-main-left {
+    gap: 15px;
+  }
+  .header-main-left-search-input {
+    width: 450px;
+  }
+  input#search_call:checked ~ .header-main-left-search-input {
+    left: 60%;
+  }
+  .header-main-menu-bg {
+    position: relative;
+    height: 50px;
+    padding: 0 10px;
+    border: none;
+  }
+  .header-main-menu {
+    width: 1215px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-main-menu-burger {
+    position: static;
+    flex-basis: 5%;
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  .header-main-menu-list {
+    display: block;
+    flex-basis: 95%;
+  }
+  .header-main-menu-list-ul {
+    gap: 10px;
+    padding: 0;
+    justify-content: space-between;
+  }
+  .header-main-menu-list-li {
+    width: initial;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 50px;
+    text-align: center;
+  }
+
+  .header-main-menu-list-li label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .header-main-menu-list-li:hover > .header-main-hover {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .header-main-hover {
+    position: absolute;
+    background: white;
+    top: 50px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 15px;
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 1370px;
+    max-height: 500px;
+    z-index: 99;
+    box-shadow: 1px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .header-main-hover::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .header-main-hover::-webkit-scrollbar-thumb {
+    background-color: #e9e8e8;
+    border-radius: 18px;
+  }
+
+  .header-main-hover::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .header-hover-block-flex {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: start;
+  }
+  .header-block-flex-part {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .header-block-flex-uni {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .header-block-flex-uni span {
+    color: #002b6a;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: "Nunito Sans", sans-serif;
+  }
+  .header-block-flex-text {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: justify;
+    width: 400px;
+  }
+  .header-block-flex-list {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+  }
+  .header-block-flex-links {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 400px;
+    width: 100%;
+  }
+  .header-block-flex-link {
+    white-space: nowrap;
+    padding: 10px 5px 0 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(134, 144, 156);
+    text-decoration: none;
+    text-align: start;
+    font-family: "Nunito Sans", sans-serif;
+    border-bottom: 1px solid rgba(0, 49, 107, 0.1);
+    line-height: 25px;
+    transition: 0.3s all linear;
+    margin-right: 10px;
+  }
+  .header-block-flex-link:hover {
+    color: black;
+    background: rgb(231, 231, 231);
+  }
+
+  /* <----------------BIG BURGER MENU--------------> */
+
+  .nav-container {
+    padding: 15px;
+    max-width: 1342px;
+    margin: auto;
+  }
+
+  .header-main-nav-row {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+
+  .header-main-nav-row-1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .header-main-nav-row-1 img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .header-main-nav-row-1 span {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 700;
+    width: 250px;
+  }
+
+  .header-main-nav-row-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 10px;
+    width: 600px;
+  }
+
+  .header-main-nav-row-2 p {
+    font-family: "Great Vibes", cursive;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 35px;
+    text-align: right;
+    letter-spacing: 2px;
+  }
+
+  .header-main-nav-row-2 span {
+    color: #9fabb9;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .header-main-nav-container {
+    border-top: 1px solid #d7dadd;
+    padding: 20px 15px;
+  }
+
+  .header-main-nav-column {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+  }
+
+  .header-main-nav-column-1 {
+    width: 130px;
+  }
+
+  .header-main-nav-column-1 button {
+    background: none;
+    border: none;
+    margin-top: 2px;
+    outline: none;
+    padding: 0;
+    position: relative;
+    z-index: 3;
+    font-size: 30px;
+    color: rgb(124, 124, 124);
+  }
+
+  .header-main-nav-column-2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: start;
+    gap: 25px;
+  }
+
+  .header-main-nav-column-2 ul {
+    width: 12.5%;
+  }
+
+  .main-title span {
+    text-decoration: none;
+    color: #374453;
+    font-size: 12px;
+    font-family: "Roboto Slab", serif;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
+  .main-title i {
+    display: none;
+  }
+
+  .header-main-nav-ul {
+    overflow: initial;
+    height: auto;
+    width: 100% !important;
+  }
+  .header-main-nav-column-2 ul a {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+  }
+
+  .header-main-nav-column-2 ul li {
+    align-items: center;
+    color: #86909c;
+    display: flex;
+    font-family: "Cabin", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 480;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 20px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    transition: all 0.3s;
+  }
+
+  .header-main-nav-column-2 ul li:hover {
+    color: #374453;
+    transform: translateX(10px);
+  }
+
+  .header-main-nav-footer {
+    padding-top: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    max-width: 100%;
+  }
+
+  .header-nav-footer-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-nav-footer-info div a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .header-nav-footer-info div a i {
+    color: #024da5;
+  }
+
+  .header-nav-footer-info div a span {
+    color: #374453;
+    font-family: "Nunito Sans", sans-serif;
+  }
+
+  .header-nav-footer-by {
+    display: flex;
+    gap: 10px;
+  }
+
+  .header-nav-footer-by p {
+    color: #374453;
+    font-family: "Nunito Sans", sans-serif;
+  }
+
+  /* <----------------BIG BURGER MENU--------------> */
+
+  .header-logo-div {
+    width: 1215px;
+    margin: auto;
+    padding: 15px 0 0 0;
+  }
+  .header-logo-uni img {
+    width: 95px;
+    height: 95px;
+  }
+
+  /* <---------------FACULTIES---------------------> */
+
+  .faculty-block-pro {
+    height: 250px;
+    width: 1215px;
+  }
+  .faculty-block-pro-img{
+    height: 240px;
+  }
+  .faculty-block-pro-title{
+    width: 963px;
+  }
+
+  /* <--------------FOOTER-------------------> */
+  .footer .container {
+    width: 1215px;
+    margin: auto;
+  }
+
+  .footer {
+    width: 100%;
+    background-color: #002b6a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-social-div {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px #fff solid;
+  }
+
+  .footer-social-div-small {
+    width: 1215px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-social-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .footer-logo-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
+
+  .footer-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .footer-title-span {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 650;
+    font-size: 21px;
+  }
+
+  .footer-title-mini-span {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+  }
+
+  .footer-connect-btn {
+    text-decoration: none;
+    width: 295px !important;
+    height: 65px;
+  }
+
+  .footer-social {
+    width: 190px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer-social-btn {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s all linear;
+  }
+
+  .footer-link-map-div {
+    width: 1215px;
+    height: 410px;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-infos-div {
+    width: 1215px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+
+  .footer-map {
+    width: 495px;
+    height: 295px;
+    border-radius: 15px;
+  }
+
+  .footer-info-links {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .footer-info-university {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+  }
+
+  .footer-info-university-title {
+    width: 200px;
+    height: 45px;
+    border-bottom: 1px rgb(255, 255, 255, 0.1) solid;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+
+  .footer-info-university-title-span {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 650;
+    font-size: 20px;
+  }
+
+  .footer-info-university-links {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .footer-info-university-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .footer-info-activity {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+  }
+
+  .footer-info-activity-title {
+    width: 250px;
+    height: 45px;
+    border-bottom: 1px rgb(255, 255, 255, 0.1) solid;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+
+  .footer-info-activity-title-span {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 650;
+    font-size: 20px;
+  }
+
+  .footer-info-activity-links {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .footer-info-activity-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .footer-info-students {
+    width: 165px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+  }
+
+  .footer-info-students-title {
+    width: 165px;
+    height: 45px;
+    border-bottom: 1px rgb(255, 255, 255, 0.1) solid;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+
+  .footer-info-students-title-span {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 650;
+    font-size: 20px;
+  }
+
+  .footer-info-students-links {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .footer-info-students-link {
+    text-decoration: none;
+
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .footer-inc-copyright-big {
+    width: 100%;
+    border-top: 1px #fff solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-inc-copyright {
+    width: 1215px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copyright {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+  }
+
+  .footer-inc {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+  }
+
+  .inc-bold {
+    color: #ffffff;
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 560;
+    font-size: 17px;
+  }
+}
+
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+  color: #999;
+}
+
+.breadcrumb a {
+  color: #999;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.content h2 {
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.department-list {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.department-list li {
+  margin-bottom: 8px;
+}
+
+.department-list a {
+  color: #0000ff;
+  text-decoration: none;
+}
+
+.department-list a:hover {
+  text-decoration: underline;
+}
+
+.paragraph {
+  margin-bottom: 20px;
+  text-align: justify;
+}

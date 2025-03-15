@@ -167,6 +167,7 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
         'max-snippet': -1,
       },
     },
+
     verification: {
       google: 'your-google-verification-code',
       yandex: 'your-yandex-verification-code',
