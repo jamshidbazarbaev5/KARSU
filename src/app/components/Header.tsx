@@ -31,7 +31,7 @@ const Header = () => {
     const router = useRouter();
     
     useEffect(() => {
-        fetch('https://debttracker.uz/menus/main/')
+        fetch('https://karsu.uz/api/menus/main/')
             .then(res => res.json())
             .then(data => setMenuItems(data))
             .catch(err => console.error('Error fetching menu items:', err));
@@ -177,11 +177,16 @@ const Header = () => {
                                                     <Link 
                                                         key={subItem.id}
                                                         href={
-                                                            subTranslation.slug === 'rukovodstvo' || subTranslation.slug === 'leadership' || subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'adminstraciya'
+                                                            subTranslation.slug === 'rukovodstvo' || subTranslation.slug === 'leadership' || 
+                                                            subTranslation.slug === 'rahbariyat' || subTranslation.slug === 'adminstraciya'
                                                                 ? `/${i18n.language}/administration/`
-                                                                : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
+                                                                : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || 
+                                                                subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
                                                                     ? `/${i18n.language}/file/`
-                                                                    : `/${i18n.language}/menus/main/${subTranslation.slug}/`
+                                                                    : subTranslation.slug === 'fakultety' || subTranslation.slug === 'faculties' || 
+                                                                    subTranslation.slug === 'fakultetler' || subTranslation.slug === 'fakultetlar'
+                                                                        ? `/${i18n.language}/faculties/`
+                                                                        : `/${i18n.language}/menus/main/${subTranslation.slug}/`
                                                         }
                                                         className="header-block-flex-link"
                                                     >
@@ -240,7 +245,10 @@ const Header = () => {
                                             ? `/${i18n.language}/administration/`
                                             : subTranslation.slug === 'normativ-hujjetler' || subTranslation.slug === 'dokumenty' || subTranslation.slug === 'documents' || subTranslation.slug === 'meyoriy-hujjatlar'
                                                 ? `/${i18n.language}/file/`
-                                                : `/${i18n.language}/menus/main/${subTranslation.slug}/`
+                                                : subTranslation.slug === 'fakultety' || subTranslation.slug === 'faculties' || 
+                                                subTranslation.slug === 'fakultetler' || subTranslation.slug === 'fakultetlar'
+                                                    ? `/${i18n.language}/faculties/`
+                                                    : `/${i18n.language}/menus/main/${subTranslation.slug}/`
                                     }>
                                         <li>{subTranslation.name}</li>
                                     </a>

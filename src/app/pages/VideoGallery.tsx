@@ -62,7 +62,7 @@ const VideoGalleryPage = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch(`https://debttracker.uz/publications/videos/?page=${currentPage}`);
+        const response = await fetch(`https://karsu.uz/api/publications/videos/?page=${currentPage}`);
         const data = await response.json();
         setVideos(data.results.map((video: any) => ({
           id: video.id,

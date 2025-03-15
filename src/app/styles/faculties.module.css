@@ -1,0 +1,138 @@
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .homeLink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .separator {
+    color: #ccc;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  .contentWrapper {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .facultiesSection {
+    flex: 1;
+    max-width: 75%; /* Adjust this value to control the width ratio */
+  }
+  
+  .newsSection {
+    width: 300px; /* Adjust this value based on your NewsRubric width */
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Shows exactly 3 items per row */
+    gap: 2rem;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    height: 280px;
+    justify-content: space-between;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .card:hover .line {
+    width: 120px; /* Increased from 60px to 120px on hover */
+    background: #002B6A; /* Changed color to make it more noticeable */
+  }
+  
+  .iconWrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icon {
+    border-radius: 50%;
+  }
+  
+  .facultyName {
+    font-size: 1.25rem;
+    color: #333;
+    margin: 1rem 0;
+    line-height: 1.4;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .line {
+    width: 60px;
+    height: 4px;
+    background: #e0e7ff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    margin-top: auto;
+  }
+  
+  @media (max-width: 1200px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 968px) {
+    .contentWrapper {
+      flex-direction: column;
+    }
+  
+    .facultiesSection {
+      max-width: 100%;
+    }
+  
+    .newsSection {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  

@@ -90,7 +90,7 @@ export default function MenuPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
 
         if (isDepartmentsSection) {
           const [agencyResponse, adminResponse] = await Promise.all([
@@ -216,7 +216,7 @@ export default function MenuPage() {
         <div className="container">
           <nav className="breadcrumb">
             <Link href={`/${i18n.language}`}>{t("common.home")}</Link> •
-            <Link href={`/${i18n.language}/menus`}>{t("common.menus")}</Link> •
+
             <span>
               { menuItem?.translations[i18n.language as SupportedLanguages].title}
             </span>

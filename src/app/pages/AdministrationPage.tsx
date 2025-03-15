@@ -86,8 +86,8 @@ const AdministrationPage = () => {
     const fetchData = async () => {
       try {
         const [adminResponse, positionResponse] = await Promise.all([
-          fetch('https://debttracker.uz/menus/admin/'),
-          fetch('https://debttracker.uz/menus/position/')
+          fetch('https://karsu.uz/api/menus/admin/'),
+          fetch('https://karsu.uz/api/menus/position/')
         ]);
         
         const [adminData, positionData] = await Promise.all([

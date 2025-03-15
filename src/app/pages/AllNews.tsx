@@ -109,8 +109,8 @@ const AllNews = () => {
           : params.category;
 
         const url = categorySlug
-          ? `https://debttracker.uz/news/category/${categorySlug}/posts/?page=${activePage}`
-          : `https://debttracker.uz/news/posts/?page=${activePage}`;
+          ? `https://karsu.uz/api/news/category/${categorySlug}/posts/?page=${activePage}`
+          : `https://karsu.uz/api/news/posts/?page=${activePage}`;
 
         const response = await axios.get<NewsResponse>(url);
         setNews(response.data.results);
@@ -137,7 +137,7 @@ const AllNews = () => {
     const fetchGoals = async () => {
       try {
         const response = await axios.get<Goal[]>(
-          `https://debttracker.uz/news/goals/`
+          `https://karsu.uz/api/news/goals/`
         );
         setGoals(response.data);
       } catch (error) {
@@ -152,7 +152,7 @@ const AllNews = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get<Category[]>(
-          `https://debttracker.uz/news/category/`
+            `https://karsu.uz/api/news/category/`
         );
         setCategories(response.data);
       } catch (error) {

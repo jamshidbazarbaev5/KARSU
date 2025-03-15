@@ -31,7 +31,7 @@ export default function SingleAnnouncementPage() {
     const fetchAnnouncement = async () => {
       try {
         const response = await axios.get(
-          `https://debttracker.uz/announcements/${slug}/`
+          `https://karsu.uz/api/announcements/${slug}/`
         );
         setAnnouncement(response.data);
       } catch (error) {

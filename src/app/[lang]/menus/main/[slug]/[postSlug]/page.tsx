@@ -22,7 +22,7 @@ export default function PostPage() {
     const fetchPost = async () => {
       try {
         const baseUrl =
-            process.env.NEXT_PUBLIC_API_URL || "https://debttracker.uz";
+            process.env.NEXT_PUBLIC_API_URL || "https://karsu.uz/api";
         const response = await fetch(
             `${baseUrl}/publications/posts/${postSlug}`
         );

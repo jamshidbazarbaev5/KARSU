@@ -33,7 +33,7 @@ export const FeedbackForm = () => {
 
     try {
       const response = await fetch(
-        'https://debttracker.uz/feedback/', {
+        'https://karsu.uz/api/feedback/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -47,8 +47,8 @@ export default function SearchResults() {
     const fetchCategoriesAndGoals = async () => {
       try {
         const [categoriesResponse, goalsResponse] = await Promise.all([
-          axios.get('https://debttracker.uz/news/category/'),
-          axios.get('https://debttracker.uz/news/goals/')
+          axios.get('https://karsu.uz/api/news/category/'),
+          axios.get('https://karsu.uz/api/news/goals/')
         ]);
         setCategories(categoriesResponse.data);
         setGoals(goalsResponse.data);
@@ -64,7 +64,7 @@ export default function SearchResults() {
     const fetchSearchResults = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://debttracker.uz/news/posts/?title=${query}`);
+        const response = await axios.get(`https://karsu.uz/api/news/posts/?title=${query}`);
         setSearchResults(response.data.results || []);
       } catch (error) {
         console.error('Error fetching search results:', error);

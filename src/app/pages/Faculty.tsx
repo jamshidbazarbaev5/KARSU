@@ -49,7 +49,7 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
         const response = await fetch(`${baseUrl}/menus/admin/`);
         const data = await response.json();
         const matchingAdmin = data.find((admin: any) => admin.faculty === facultyData.id);

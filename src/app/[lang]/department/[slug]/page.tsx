@@ -3,7 +3,7 @@ import '../../department/main.css';
 import { notFound } from 'next/navigation';
 
 async function getDepartmentData(slug: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
   const response = await fetch(`${baseUrl}/menus/department/${slug}`, {
     next: { revalidate: 3600 },
   });

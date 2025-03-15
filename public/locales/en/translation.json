@@ -44,6 +44,7 @@
       "economics": "Faculty of Economics"
     },
     "common": {
+        "normativeDocuments":"Normative Documents",
       "soon":"Soon there will be important information here. Stay tuned!",
       "noNewsAvailable":"No news available",
       "readMore":"More",
@@ -67,8 +68,12 @@
       "departments": "Agency",
       "otdely": "Depatment",
       "home": "Main ",
-      "faculties": "Faculty",
-      "facultyDepartment": "Faculty Departments"
+      "faculties": "Faculties",
+      "facultyDepartment": "Faculty Departments",
+      "documentType": "Document Type / Issued By",
+      "date": "Date",
+      "documentName": "Document Name",
+      "downloadDocument": "Download Document"
     },
     "buttons": {
       "more": "More"

@@ -57,7 +57,7 @@ export default function FooterMenuPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
         // First, fetch all footer menu items
         const menuResponse = await fetch(`${baseUrl}/menus/footer/`);
         if (!menuResponse.ok) {
@@ -119,7 +119,7 @@ export default function FooterMenuPage() {
           {!isSinglePost && (
             <nav className="breadcrumb" style={{marginLeft:"100px"}}>
               <Link href={`/${i18n.language}`}>{t("common.home")}</Link> •
-              <Link href={`/${i18n.language}`}>{t("common.menus")}</Link> •
+
               <span>
                 {menuItem?.translations[i18n.language as SupportedLanguages]?.name}
               </span>

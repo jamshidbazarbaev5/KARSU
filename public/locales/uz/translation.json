@@ -60,6 +60,7 @@
       "submitting":"Yuborish..."
     },
     "common": {
+      "normativeDocuments":"Normativ hujjatlar",
       "readMore":"Batafsil",
       "noNewsAvailable":"Yangiliklar topilmadi",  
       "nameOfBerdakh":"Berdax nomidagi",
@@ -83,8 +84,12 @@
       "administration": "Administratsiya",
       "departments": "Bo'limlar",
       "otdely": "Kafedra",
-      "faculties": "Fakultet",
-      "facultyDepartment": "Fakultet kafedralari"
+      "faculties": "Fakultetlar",
+      "facultyDepartment": "Fakultet kafedralari",
+      "documentType": "Hujjat turi / Tashkil etuvchi",
+      "date": "Sana",
+      "documentName": "Hujjat nomi",
+      "downloadDocument": "Hujjatni yuklash"
     },
     "buttons": {
         "more": "Batafsil"

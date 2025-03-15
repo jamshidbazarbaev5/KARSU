@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: {
 }) {
     const resolvedParams = await params;
     try {
-      const response = await fetch(`https://debttracker.uz/news/posts/${resolvedParams.slug}/`);
+      const response = await fetch(`https://karsu.uz/api/news/posts/${resolvedParams.slug}/`);
       const newsData = await response.json();
       
       // Try to get title in current language, fallback to English, then to default text

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Pagination  from '../components/Pagination'
+import NewsRubric from "../components/NewsRubric";
 
 interface Translation {
   title: string;
@@ -45,7 +46,7 @@ const GoalNews = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://debttracker.uz/news/goals/${params.slug}/posts/?page=${currentPage}`
+          `https://karsu.uz/api/goals/${params.slug}/posts/?page=${currentPage}`
         );
         const data = await response.json();
         setNewsData(data);
@@ -146,18 +147,7 @@ const GoalNews = () => {
             )}
           </div>
 
-          <div className="main-news-rubric">
-            <div className="main-news-rubric-logo">
-              <img src="../mainpage/content/icon.png" alt="" />
-              <h1>Axborotlar xizmati</h1>
-            </div>
-            <ul>
-              <li><a href="#">Yangiliklar</a></li>
-              <li><a href="#">Events</a></li>
-              <li><a href="#">Lorem</a></li>
-              <li className="last"><a href="#">ipsum</a></li>
-            </ul>
-          </div>
+          <NewsRubric />
         </div>
       </div>
     </main>

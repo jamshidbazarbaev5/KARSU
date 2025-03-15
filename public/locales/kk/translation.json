@@ -1,6 +1,7 @@
 {
     "common":{
         "home": "Bas bet",
+        "normativeDocuments":"Normativ hujjetler",
         "news": "Jańaliqlar",
         "title": "Sarlavha",
         "events": "Ilajlar",
@@ -19,8 +20,12 @@
       "administration": "Adminictratsiya",
       "departments": "Bo'limler",
       "otdely": "Kafedra",
-      "faculties": "Fakultet",
+      "faculties": "Fakultetler",
       "facultyDepartment": "Fakultet kafedralari",
+      "documentType": "Hújjet turi",
+      "date": "Sana",
+      "documentName": "Hújjet ati",
+      "downloadDocument": "Hújjet juklew",
       "soon":"Tez arada jan'a informatciyalar boladi"
 
     },

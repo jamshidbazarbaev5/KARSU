@@ -64,7 +64,7 @@ const EventsPage = () => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://debttracker.uz/announcements/?page=${currentPage}`);
+        const response = await fetch(`https://karsu.uz/api/announcements/?page=${currentPage}`);
         const data = await response.json();
         setEvents(data.results);
         setTotalPages(Math.ceil(data.count / itemsPerPage));

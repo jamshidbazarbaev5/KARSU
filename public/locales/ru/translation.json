@@ -47,6 +47,7 @@
     "common": {
       "readMore":"Подробнее",
       "videos":"Видео",
+      "normativeDocuments":"Нормативные документы",
       "soon":"Вскоре здесь будет важная информация",
       "allEvents":"Все события",
       "noNewsAvailable":"Новости не найдены",
@@ -68,9 +69,12 @@
       "administration": "Aдминистрация",
       "departments": "Отдели",
       "otdely": "Кафедры",
-      "faculties": "Факультет",
-      "facultyDepartment": "Кафедры факультета"
-      
+      "faculties": "Факультеты",
+      "facultyDepartment": "Кафедры факультета",
+      "documentType": "Тип документа / Издатель",
+      "date": "Дата",
+      "documentName": "Название документа",
+      "downloadDocument": "Скачать документ"
 
 
     },

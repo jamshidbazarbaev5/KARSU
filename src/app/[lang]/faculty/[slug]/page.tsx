@@ -16,7 +16,7 @@ interface FacultyData {
 }
 
 async function getDepartments(): Promise<any[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
   const response = await fetch(`${baseUrl}/menus/department/`, {
     next: { revalidate: 3600 },
   });
@@ -31,8 +31,8 @@ async function getDepartments(): Promise<any[]> {
 async function getFacultyData(slug: string): Promise<FacultyData> {
   try {
     const [facultyResponse, departmentsResponse] = await Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz'}/menus/faculty/${slug}`),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz'}/menus/department/`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api'}/menus/faculty/${slug}`),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api'}/menus/department/`)
     ]);
 
     const facultyData = await facultyResponse.json();

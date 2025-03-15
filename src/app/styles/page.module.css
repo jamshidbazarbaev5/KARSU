@@ -1,0 +1,58 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .header {
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .homeLink {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #666;
+    text-decoration: none;
+  }
+  
+  .separator {
+    margin: 0 8px;
+    color: #ccc;
+  }
+  
+  .currentPage {
+    color: #999;
+  }
+  
+  .main {
+    padding: 24px 0;
+  }
+  
+  .title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 24px;
+  }
+  
+  .content {
+    display: flex;
+    gap: 24px;
+  }
+  
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+    }
+  }
+  
+  

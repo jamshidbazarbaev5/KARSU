@@ -152,6 +152,12 @@ interface Partner {
   };
 }
 
+interface MainImage {
+  id: number;
+  main_img: string;
+  is_active: boolean;
+}
+
 // Add this helper function at the top level
 const decodeHtmlEntities = (text: string) => {
   const textarea = document.createElement('textarea');
@@ -249,11 +255,12 @@ export default function MainSlider() {
   const [mainSwiper, setMainSwiper] = useState<Swiper | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [partners, setPartners] = useState<Partner[]>([]);
+  const [mainImage, setMainImage] = useState<MainImage | null>(null);
   
   useEffect(() => {
     const fetchFaculties = async () => {
       try {
-        const response = await axios.get(`https://debttracker.uz/menus/faculty/`);
+        const response = await axios.get(`https://karsu.uz/api/menus/faculty/`);
         setFaculties(response.data);
       } catch (error) {
         console.error("Error fetching faculties:", error);
@@ -265,7 +272,7 @@ export default function MainSlider() {
     const fetchNews = async () => {
       try {
         const response = await axios.get<NewsItem[]>(
-          `https://debttracker.uz/news/recent-posts/`
+          `https://karsu.uz/api/news/recent-posts/`
         );
         setNews(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
@@ -282,7 +289,7 @@ export default function MainSlider() {
     const fetchAnnouncements = async () => {
       try {
         const response = await axios.get(
-          `https://debttracker.uz/announcements/`
+          `https://karsu.uz/api/announcements/`
         );
         setAnnouncements(response.data.results);
       } catch (error) {
@@ -298,7 +305,7 @@ export default function MainSlider() {
     const fetchVideos = async () => {
       try {
         const response = await axios.get<Video[]>(
-          `https://debttracker.uz/publications/recent-videos/`
+          `https://karsu.uz/api/publications/recent-videos/`
         );
         setVideos(response.data);
       } catch (error) {
@@ -313,7 +320,7 @@ export default function MainSlider() {
     const fetchQuantities = async () => {
       try {
         const response = await axios.get<Quantity[]>(
-          `https://debttracker.uz/publications/quantities/`
+          `https://karsu.uz/api/publications/quantities/`
         );
         setQuantities(response.data);
       } catch (error) {
@@ -327,7 +334,7 @@ export default function MainSlider() {
     const fetchServices = async () => {
       try {
         const response = await axios.get<Service[]>(
-          `https://debttracker.uz/references/services/`
+          `https://karsu.uz/api/references/services/`
         );
         setServices(response.data);
       } catch (error) {
@@ -342,7 +349,7 @@ export default function MainSlider() {
     const fetchGoals = async () => {
       try {
         const response = await axios.get<Goal[]>(
-          `https://debttracker.uz/news/goals/`
+          `https://karsu.uz/api/news/goals/`
         );
         setGoals(response.data);
       } catch (error) {
@@ -357,7 +364,7 @@ export default function MainSlider() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get<Category[]>(
-          `https://debttracker.uz/news/category/`
+          `https://karsu.uz/api/news/category/`
         );
         setCategories(response.data);
       } catch (error) {
@@ -372,7 +379,7 @@ export default function MainSlider() {
     const fetchPartners = async () => {
       try {
         const response = await axios.get<Partner[]>(
-          `https://debttracker.uz/references/links`
+          `https://karsu.uz/api/references/links`
         );
         setPartners(response.data);
       } catch (error) {
@@ -563,16 +570,20 @@ export default function MainSlider() {
               <div className="main-slider-div-data-small">
                 <div className="main-slider-div-data-span-div">
                   <span className="main-slider-div-data-span-uni-title">
-                    {getTranslatedText(item.translations, i18n.language, "title")
-                      .split(' ')
-                      .slice(0, 3)
-                      .join('\n')}
+                    {typeof getTranslatedText(item.translations, i18n.language, "title") === 'string' 
+                      ? getTranslatedText(item.translations, i18n.language, "title")
+                          .split(' ')
+                          .slice(0, 3)
+                          .join('\n')
+                      : ''}
                   </span>
                   <span className="main-slider-div-data-span-text">
-                    {getTranslatedText(item.translations, i18n.language, "title")
-                      .split(' ')
-                      .slice(3)
-                      .join(' ')}
+                    {typeof getTranslatedText(item.translations, i18n.language, "title") === 'string'
+                      ? getTranslatedText(item.translations, i18n.language, "title")
+                          .split(' ')
+                          .slice(3)
+                          .join(' ')
+                      : ''}
                   </span>
                 </div>
                 <div className="main-slider-btn-div">
@@ -678,8 +689,8 @@ export default function MainSlider() {
     const fetchNewsByCategory = async () => {
       try {
         const url = activeCategory 
-          ? `https://debttracker.uz/news/category/${activeCategory}/recent-posts/`
-          : `https://debttracker.uz/news/recent-posts/`;
+          ? `https://karsu.uz/api/news/category/${activeCategory}/recent-posts/`
+          : `https://karsu.uz/api/news/recent-posts/`;
           
         const response = await axios.get(url);
         const newsData = Array.isArray(response.data) ? response.data : response.data.results || [];
@@ -697,6 +708,19 @@ export default function MainSlider() {
     setActiveCategory(categorySlug);
   };
 
+  useEffect(() => {
+    axios.get('https://debttracker.uz/publications/images/')
+      .then(response => {
+        const activeImage = response.data.find((img: MainImage) => img.is_active);
+        if (activeImage) {
+          setMainImage(activeImage);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching main image:", error);
+      });
+  }, []);
+
   return (
     <>
       <div className="main-slider-div-bg">
@@ -705,9 +729,9 @@ export default function MainSlider() {
             {Array.isArray(news) && news.length > 0 ? slides : (
               <div className="swiper-slide">
                 <div className="main-slider-div">
-                  <div className="main-slider-div-black">
-                    <p>{t("common.noNewsAvailable")}</p>
-                  </div>
+                  {/*<div className="main-slider-div-black">*/}
+                  {/*  <p>{t("common.noNewsAvailable")}</p>*/}
+                  {/*</div>*/}
                 </div>
               </div>
             )}
@@ -716,7 +740,7 @@ export default function MainSlider() {
         </div>
         <div className="main-slider-back">
           <Image
-            src={getValidImagePath("/eab7b06f-a168-41a4-9491-9ad8c2df0299.jpg")}
+            src={getValidImagePath("/MAIN_IMAGE.jpg")}
             alt="Background"
             width={1920}
             height={1080}
@@ -833,11 +857,11 @@ export default function MainSlider() {
                 </div>
               </div>
             ))}
-            {news.length === 0 && (
-              <div className="no-news-message" style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100%", margin:"0 auto"}} >
-                <p style={{color: '#002B6A', textAlign:"center",fontSize:"20px", fontWeight:"700"}}>{t("common.noNewsAvailable")}</p>
-              </div>
-            )}
+            {/*{news.length === 0 && (*/}
+            {/*  <div className="no-news-message" style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100%", margin:"0 auto"}} >*/}
+            {/*    <p style={{color: '#002B6A', textAlign:"center",fontSize:"20px", fontWeight:"700"}}>{t("common.noNewsAvailable")}</p>*/}
+            {/*  </div>*/}
+            {/*)}*/}
           </div>
 
           {/* <div className="news-page-numbers">
@@ -1186,108 +1210,114 @@ export default function MainSlider() {
           </div>
           <div className="numbers-circle-div">
             <div className="numbers-rectangle">
-              {quantities.slice(0, 2).map((item) => (
-                <div className="numbers-circle" key={item.id}>
-                  <div className="numbers-logo">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="48"
-                      height="48"
-                      viewBox="0 0 48 48"
-                      fill="none"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M24 4V14.108C24 14.956 24 15.782 24.092 16.462C24.194 17.228 24.446 18.102 25.172 18.828C25.898 19.554 26.772 19.806 27.54 19.908C28.22 20 29.044 20 29.892 20H40V32C40 37.656 40 40.486 38.242 42.242C36.486 44 33.656 44 28 44H20C14.344 44 11.514 44 9.758 42.242C8 40.486 8 37.656 8 32V16C8 10.344 8 7.514 9.758 5.758C11.514 4 14.344 4 20 4H24Z"
-                        fill="#002B6A"
-                      />
-                    </svg>
+              {Array.isArray(quantities) && quantities.length > 0 ? 
+                quantities.slice(0, 2).map((item) => (
+                  <div className="numbers-circle" key={item.id}>
+                    <div className="numbers-logo">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M24 4V14.108C24 14.956 24 15.782 24.092 16.462C24.194 17.228 24.446 18.102 25.172 18.828C25.898 19.554 26.772 19.806 27.54 19.908C28.22 20 29.044 20 29.892 20H40V32C40 37.656 40 40.486 38.242 42.242C36.486 44 33.656 44 28 44H20C14.344 44 11.514 44 9.758 42.242C8 40.486 8 37.656 8 32V16C8 10.344 8 7.514 9.758 5.758C11.514 4 14.344 4 20 4H24Z"
+                          fill="#002B6A"
+                        />
+                      </svg>
+                    </div>
+                    <div className="numbers-name">
+                      <span className="numbers-name-span">
+                        {getTranslatedText(
+                          item.translations,
+                          i18n.language,
+                          "title"
+                        )}
+                      </span>
+                    </div>
+                    <div className="numbers-num">
+                      <span className="numbers-num-span">{item.quantity}</span>
+                    </div>
                   </div>
-                  <div className="numbers-name">
-                    <span className="numbers-name-span">
-                      {getTranslatedText(
-                        item.translations,
-                        i18n.language,
-                        "title"
-                      )}
-                    </span>
-                  </div>
-                  <div className="numbers-num">
-                    <span className="numbers-num-span">{item.quantity}</span>
-                  </div>
-                </div>
-              ))}
+                )) : null
+              }
             </div>
 
             <div className="numbers-rectangle vertical">
-              {quantities.slice(2, 4).map((item) => (
-                <div className="numbers-circle vertical" key={item.id}>
-                  <div className="numbers-logo">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="48"
-                      height="48"
-                      viewBox="0 0 48 48"
-                      fill="none"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M24 4V14.108C24 14.956 24 15.782 24.092 16.462C24.194 17.228 24.446 18.102 25.172 18.828C25.898 19.554 26.772 19.806 27.54 19.908C28.22 20 29.044 20 29.892 20H40V32C40 37.656 40 40.486 38.242 42.242C36.486 44 33.656 44 28 44H20C14.344 44 11.514 44 9.758 42.242C8 40.486 8 37.656 8 32V16C8 10.344 8 7.514 9.758 5.758C11.514 4 14.344 4 20 4H24Z"
-                        fill="#002B6A"
-                      />
-                    </svg>
+              {Array.isArray(quantities) && quantities.length > 2 ? 
+                quantities.slice(2, 4).map((item) => (
+                  <div className="numbers-circle vertical" key={item.id}>
+                    <div className="numbers-logo">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M24 4V14.108C24 14.956 24 15.782 24.092 16.462C24.194 17.228 24.446 18.102 25.172 18.828C25.898 19.554 26.772 19.806 27.54 19.908C28.22 20 29.044 20 29.892 20H40V32C40 37.656 40 40.486 38.242 42.242C36.486 44 33.656 44 28 44H20C14.344 44 11.514 44 9.758 42.242C8 40.486 8 37.656 8 32V16C8 10.344 8 7.514 9.758 5.758C11.514 4 14.344 4 20 4H24Z"
+                          fill="#002B6A"
+                        />
+                      </svg>
+                    </div>
+                    <div className="numbers-name">
+                      <span className="numbers-name-span">
+                        {getTranslatedText(
+                          item.translations,
+                          i18n.language,
+                          "title"
+                        )}
+                      </span>
+                    </div>
+                    <div className="numbers-num">
+                      <span className="numbers-num-span">{item.quantity}</span>
+                    </div>
                   </div>
-                  <div className="numbers-name">
-                    <span className="numbers-name-span">
-                      {getTranslatedText(
-                        item.translations,
-                        i18n.language,
-                        "title"
-                      )}
-                    </span>
-                  </div>
-                  <div className="numbers-num">
-                    <span className="numbers-num-span">{item.quantity}</span>
-                  </div>
-                </div>
-              ))}
+                )) : null
+              }
             </div>
 
             <div className="numbers-rectangle gorizontal">
-              {quantities.slice(4, 6).map((item) => (
-                <div className="numbers-circle gorizontal" key={item.id}>
-                  <div className="numbers-logo">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="48"
-                      height="48"
-                      viewBox="0 0 48 48"
-                      fill="none"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M24 4V14.108C24 14.956 24 15.782 24.092 16.462C24.194 17.228 24.446 18.102 25.172 18.828C25.898 19.554 26.772 19.806 27.54 19.908C28.22 20 29.044 20 29.892 20H40V32C40 37.656 40 40.486 38.242 42.242C36.486 44 33.656 44 28 44H20C14.344 44 11.514 44 9.758 42.242C8 40.486 8 37.656 8 32V16C8 10.344 8 7.514 9.758 5.758C11.514 4 14.344 4 20 4H24Z"
-                        fill="#002B6A"
-                      />
-                    </svg>
+              {Array.isArray(quantities) && quantities.length > 4 ? 
+                quantities.slice(4, 6).map((item) => (
+                  <div className="numbers-circle gorizontal" key={item.id}>
+                    <div className="numbers-logo">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M24 4V14.108C24 14.956 24 15.782 24.092 16.462C24.194 17.228 24.446 18.102 25.172 18.828C25.898 19.554 26.772 19.806 27.54 19.908C28.22 20 29.044 20 29.892 20H40V32C40 37.656 40 40.486 38.242 42.242C36.486 44 33.656 44 28 44H20C14.344 44 11.514 44 9.758 42.242C8 40.486 8 37.656 8 32V16C8 10.344 8 7.514 9.758 5.758C11.514 4 14.344 4 20 4H24Z"
+                          fill="#002B6A"
+                        />
+                      </svg>
+                    </div>
+                    <div className="numbers-name">
+                      <span className="numbers-name-span">
+                        {getTranslatedText(
+                          item.translations,
+                          i18n.language,
+                          "title"
+                        )}
+                      </span>
+                    </div>
+                    <div className="numbers-num">
+                      <span className="numbers-num-span">{item.quantity}</span>
+                    </div>
                   </div>
-                  <div className="numbers-name">
-                    <span className="numbers-name-span">
-                      {getTranslatedText(
-                        item.translations,
-                        i18n.language,
-                        "title"
-                      )}
-                    </span>
-                  </div>
-                  <div className="numbers-num">
-                    <span className="numbers-num-span">{item.quantity}</span>
-                  </div>
-                </div>
-              ))}
+                )) : null
+              }
             </div>
 
             <div className="circle-line">

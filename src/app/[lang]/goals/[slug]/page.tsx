@@ -73,7 +73,7 @@ const GoalNews = () => {
   useEffect(() => {
     const fetchGoalInfo = async () => {
       try {
-        const response = await fetch(`https://debttracker.uz/news/goals/${params.slug}/`);
+        const response = await fetch(`https://karsu.uz/api/news/goals/${params.slug}/`);
         const data = await response.json();
         setGoalInfo(data);
       } catch (error) {
@@ -91,7 +91,7 @@ const GoalNews = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://debttracker.uz/news/goals/${params.slug}/posts/?page=${currentPage}`
+          `https://karsu.uz/api/news/goals/${params.slug}/posts/?page=${currentPage}`
         );
         const data = await response.json();
         setNewsData(data);

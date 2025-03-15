@@ -26,7 +26,7 @@ export default function I18nProvider({
 
   if (!isI18nInitialized) {
     // You can show a loading spinner or placeholder here
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   return <>{children}</>;

@@ -45,7 +45,7 @@ const Department: React.FC<DepartmentProps> = ({ departmentData }) => {
   React.useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://debttracker.uz';
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api'
         const response = await fetch(`${baseUrl}/menus/admin/`);
         const data = await response.json();
         // Find admin for this department

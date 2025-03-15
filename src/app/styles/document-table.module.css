@@ -1,0 +1,88 @@
+.tableContainer {
+    flex: 1;
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  
+  .table th {
+    background-color: #1e3a8a;
+    color: white;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 500;
+  }
+  
+  .table th:first-child {
+    border-top-left-radius: 4px;
+  }
+  
+  .table th:last-child {
+    border-top-right-radius: 4px;
+  }
+  
+  .table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eaeaea;
+    color: #333;
+  }
+  
+  .numberColumn {
+    width: 40px;
+  }
+  
+  .typeColumn {
+    width: 25%;
+  }
+  
+  .dateColumn {
+    width: 15%;
+  }
+  
+  .nameColumn {
+    width: 50%;
+  }
+  
+  .downloadColumn {
+    width: 60px;
+  }
+  
+  .numberCell {
+    color: #666;
+  }
+  
+  .typeCell {
+    color: #555;
+  }
+  
+  .dateCell {
+    color: #666;
+    white-space: nowrap;
+  }
+  
+  .nameCell {
+    font-weight: 500;
+  }
+  
+  .downloadCell {
+    text-align: center;
+  }
+  
+  .downloadButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .downloadButton:hover {
+    background-color: #f0f0f0;
+  }
+  
+  

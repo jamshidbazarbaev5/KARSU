@@ -63,7 +63,7 @@ export default function NewsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const newsResponse = await axios.get<NewsItem>(`https://debttracker.uz/news/posts/${slug}/`);
+        const newsResponse = await axios.get<NewsItem>(`https://karsu.uz/api/news/posts/${slug}/`);
         
         // Check if we should redirect to the correct slug for current language
         const currentLang = i18n.language;

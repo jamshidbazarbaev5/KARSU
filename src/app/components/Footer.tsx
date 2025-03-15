@@ -31,7 +31,7 @@ const Footer = () => {
     useEffect(() => {
         const fetchMenuItems = async () => {
             try {
-                const response = await fetch('https://debttracker.uz/menus/footer/');
+                const response = await fetch('https://karsu.uz/api/menus/footer/');
                 const data = await response.json();
                 setMenuItems(data);
             } catch (error) {

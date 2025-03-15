@@ -22,7 +22,7 @@ export default function NewsRubric() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://debttracker.uz/news/category/');
+        const response = await fetch('https://karsu.uz/api/news/category/');
         const data = await response.json();
         setCategories(data);
       } catch (error) {
