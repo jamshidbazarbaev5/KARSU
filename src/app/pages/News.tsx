@@ -10,6 +10,7 @@ import DOMPurify from "isomorphic-dompurify";
 import { useParams, useRouter } from "next/navigation";
 import NewsRubric from "@/app/components/NewsRubric";
 
+
 interface GoalType {
   id: number;
   translations: {
@@ -93,30 +94,34 @@ export default function News({ newsData }: NewsProps) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://karsu.uz/api/news/category/');
+        const response = await fetch("https://karsu.uz/api/news/category/");
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 
     fetchCategories();
   }, []);
 
-  // Add effect to handle language changes
+  // Remove or modify the language change effect to prevent redirect
   useEffect(() => {
     const currentLang = i18n.language;
-    const currentSlug = newsData.translations[currentLang]?.slug || newsData.translations["en"]?.slug;
-    const currentPath = window.location.pathname;
-    
-    // Check if we need to update the URL
-    if (currentPath.includes('/news/')) {
-      const newPath = `/${currentLang}/news/${currentSlug}`;
-      if (currentPath !== newPath) {
-        router.replace(newPath, { scroll: false });
+
+    // Only update URL if content exists in current language
+    if (newsData.translations[currentLang]) {
+      const currentSlug = newsData.translations[currentLang].slug;
+      const currentPath = window.location.pathname;
+
+      if (currentPath.includes("/news/")) {
+        const newPath = `/${currentLang}/news/${currentSlug}`;
+        if (currentPath !== newPath) {
+          router.replace(newPath, { scroll: false });
+        }
       }
     }
+    // Remove the redirect logic for missing translations
   }, [i18n.language, newsData.translations, router]);
 
   const mainSettings: Settings = {
@@ -179,12 +184,16 @@ export default function News({ newsData }: NewsProps) {
     ],
   };
 
+  // Keep the isContentAvailableInCurrentLanguage helper
+  const isContentAvailableInCurrentLanguage = () => {
+    const currentLang = i18n.language;
+    return Boolean(newsData.translations[currentLang]);
+  };
+
+  // Update getTranslatedContent to handle missing translations
   const getTranslatedContent = (field: "title" | "description") => {
-    const content =
-      newsData.translations[i18n.language]?.[field] ||
-      newsData.translations["en"]?.[field] ||
-      "";
-    return field === "description" ? DOMPurify.sanitize(content) : content;
+    const currentLang = i18n.language;
+    return newsData.translations[currentLang]?.[field] || "";
   };
 
   const sliderImages = newsData.images.map((img, index) => ({
@@ -193,16 +202,16 @@ export default function News({ newsData }: NewsProps) {
   }));
 
   const getShareUrl = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return encodeURIComponent(window.location.href);
     }
-    return '';
+    return "";
   };
 
   const getSocialShareUrls = () => {
     const url = getShareUrl();
     const title = encodeURIComponent(getTranslatedContent("title"));
-    
+
     return {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
       twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
@@ -211,11 +220,19 @@ export default function News({ newsData }: NewsProps) {
   };
 
   const getCategorySlug = (category: NewsCategory) => {
-    return category.translations[i18n.language]?.slug || category.translations["en"]?.slug || "";
+    return (
+      category.translations[i18n.language]?.slug ||
+      category.translations["en"]?.slug ||
+      ""
+    );
   };
 
   const getCategoryName = (category: NewsCategory) => {
-    return category.translations[i18n.language]?.name || category.translations["en"]?.name || "";
+    return (
+      category.translations[i18n.language]?.name ||
+      category.translations["en"]?.name ||
+      ""
+    );
   };
 
   const handleCategoryClick = (slug: string) => {
@@ -223,216 +240,261 @@ export default function News({ newsData }: NewsProps) {
   };
 
   return (
-    <>
-    
-     <main className="main">
+    <main className="main">
       <div className="container">
-        <div className="main-news-pages">
-          <a href={`/${i18n.language}`}>{t("common.home")}</a>
-          <a href={`/${i18n.language}/allnews`}>{t("common.news")}</a>
-          <a href="#">{getTranslatedContent("title")}</a>
-        </div>
-        <div className="main-news">
-          <div className="main-news-block">
-            <div className="main-news-block-title">
-              <h1>{getTranslatedContent("title")}</h1>
+        {isContentAvailableInCurrentLanguage() ? (
+          <>
+            <div className="main-news-pages">
+              <a href={`/${i18n.language}`}>{t("common.home")}</a>
+              <a href={`/${i18n.language}/allnews`}>{t("common.news")}</a>
+              <a href="#">{getTranslatedContent("title")}</a>
             </div>
+            <div className="main-news">
+              <div className="main-news-block">
+                <div className="main-news-block-title">
+                  <h1>{getTranslatedContent("title")}</h1>
+                </div>
 
-            <div className="main-news-block-date">
-              <div>
-                <span className="date-day">
-                  {new Date(newsData.date_posted).getDate()}
-                </span>
-                <span className="date-month">
-                  {new Date(newsData.date_posted).toLocaleString(
-                    i18n.language,
-                    { month: "long" }
-                  )}
-                </span>
-                <span className="date-year">
-                  {new Date(newsData.date_posted).getFullYear()}
-                </span>
-              </div>
-              <div className="main-news-block-views">
-                <span className="view-number">{newsData.views_count}</span>
-              </div>
-            </div>
+                <div className="main-news-block-date">
+                  <div>
+                    <span className="date">
+                      {new Date(newsData.date_posted)
+                        .toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })
+                        .replace(/\//g, ".")}
+                    </span>
+                  </div>
+                  <div className="main-news-block-views">
+                    <span className="view-number">{newsData.views_count}</span>
+                  </div>
+                </div>
 
-            <div
-              className="main-news-block-photo"
-              style={{ position: "relative", zIndex: 2 }}
-            >
-              <Image
-                src={newsData.main_image}
-                alt={getTranslatedContent("title")}
-                width={800}
-                height={400}
-                priority
-              />
-            </div>
-
-            <div
-              className="main-news-block-text"
-              dangerouslySetInnerHTML={{
-                __html: getTranslatedContent("description"),
-              }}
-            />
-
-            {newsData.images.length > 0 && (
-              <div
-                className="main-news-block-slider"
-                style={{ position: "relative", zIndex: 1 }}
-              >
-                <Slider
-                  {...mainSettings}
-                  ref={slider1}
-                  className="main-block-slider-for"
+                <div
+                  className="main-news-block-photo"
+                  style={{ position: "relative", zIndex: 2 }}
                 >
-                  {sliderImages.map((img, index) => (
-                    <div key={index} className="slide">
-                      <div className="slide-image-wrapper">
-                        <Image
-                          src={img.src}
-                          alt={img.alt}
-                          fill
-                          sizes="(max-width: 800px) 100vw, 800px"
-                          priority={index === 0}
-                          className="slider-image"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </Slider>
+                  <Image
+                    src={newsData.main_image}
+                    alt={getTranslatedContent("title")}
+                    width={800}
+                    height={400}
+                    priority
+                  />
+                </div>
 
-                {sliderImages.length > 1 && (
-                  <Slider
-                    {...thumbnailSettings}
-                    ref={slider2}
-                    className="thumbnail-slider"
+                <div
+                  className="main-news-block-text tinymce-content"
+                  dangerouslySetInnerHTML={{
+                    __html: getTranslatedContent("description"),
+                  }}
+                />
+
+                {newsData.images.length > 0 && (
+                  <div
+                    className="main-news-block-slider"
+                    style={{ position: "relative", zIndex: 1 }}
                   >
-                    {sliderImages.map((img, index) => (
-                      <div key={index} className="thumbnail">
-                        <div className="thumbnail-image-wrapper">
-                          <Image
-                            src={img.src}
-                            alt={`Thumbnail ${index + 1}`}
-                            fill
-                            sizes="(max-width: 150px) 100vw, 150px"
-                            className="thumbnail-image"
-                          />
+                    <Slider
+                      {...mainSettings}
+                      ref={slider1}
+                      className="main-block-slider-for"
+                    >
+                      {sliderImages.map((img, index) => (
+                        <div key={index} className="slide">
+                          <div className="slide-image-wrapper">
+                            <Image
+                              src={img.src}
+                              alt={img.alt}
+                              fill
+                              sizes="(max-width: 800px) 100vw, 800px"
+                              priority={index === 0}
+                              className="slider-image"
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </Slider>
+                      ))}
+                    </Slider>
+
+                    {sliderImages.length > 1 && (
+                      <Slider
+                        {...thumbnailSettings}
+                        ref={slider2}
+                        className="thumbnail-slider"
+                      >
+                        {sliderImages.map((img, index) => (
+                          <div key={index} className="thumbnail">
+                            <div className="thumbnail-image-wrapper">
+                              <Image
+                                src={img.src}
+                                alt={`Thumbnail ${index + 1}`}
+                                fill
+                                sizes="(max-width: 150px) 100vw, 150px"
+                                className="thumbnail-image"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </Slider>
+                    )}
+                  </div>
                 )}
-              </div>
-            )}
 
-            <div className="main-news-block-social">
-              <div className="faculty-block-text-social" style={{ padding: "10px" }}>
-                <a 
-                  href={getSocialShareUrls().facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ margin: "10px" }}
-                >
-                  <i className="fa-brands fa-square-facebook"></i>
-                </a>
-                <a 
-                  href={`https://t.me/share/url?url=${getShareUrl()}&text=${encodeURIComponent(getTranslatedContent("title"))}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ margin: "10px" }}
-                >
-                  <i className="fa-brands fa-telegram"></i>
-                </a>
-                <a 
-                  href={getSocialShareUrls().twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ margin: "10px" }}
-                >
-                  <i className="fa-brands fa-x-twitter"></i>
-                </a>
-                <a 
-                  href={getSocialShareUrls().linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ margin: "10px" }}
-                >
-                  <i className="fa-brands fa-linkedin"></i>
-                </a>
-              </div>
-            </div>
-
-            <div className="main-news-block-buttons">
-              {newsData.display_goals.map((goal) => {
-                const formatColor = (color: string) => {
-                  color = color.replace('#', '');
-                  
-                  if (color.length <= 3) {
-                    color = color.split('').map(char => char + char).join('');
-                  }
-                  
-                  return '#' + color.padStart(6, '0');
-                };
-
-                return (
-                  <a
-                    key={goal.id}
-                    href={`/${i18n.language}/goals/${goal.translations[i18n.language]?.slug || goal.translations["en"]?.slug || ''}`}
-                    style={{
-                      backgroundColor: formatColor(goal.color)
-                    }}
+                <div className="main-news-block-social">
+                  <div
+                    className="faculty-block-text-social"
+                    style={{ padding: "10px" }}
                   >
-                    <span className="buttons-number">{goal.goals}</span>
-                    <p>
-                      {goal.translations[i18n.language]?.name || 
-                       goal.translations["en"]?.name || 
-                       "Unknown Goal"}
-                    </p>
-                  </a>
-                );
-              })}
+                    <a
+                      href={getSocialShareUrls().facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ margin: "10px" }}
+                    >
+                      <i className="fa-brands fa-square-facebook"></i>
+                    </a>
+                    <a
+                      href={`https://t.me/share/url?url=${getShareUrl()}&text=${encodeURIComponent(
+                        getTranslatedContent("title")
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ margin: "10px" }}
+                    >
+                      <i className="fa-brands fa-telegram"></i>
+                    </a>
+                    <a
+                      href={getSocialShareUrls().twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ margin: "10px" }}
+                    >
+                      <i className="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a
+                      href={getSocialShareUrls().linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ margin: "10px" }}
+                    >
+                      <i className="fa-brands fa-linkedin"></i>
+                    </a>
+                  </div>
+                </div>
 
-              {newsData.display_goals.length > 4 && (
-                <>
-                  <div className={`hidden-buttons ${showAllButtons ? 'show' : ''}`}>
-                    {newsData.display_goals.slice(4).map((goal) => (
+                <div className="main-news-block-buttons">
+                  {newsData.display_goals.map((goal) => {
+                    const formatColor = (color: string) => {
+                      color = color.replace("#", "");
+
+                      if (color.length <= 3) {
+                        color = color
+                          .split("")
+                          .map((char) => char + char)
+                          .join("");
+                      }
+
+                      return "#" + color.padStart(6, "0");
+                    };
+
+                    return (
                       <a
                         key={goal.id}
-                        href={`/${i18n.language}/goals/${goal.translations[i18n.language]?.slug || goal.translations["en"]?.slug || ''}`}
+                        href={`/${i18n.language}/goals/${
+                          goal.translations[i18n.language]?.slug ||
+                          goal.translations["en"]?.slug ||
+                          ""
+                        }`}
                         style={{
-                          backgroundColor: goal.color.startsWith("#") 
-                            ? goal.color 
-                            : `#${goal.color.padStart(6, '0')}`,
+                          backgroundColor: formatColor(goal.color),
                         }}
                       >
                         <span className="buttons-number">{goal.goals}</span>
                         <p>
-                          {goal.translations[i18n.language]?.name || 
-                           goal.translations["en"]?.name || 
-                           "Unknown Goal"}
+                          {goal.translations[i18n.language]?.name ||
+                            goal.translations["en"]?.name ||
+                            "Unknown Goal"}
                         </p>
                       </a>
-                    ))}
-                  </div>
-                  <span 
-                    className="show-all-text"
-                    onClick={() => setShowAllButtons(!showAllButtons)}
-                  >
-                    {showAllButtons ? "Show Less" : "Show All"}
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
+                    );
+                  })}
 
-         <NewsRubric/>
-        </div>
+                  {newsData.display_goals.length > 4 && (
+                    <>
+                      <div
+                        className={`hidden-buttons ${
+                          showAllButtons ? "show" : ""
+                        }`}
+                      >
+                        {newsData.display_goals.slice(4).map((goal) => (
+                          <a
+                            key={goal.id}
+                            href={`/${i18n.language}/goals/${
+                              goal.translations[i18n.language]?.slug ||
+                              goal.translations["en"]?.slug ||
+                              ""
+                            }`}
+                            style={{
+                              backgroundColor: goal.color.startsWith("#")
+                                ? goal.color
+                                : `#${goal.color.padStart(6, "0")}`,
+                            }}
+                          >
+                            <span className="buttons-number">{goal.goals}</span>
+                            <p>
+                              {goal.translations[i18n.language]?.name ||
+                                goal.translations["en"]?.name ||
+                                "Unknown Goal"}
+                            </p>
+                          </a>
+                        ))}
+                      </div>
+                      <span
+                        className="show-all-text"
+                        onClick={() => setShowAllButtons(!showAllButtons)}
+                      >
+                        {showAllButtons ? "Show Less" : "Show All"}
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <NewsRubric />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="header-logo-div">
+              <div className="header-logo-mini">
+                <div className="header-logo-uni">
+                  <Image src="/logo.png" alt="logo" width={100} height={100} />
+                </div>
+                <div className="header-logo-uni-name">
+                  <a
+                    href={`/${i18n.language}`}
+                    className="header-logo-uni-name-span"
+                  >
+                    {t("common.University")}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              className="no-content-message"
+              style={{
+                textAlign: "center",
+                padding: "50px 0",
+                fontSize: "1.2rem",
+              }}
+            >
+              {t("common.noNews",)}
+            </div>
+          </>
+        )}
       </div>
     </main>
-    </>
-   
   );
 }

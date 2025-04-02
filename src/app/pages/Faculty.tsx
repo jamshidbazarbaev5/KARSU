@@ -40,6 +40,19 @@ interface FacultyProps {
   };
 }
 
+// Add this helper function
+const fetchAdminPage = async (page: number) => {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
+    const response = await fetch(`${baseUrl}/menus/admin/?page=${page}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching admin data page ${page}:`, error);
+    return null;
+  }
+};
+
 const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
@@ -49,10 +62,22 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
-        const response = await fetch(`${baseUrl}/menus/admin/`);
-        const data = await response.json();
-        const matchingAdmin = data.find((admin: any) => admin.faculty === facultyData.id);
+        let allAdminData: any[] = [];
+        let page = 1;
+        
+        // Keep fetching pages until we run out of pages
+        while (true) {
+          const adminPageData = await fetchAdminPage(page);
+          if (!adminPageData || !adminPageData.results.length) break;
+          
+          allAdminData = [...allAdminData, ...adminPageData.results];
+          
+          // Break if there are no more pages
+          if (!adminPageData.next) break;
+          page++;
+        }
+        
+        const matchingAdmin = allAdminData.find((admin: any) => admin.faculty === facultyData.id);
         if (matchingAdmin) {
           setAdminData(matchingAdmin);
         }
@@ -90,59 +115,90 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
       <div className="container">
         <nav className="breadcrumb">
           <Link href="/">{t("common.home")}</Link> •
-          <Link href="/faculties">{t("common.faculties")}</Link> •
+          <Link href={`/${i18n.language}/faculties`}>{t("common.faculties")}</Link> •
           <span>{getTranslatedContent("name")}</span>
         </nav>
 
-        <div className="faculty-logo">
-          <h1>{getTranslatedContent("name")}</h1>
-        </div>
+        {getTranslatedContent("name") && (
+          <div className="faculty-logo">
+            <h1>{getTranslatedContent("name")}</h1>
+          </div>
+        )}
         
         {adminData ? (
           <AdminInfoBlock
             adminData={adminData}
             email={facultyData.email}
-            title={t("Faculty History")}
-            description={facultyContent.description}
-            
+            description={null}
           >
+            {/* Departments list first */}
             {facultyDepartments && facultyDepartments.length > 0 && (
               <div className="faculty-block-text-links">
-                <h4>{t("Faculty Departments")} ({facultyDepartments.length}):</h4>
                 <ul>
-                  {facultyDepartments.map((dept) => (
-                    <li key={dept.id}>
-                      <Link href={`/${i18n.language}/department/${dept.translations[currentLang]?.slug || dept.translations['en']?.slug}`}>
-                        <span dangerouslySetInnerHTML={{ 
-                          __html: DOMPurify.sanitize(dept.translations[currentLang]?.name || dept.translations['en']?.name || '') 
-                        }} />
-                      </Link>
-                    </li>
-                  ))}
+                  {facultyDepartments.map((dept) => {
+                    const deptName = dept.translations[currentLang]?.name || dept.translations['en']?.name;
+                    const deptSlug = dept.translations[currentLang]?.slug || dept.translations['en']?.slug;
+                    
+                    return deptName && deptSlug ? (
+                      <li key={dept.id}>
+                        <Link href={`/${i18n.language}/department/${deptSlug}`}>
+                          <span dangerouslySetInnerHTML={{ 
+                            __html: DOMPurify.sanitize(deptName) 
+                          }} />
+                        </Link>
+                      </li>
+                    ) : null;
+                  })}
                 </ul>
               </div>
             )}
+
+            {/* Description and History sections */}
+            <div className="content">
+              {facultyContent?.description && (
+                <div 
+                  className="paragraph"
+                  dangerouslySetInnerHTML={{ 
+                    __html: DOMPurify.sanitize(facultyContent.description) 
+                  }}
+                />
+              )}
+              
+              {facultyContent?.history_of_faculty && (
+                <div 
+                  className="paragraph"
+                  dangerouslySetInnerHTML={{ 
+                    __html: DOMPurify.sanitize(facultyContent.history_of_faculty) 
+                  }}
+                />
+              )}
+            </div>
           </AdminInfoBlock>
         ) : (
           <div className="content">
             {facultyDepartments && facultyDepartments.length > 0 && (
               <>
-                <h2>{t("common.facultyDepartment")}</h2>
+                {/* <h2>{t("common.facultyDepartment")}</h2> */}
                 <ol className="department-list">
-                  {facultyDepartments.map((dept) => (
-                    <li key={dept.id}>
-                      <Link href={`/${i18n.language}/department/${dept.translations[currentLang]?.slug || dept.translations['en']?.slug}`}>
-                        <span dangerouslySetInnerHTML={{ 
-                          __html: DOMPurify.sanitize(dept.translations[currentLang]?.name || dept.translations['en']?.name || '') 
-                        }} />
-                      </Link>
-                    </li>
-                  ))}
+                  {facultyDepartments.map((dept) => {
+                    const deptName = dept.translations[currentLang]?.name || dept.translations['en']?.name;
+                    const deptSlug = dept.translations[currentLang]?.slug || dept.translations['en']?.slug;
+                    
+                    return deptName && deptSlug ? (
+                      <li key={dept.id}>
+                        <Link href={`/${i18n.language}/department/${deptSlug}`}>
+                          <span dangerouslySetInnerHTML={{ 
+                            __html: DOMPurify.sanitize(deptName) 
+                          }} />
+                        </Link>
+                      </li>
+                    ) : null;
+                  })}
                 </ol>
               </>
             )}
             
-            {facultyContent.description && (
+            {facultyContent?.description && (
               <div 
                 className="paragraph"
                 dangerouslySetInnerHTML={{ 
@@ -151,7 +207,7 @@ const Faculty: React.FC<FacultyProps> = ({ facultyData }) => {
               />
             )}
             
-            {facultyContent.history_of_faculty && (
+            {facultyContent?.history_of_faculty && (
               <div 
                 className="paragraph"
                 dangerouslySetInnerHTML={{ 

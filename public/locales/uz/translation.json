@@ -60,8 +60,11 @@
       "submitting":"Yuborish..."
     },
     "common": {
+      "teachers":"Oqitiwshilar",
+      "description":"Qisqa táripleme",
       "normativeDocuments":"Normativ hujjatlar",
       "readMore":"Batafsil",
+      "agencies": "Bolimlar",
       "noNewsAvailable":"Yangiliklar topilmadi",  
       "nameOfBerdakh":"Berdax nomidagi",
       "videos":"Vidiolar",
@@ -73,7 +76,7 @@
       "moreDetails": "Batafsil",
       "allVideos": "Barcha videolar",
       "attention": "DIQQAT!!! DIQQAT!!! TEZKOR!!!",
-      "berdakh": "Men Marifat Izlar Edim, Berdah",
+      "berdakh": "Men Marifat Izlar Edim, Berdaq",
       "menus":"Postlar",
       "allNews":"Barcha Yangiliklar",
       "University":"QORAQALPOQ DAVLAT UNIVERSITETI",
@@ -89,10 +92,23 @@
       "documentType": "Hujjat turi / Tashkil etuvchi",
       "date": "Sana",
       "documentName": "Hujjat nomi",
-      "downloadDocument": "Hujjatni yuklash"
-    },
+      "downloadDocument": "Hujjatni yuklash",
+      "files":"Fayllar",
+      "noNews":"Yangiliklar topilmadi",
+      "noEventsAvailable":"Tadbirlar topilmadi",
+      "noServicesAvailable":"Xizmatlar topilmadi",
+      "noStatisticsAvailable":"Statistikalar topilmadi",
+      "noPartnersAvailable":"Hamkorlar topilmadi",
+      "noFacultiesAvailable":"Fakultetlar topilmadi",
+      "noVideosAvailable":"Vidiolar topilmadi"
+
+      },
     "buttons": {
         "more": "Batafsil"
+    },
+    "faculty":{
+      "description":"Fakultet tavisfi",
+      "history":"Fakultet tarixi"
     },
     "header": {
       "languages": {

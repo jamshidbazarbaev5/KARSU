@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import '../styles/main.css';
 import '../styles/mormalize.css';
 import Script from 'next/script';
-import { Nunito, Roboto, Cabin, Source_Sans_3, Biryani, Sofia_Sans, Satisfy, Great_Vibes, Archivo } from 'next/font/google';
+import { Nunito, Roboto, Cabin, Source_Sans_3, Sofia_Sans, Satisfy, Great_Vibes, Archivo, Montserrat } from 'next/font/google';
 import '../i18n/config';
 import ClientLanguageProvider from '../components/ClientLanguageProvider'
 import { NextWebVitalsMetric } from 'next/app';
@@ -31,24 +31,20 @@ const cabin = Cabin({
   variable: '--font-cabin',
 })
 
-// const robotoSlab = RobotoSlab({
-//   subsets: ['latin'],
-//   display: 'swap',
-//   variable: '--font-roboto-slab',
-// })
+
 
 const sourceSans3 = Source_Sans_3({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-source-sans',
 })
-
-const biryani = Biryani({
-  weight: ['200', '300', '400', '600', '700', '800', '900'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-biryani',
-})
+//
+// const biryani = Biryani({
+//   weight: ['200', '300', '400', '600', '700', '800', '900'],
+//   subsets: ['latin'],
+//   display: 'swap',
+//   variable: '--font-biryani',
+// })
 
 const sofiaSans = Sofia_Sans({
   subsets: ['latin'],
@@ -76,6 +72,12 @@ const archivo = Archivo({
   variable: '--font-archivo',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-montserrat',
 });
 
 const inter = Inter({ subsets: ["latin"] });
@@ -204,14 +206,17 @@ export default async function RootLayout({
         ${roboto.variable}
         ${cabin.variable}
         ${sourceSans3.variable}
-        ${biryani.variable}
+      
         ${sofiaSans.variable}
         ${satisfy.variable}
         ${greatVibes.variable}
         ${archivo.variable}
+        ${montserrat.variable}
+        font-sans
       `}
     >
       <head>
+        <link rel="icon" href="/icon.png" />
         <link 
           rel="stylesheet" 
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 

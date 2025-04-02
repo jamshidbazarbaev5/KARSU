@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import { Home } from "lucide-react"
 import Link from "next/link"
 import NewsRubric from "../components/NewsRubric"
+import Sidebar from "../components/Sidebar"
 
 interface FacultyTranslation {
   name: string;
@@ -23,6 +24,17 @@ interface Faculty {
   };
 }
 
+const fetchFacultiesPage = async (page: number) => {
+  try {
+    const response = await fetch(`https://karsu.uz/api/menus/faculty/?page=${page}`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error(`Error fetching faculties page ${page}:`, error)
+    return null
+  }
+}
+
 export default function FacultiesPage() {
   const [faculties, setFaculties] = useState<Faculty[]>([])
   const { t, i18n } = useTranslation()
@@ -30,9 +42,20 @@ export default function FacultiesPage() {
   useEffect(() => {
     const fetchFaculties = async () => {
       try {
-        const response = await fetch('https://karsu.uz/api/menus/faculty/')
-        const data = await response.json()
-        setFaculties(data)
+        let allFaculties: Faculty[] = []
+        let page = 1
+        
+        while (true) {
+          const facultiesData = await fetchFacultiesPage(page)
+          if (!facultiesData || !facultiesData.results.length) break
+          
+          allFaculties = [...allFaculties, ...facultiesData.results]
+          
+          if (!facultiesData.next) break
+          page++
+        }
+        
+        setFaculties(allFaculties)
       } catch (error) {
         console.error('Error fetching faculties:', error)
       }
@@ -59,6 +82,7 @@ export default function FacultiesPage() {
           <div className={styles.grid}>
             {faculties.map((faculty) => {
               const translation = faculty.translations[i18n.language] || faculty.translations.ru
+              if (!translation) return null;
               return (
                 <Link
                   href={`/${i18n.language}/faculty/${translation.slug}`}
@@ -82,7 +106,7 @@ export default function FacultiesPage() {
           </div>
         </div>
         <div className={styles.newsSection}>
-          <NewsRubric />
+        <Sidebar/>
         </div>
       </div>
     </div>

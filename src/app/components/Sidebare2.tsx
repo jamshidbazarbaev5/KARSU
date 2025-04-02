@@ -1,5 +1,5 @@
 'use client'
-import styles from "../styles/sidebar.module.css"
+import styles from "../styles/sidebar2.module.css"
 import { ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
 import axios from "axios"

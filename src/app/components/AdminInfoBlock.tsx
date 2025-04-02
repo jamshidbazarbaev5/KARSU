@@ -31,9 +31,13 @@ const AdminInfoBlock = ({
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
 
+  // Check if admin data has complete translations
+  const hasCompleteTranslations = adminData?.translations?.[currentLang]?.full_name?.trim() !== '' &&
+    adminData?.translations?.[currentLang]?.biography?.trim() !== '';
+
   return (
     <div className="faculty-block">
-      {adminData && (
+      {adminData && hasCompleteTranslations && (
         <div className="faculty-block-pro">
           <div className="faculty-block-pro-img">
             <img src={adminData.main_image} alt={adminData.translations?.[currentLang]?.full_name} />

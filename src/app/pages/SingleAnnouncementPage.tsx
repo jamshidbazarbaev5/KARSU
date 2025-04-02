@@ -49,7 +49,7 @@ export default function SingleAnnouncementPage() {
     language: string,
     field: string
   ) => {
-    return translations?.[language]?.[field] || "No translation available";
+    return translations?.[language]?.[field] || null;
   };
 
   const getShareUrl = () => {
@@ -91,13 +91,11 @@ export default function SingleAnnouncementPage() {
       <div className="main-news-pages">
         <a href={`/${i18n.language}`}>{t("common.home")}</a>
         <a href={`/${i18n.language}/events`}>{t("common.events")}</a>
-        <a href="#">
-          {getTranslatedText(
-            announcement?.translations,
-            i18n.language,
-            "title"
-          )}
-        </a>
+        {getTranslatedText(announcement?.translations, i18n.language, "title") && (
+          <a href="#">
+            {getTranslatedText(announcement?.translations, i18n.language, "title")}
+          </a>
+        )}
       </div>
       <main className="main-2">
         <div className="all-events-page-link-div-2">
@@ -120,30 +118,28 @@ export default function SingleAnnouncementPage() {
           </Link>
         </div>
 
-        {announcement && (
+        {announcement && getTranslatedText(announcement.translations, i18n.language, "title") && (
           <div className="main-event-page-2">
             <div className="main-event-card-2">
               <div className="main-event-title-2">
                 <a href="#" className="main-event-title-link-2">
-                  {getTranslatedText(
-                    announcement.translations,
-                    i18n.language,
-                    "title"
-                  )}
+                  {getTranslatedText(announcement.translations, i18n.language, "title")}
                 </a>
               </div>
-              <div className="main-event-info-2">
-                <span
-                  className="main-event-info-span-2"
-                  dangerouslySetInnerHTML={{
-                    __html: getTranslatedText(
-                      announcement.translations,
-                      i18n.language,
-                      "description"
-                    ),
-                  }}
-                />
-              </div>
+              {getTranslatedText(announcement.translations, i18n.language, "description") && (
+                <div className="main-event-info-2">
+                  <span
+                    className="main-event-info-span-2"
+                    dangerouslySetInnerHTML={{
+                      __html: getTranslatedText(
+                        announcement.translations,
+                        i18n.language,
+                        "description"
+                      )!
+                    }}
+                  />
+                </div>
+              )}
               <div className="main-news-block-social">
                 <div className="faculty-block-text-social" style={{ padding: "10px" }}>
                   <a 
@@ -187,13 +183,13 @@ export default function SingleAnnouncementPage() {
               <div className="main-event-date">
                 <span className="main-event-date-span-2">
                   {new Date(announcement.date_post).toLocaleDateString(
-                    i18n.language,
+                    'en-GB',
                     {
                       year: "numeric",
-                      month: "long",
-                      day: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
                     }
-                  )}
+                  ).split('/').reverse().join('.')}
                 </span>
               </div>
             </div>

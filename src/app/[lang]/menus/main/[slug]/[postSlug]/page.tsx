@@ -5,12 +5,14 @@ import { MenuPostCard } from "@/app/components/MenuPost/MenuPostCard";
 import { MenuPost } from "@/app/types/menu";
 import { useTranslation } from "react-i18next";
 import "../../../main.css";
+// import '@/app/[lang]/faculty/main.css';
+// import '@/app/components/MenuPost/style.css';
 import Image from "next/image";
 import { t } from "i18next";
 import SocialMediaShare from "@/app/components/SocialMediasShare";
 
 export default function PostPage() {
-  const { postSlug, lang } = useParams();
+  const { postSlug, lang, slug } = useParams();
   const [post, setPost] = useState<MenuPost | null>(null);
   const { i18n } = useTranslation();
 
@@ -21,21 +23,28 @@ export default function PostPage() {
 
     const fetchPost = async () => {
       try {
-        const baseUrl =
-            process.env.NEXT_PUBLIC_API_URL || "https://karsu.uz/api";
-        const response = await fetch(
-            `${baseUrl}/publications/posts/${postSlug}`
-        );
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://karsu.uz/api";
+        
+        // First fetch the menu data to check if it's an external link
+        const menuResponse = await fetch(`${baseUrl}/menus/main/${slug}/`);
+        if (!menuResponse.ok) {
+          throw new Error(`Failed to fetch menu data`);
+        }
+        const menuData = await menuResponse.json();
+        
+        if (menuData.menu_outer_link?.is_outer) {
+          window.location.href = menuData.menu_outer_link.url;
+          return;
+        }
+
+        const response = await fetch(`${baseUrl}/publications/posts/${postSlug}`);
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(
-              `Failed to fetch post: ${response.status} ${response.statusText}. ${errorText}`
-          );
+          throw new Error(`Failed to fetch post: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
         setPost(data);
       } catch (error) {
-        console.error("Error fetching post:", error);
+        console.error("Error fetching data:", error);
         setPost(null);
       }
     };
@@ -43,7 +52,7 @@ export default function PostPage() {
     if (postSlug) {
       fetchPost();
     }
-  }, [postSlug, lang, i18n]);
+  }, [postSlug, lang, i18n, slug]);
 
   if (!post) {
     return (

@@ -10,6 +10,9 @@ interface Administrator {
   phone_number: string;
   email: string;
   main_image: string;
+  agency: number | null;
+  faculty: number | null;
+  department: number | null;
   translations: {
     [key: string]: {
       full_name: string;
@@ -75,6 +78,26 @@ const AdministratorCard = ({ photo, title, name, phone, email, isMain = false ,b
   );
 };
 
+const fetchAdminPage = async (page: number) => {
+  try {
+    const response = await fetch(`https://karsu.uz/api/menus/admin/?page=${page}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching admin page ${page}:`, error);
+    return null;
+  }
+};
+
+const fetchPositionPage = async (page: number) => {
+  try {
+    const response = await fetch(`https://karsu.uz/api/menus/position/?page=${page}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching position page ${page}:`, error);
+    return null;
+  }
+};
+
 const AdministrationPage = () => {
   const [administrators, setAdministrators] = useState<Administrator[]>([]);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -85,25 +108,50 @@ const AdministrationPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [adminResponse, positionResponse] = await Promise.all([
-          fetch('https://karsu.uz/api/menus/admin/'),
-          fetch('https://karsu.uz/api/menus/position/')
-        ]);
+        let allAdmins: Administrator[] = [];
+        let adminPage = 1;
         
-        const [adminData, positionData] = await Promise.all([
-          adminResponse.json(),
-          positionResponse.json()
-        ]);
+        while (true) {
+          const adminData = await fetchAdminPage(adminPage);
+          if (!adminData || !adminData.results.length) break;
+          
+          allAdmins = [...allAdmins, ...adminData.results];
+          
+          if (!adminData.next) break;
+          adminPage++;
+        }
         
-        // Filter out administrators with agency, faculty, or department
-        const filteredAdmins = adminData.filter((admin: Administrator) => 
+        let allPositions: Position[] = [];
+        let positionPage = 1;
+        
+        while (true) {
+          const positionData = await fetchPositionPage(positionPage);
+          if (!positionData || !positionData.results.length) break;
+          
+          allPositions = [...allPositions, ...positionData.results];
+          
+          if (!positionData.next) break;
+          positionPage++;
+        }
+        
+        const filteredAdmins = allAdmins.filter((admin: Administrator) => 
           admin.agency === null && 
           admin.faculty === null && 
           admin.department === null
         );
         
-        setAdministrators(filteredAdmins);
-        setPositions(positionData);
+        // Sort administrators to ensure the rector (position 4) appears first
+        const sortedAdmins = [...filteredAdmins].sort((a, b) => {
+          // If a is the rector (position 4), it should come first
+          if (a.position === 4) return -1;
+          // If b is the rector (position 4), it should come first
+          if (b.position === 4) return 1;
+          // Otherwise, sort by position ID (assuming lower IDs are higher positions)
+          return a.position - b.position;
+        });
+        
+        setAdministrators(sortedAdmins);
+        setPositions(allPositions);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {

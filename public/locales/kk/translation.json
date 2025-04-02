@@ -1,17 +1,20 @@
 {
     "common":{
+      "teachers":"Oqitiwshilar",
+      "description":"Qisqa táripleme",
         "home": "Bas bet",
+        "noNews":"Jańaliqlar joq",
         "normativeDocuments":"Normativ hujjetler",
         "news": "Jańaliqlar",
         "title": "Sarlavha",
         "events": "Ilajlar",
-        "berdakh":"Men Maǵripat Izler Edim, Berdakh",
+        "berdakh":"Men Maǵripat Izler Edim, Berdaq",
         "backToHome":"Asosiy",
         "videos":"Vidiolar",
         "allEvents":"Barliq ilajlar",
         "allVideos":"Barliq Videolar",
         "allNews":"Barliq Jańaliqlar",
-        "University":"QARAQALPAQ MA'MLEKETLIK UNIVERSITETI",
+        "University":"QARAQALPAQ MÁMLEKETLIK UNIVERSITETI",
         "readMore":"Toliqraq",
         "nameOfBerdakh":"Berdax atindag'i",
         "noNewsAvailable":"Jańaliqlar joq",
@@ -26,9 +29,22 @@
       "date": "Sana",
       "documentName": "Hújjet ati",
       "downloadDocument": "Hújjet juklew",
-      "soon":"Tez arada jan'a informatciyalar boladi"
+      "soon":"Tez arada jan'a informatciyalar boladi",
+      "agencies": "Bo'limler",
+      "files":"Fayllar",
+      "noEventsAvailable":"Ilajlar joq",
+      "noServicesAvailable":"Xizmetler joq",
+      "noStatisticsAvailable":"Statistikalar joq",
+      "noPartnersAvailable":"Hamkorlar joq",
+      "noFacultiesAvailable":"Fakultetler joq",
+      "noVideosAvailable":"Vidiolar joq"
 
     },
+    "faculty":{
+      "description":"Fakultet bayanlamasi",
+      "history":"Fakultet tarixi"
+    },
+
     "feedback": {
       "title": "Baylanisiw",
       "nameLabel": "At",

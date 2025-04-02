@@ -95,10 +95,10 @@ const EventsPage = () => {
               events.map((event) => (
                 <EventCard
                   key={event.id}
-                  title={event.translations[i18n.language].title}
-                  description={event.translations[i18n.language].description}
+                  title={event.translations[i18n.language]?.title}
+                  description={event.translations[i18n.language]?.description}
                   date={event.date_post}
-                  slug={event.translations[i18n.language].slug}
+                  slug={event.translations[i18n.language]?.slug}
                 />
               ))
             )}

@@ -89,48 +89,66 @@ const AllNews = () => {
   const { i18n } = useTranslation();
   const params = useParams();
   const router = useRouter();
+  const [displayedNews, setDisplayedNews] = useState<NewsItem[]>([]);
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNewsWithTranslations = async () => {
       setLoading(true);
       try {
-        // Calculate maximum possible page based on count
-        const itemsPerPage = 10; // Since we're displaying 6 items per page
-        const maxPage = Math.ceil(151 / itemsPerPage); // 151 is the total count from your API response
+        const itemsPerPage = 10;
+        let translatedNews: NewsItem[] = [];
+        let currentPage = activePage;
+        let totalItems = 0;
+        
+        // Get category slug from params
+        const categorySlug = params.category 
+          ? (Array.isArray(params.category) ? params.category[0] : params.category)
+          : null;
 
-        // If current page is beyond max page, adjust it
-        if (activePage > maxPage) {
-          setActivePage(maxPage);
-          return; // Exit early to avoid making invalid API call
+        // Keep fetching pages until we have enough translated items or run out of pages
+        while (translatedNews.length < itemsPerPage) {
+          const url = categorySlug
+            ? `https://karsu.uz/api/news/category/${categorySlug}/posts/?page=${currentPage}`
+            : `https://karsu.uz/api/news/posts/?page=${currentPage}`;
+
+          const response = await axios.get<NewsResponse>(url);
+          
+          // Filter items that have translation for current language
+          const translatedItems = response.data.results.filter(
+            (item) => item.translations && i18n.language in item.translations
+          );
+          
+          translatedNews = [...translatedNews, ...translatedItems];
+          
+          // Update total count on first fetch
+          if (currentPage === activePage) {
+            totalItems = response.data.count;
+            setTotalPages(Math.ceil(totalItems / itemsPerPage));
+          }
+
+          // Break if no more pages or we have enough items
+          if (!response.data.next || translatedNews.length >= itemsPerPage) {
+            break;
+          }
+          
+          currentPage++;
         }
 
-        const categorySlug = Array.isArray(params.category)
-          ? params.category[0]
-          : params.category;
-
-        const url = categorySlug
-          ? `https://karsu.uz/api/news/category/${categorySlug}/posts/?page=${activePage}`
-          : `https://karsu.uz/api/news/posts/?page=${activePage}`;
-
-        const response = await axios.get<NewsResponse>(url);
-        setNews(response.data.results);
-        
-        // Calculate total pages and ensure current page is valid
-        const calculatedTotalPages = Math.ceil(response.data.count / itemsPerPage);
-        setTotalPages(calculatedTotalPages);
-
+        // Take only the first itemsPerPage items
+        setDisplayedNews(translatedNews.slice(0, itemsPerPage));
+        setNews(translatedNews.slice(0, itemsPerPage));
         setActiveCategory(categorySlug || null);
       } catch (error) {
         console.error("Error fetching news:", error);
+        setDisplayedNews([]);
         setNews([]);
-        // Reset to page 1 on error
         setActivePage(1);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNews();
+    fetchNewsWithTranslations();
   }, [activePage, params.category, i18n.language]);
 
   useEffect(() => {
@@ -181,18 +199,11 @@ const AllNews = () => {
   const getTranslation = (item: NewsItem) => {
     if (!item.translations) return null;
 
+    // Only return translation if it exists for current language
     if (i18n.language in item.translations) {
       return item.translations[i18n.language];
     }
-
-    // Fallback to Russian if current language is not available
-    if ("ru" in item.translations) {
-      return item.translations.ru;
-    }
-
-    // If no translation is available, return the first available translation
-    const availableTranslations = Object.values(item.translations);
-    return availableTranslations.length > 0 ? availableTranslations[0] : null;
+    return null;
   };
 
   // Add this helper function to get goal color
@@ -301,18 +312,18 @@ const AllNews = () => {
           </div>
 
           {/* Main Featured News */}
-          {news?.length > 0 && (
+          {displayedNews?.length > 0 && getTranslation(displayedNews[0]) && (
             <div className="news-card-main">
               <div className="news-photo-main-div">
                 <div className="news-main-category">
                   <span className="news-main-category-span">
-                    {getCategoryName(news[0].category)}
+                    {getCategoryName(displayedNews[0].category)}
                   </span>
                 </div>
                 <Image
                   className="news-main-photo"
-                  src={news[0].main_image}
-                  alt={getTranslation(news[0])?.title || ""}
+                  src={displayedNews[0].main_image}
+                  alt={getTranslation(displayedNews[0])?.title || ""}
                   width={800}
                   height={400}
                 />
@@ -336,34 +347,30 @@ const AllNews = () => {
                       lineHeight: "1.2em",
                     }}
                     href={`/${i18n.language}/news/${
-                      news[0].translations[i18n.language]?.slug
+                      getTranslation(displayedNews[0])?.slug
                     }`}
                     className="news-main-title-span"
                   >
-                    {getTranslation(news[0])?.title || ""}
+                    {getTranslation(displayedNews[0])?.title || ""}
                   </a>
                 </div>
                 <div className="news-main-description">
                   <span
                     className="news-main-description-span"
                     dangerouslySetInnerHTML={{
-                      __html: getTranslation(news[0])?.description || "",
+                      __html: getTranslation(displayedNews[0])?.description || "",
                     }}
                   />
                 </div>
                 <div className="news-main-post-date" style={{ margin: "0px" }}>
                   <span className="news-main-post-time-span">
-                    {new Date(news[0].date_posted).toLocaleTimeString("ru-RU", {
+                    {new Date(displayedNews[0].date_posted).toLocaleTimeString("ru-RU", {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </span>
                   <span className="news-main-post-date-span">
-                    {new Date(news[0].date_posted).toLocaleDateString("ru-RU", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
+                    {new Date(displayedNews[0].date_posted).toISOString().split('T')[0].replace(/-/g, '.')}
                   </span>
                 </div>
               </div>
@@ -372,7 +379,7 @@ const AllNews = () => {
 
           {/* News Cards Grid */}
           <div className="news-all-cards-div">
-            {news?.slice(1).map((item) => (
+            {displayedNews?.slice(1).map((item) => (
               <div key={item.id} className="news-card">
                 <div className="news-photo-div">
                   <div className="news-category">
@@ -413,11 +420,11 @@ const AllNews = () => {
                   <div className="news-title">
                     <Link
                       href={`/${i18n.language}/news/${
-                        item.translations[i18n.language]?.slug
+                        getTranslation(item)?.slug
                       }`}
                       className="news-title-span"
                     >
-                      {item.translations[i18n.language]?.title || ""}
+                      {getTranslation(item)?.title || ""}
                     </Link>
                   </div>
                   <div className="news-post-date">
@@ -428,11 +435,7 @@ const AllNews = () => {
                       })}
                     </span>
                     <span className="news-post-date-span">
-                      {new Date(item.date_posted).toLocaleDateString("ru-RU", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {new Date(item.date_posted).toISOString().split('T')[0].replace(/-/g, '.')}
                     </span>
                   </div>
                 </div>

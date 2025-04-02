@@ -7,7 +7,40 @@
 }
 
 /* <-----------HEADER--------------> */
+/* Override all font families except icons, specific elements, and TinyMCE content */
+*:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-brands):not(.berdaq-quote):not([class^="fa-"]):not(.tinymce-content):not(.tinymce-content *) {
+  font-family: var(--font-sans) !important;
+}
 
+/* Specific styling for the Berdaq quote */
+.berdaq-quote {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+:root {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* TinyMCE content should inherit its fonts */
+.tinymce-content {
+  font-family: inherit;
+}
+
+.tinymce-content * {
+  font-family: inherit;
+}
+
+.tinymce-content h1,
+.tinymce-content h2,
+.tinymce-content h3,
+.tinymce-content p {
+  font-family: inherit;
+}
 .header-main {
   background: #002b6a;
   padding: 0 10px;
@@ -266,6 +299,7 @@ input#search_call:checked ~ .header-main-left-search-input {
 .header-main-nav-row-1 a {
   text-decoration: none;
   color: #002b6a;
+  max-width: 100px;
   font-family: "Nunito Sans", sans-serif;
   font-weight: bold;
 }

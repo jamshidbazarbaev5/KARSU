@@ -5,14 +5,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 .news-loading-container {
   display: flex;
   flex-direction: column;
@@ -67,5 +64,24 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+/* <-----------HEADER--------------> */
+/* Override all font families except icons, specific elements, and TinyMCE content */
+*:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-brands):not(.berdaq-quote):not([class^="fa-"]):not(.tinymce-content):not(.tinymce-content *) {
+  font-family: var(--font-sans) !important;
+}
+
+/* Specific styling for the Berdaq quote */
+.berdaq-quote {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+:root {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: var(--font-sans);
 }
 

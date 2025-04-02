@@ -5,11 +5,30 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* Override all font families except icons and specific elements */
+*:not(.fa):not(.fas):not(.far):not(.fab):not(.berdaq-quote):not([class^="fa-"]) {
+  font-family: var(--font-sans) !important;
+}
+
+/* Specific styling for the Berdaq quote */
+.berdaq-quote {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+:root {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
 html,body{
   margin:0;
   padding: 0;
   overflow-x: hidden;
 }
+
 /* <-----------HEADER--------------> */
 
 .header-main {
@@ -272,6 +291,7 @@ input#search_call:checked ~ .header-main-left-search-input {
   color: #002b6a;
   font-family: "Nunito Sans", sans-serif;
   font-weight: bold;
+  max-width: 100px;
 }
 
 .header-main-nav-row-2 {
@@ -453,7 +473,7 @@ input#search_call:checked ~ .header-main-left-search-input {
 
 .main-slider-btn {
   text-decoration: none;
-  width: 150px;
+  width: 164px;
   height: 35px;
   border: 2px #fff solid;
   border-radius: 50px;
@@ -2786,7 +2806,7 @@ input:checked + label .arrow-card i {
 
   .main-slider-btn {
     text-decoration: none;
-    width: 150px;
+    width: 164px;
     height: 35px;
     border: 2px #fff solid;
     border-radius: 50px;

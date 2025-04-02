@@ -20,6 +20,11 @@ export interface PostTranslation {
 }
 
 export interface MenuPost {
+    length?: number;
+    files?: {
+        file: string;
+        name: string;
+    }[];
     views_count?: number;
     id: number;
     menu?: number;

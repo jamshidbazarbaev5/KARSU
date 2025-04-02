@@ -26,7 +26,7 @@ export default function DocumentTable() {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await axios.get('https://debttracker.uz/menus/document/');
+        const response = await axios.get('https://karsu.uz/api/menus/document/');
         setDocuments(response.data.results);
       } catch (error) {
         console.error('Error fetching documents:', error);
@@ -37,14 +37,8 @@ export default function DocumentTable() {
   }, []);
 
   const getLocalizedDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString(i18n.language === 'kk' ? 'kk-KZ' : 
-           i18n.language === 'uz' ? 'uz-UZ' : 
-           i18n.language === 'en' ? 'en-US' : 
-           'ru-RU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
   };
 
   return (
@@ -66,9 +60,9 @@ export default function DocumentTable() {
           </tr>
         </thead>
         <tbody>
-          {documents.map((doc) => (
+          {documents.map((doc, index) => (
             <tr key={doc.id}>
-              <td className={styles.numberCell}>{doc.id}</td>
+              <td className={styles.numberCell}>{index + 1}</td>
               <td className={styles.typeCell}>
                 {doc.translations[i18n.language]?.title || doc.translations.ru?.title}
               </td>

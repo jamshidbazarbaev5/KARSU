@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: rgb(var(--background-rgb));
+  color: rgb(var(--foreground-rgb));
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.profile-card {
+  display: flex;
+  gap: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.profile-content {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.profile-title {
+  font-size: 18px;
+  color: #4a4a4a;
+  margin-bottom: 24px;
+}
+
+.description-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  user-select: none;
+}
+
+.description-header h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #666;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.description-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.description-content.open {
+  max-height: 1000px;
+}
+
+.description-text {
+  color: #4a4a4a;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.contact-info {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  color: #666;
+  text-decoration: none;
+}
+
+.contact-item:hover {
+  background: #ebebeb;
+}

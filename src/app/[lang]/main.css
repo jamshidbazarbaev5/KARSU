@@ -5,11 +5,48 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* <-----------HEADER--------------> */
+/* <-----------HEADER--------------> */
+/* Override all font families except icons, specific elements, and TinyMCE content */
+*:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-brands):not(.berdaq-quote):not([class^="fa-"]):not(.tinymce-content):not(.tinymce-content *) {
+  font-family: var(--font-sans) !important;
+}
+
+/* Specific styling for the Berdaq quote */
+.berdaq-quote {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+:root {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* TinyMCE content should inherit its fonts */
+.tinymce-content {
+  font-family: inherit;
+}
+
+.tinymce-content * {
+  font-family: inherit;
+}
+
+.tinymce-content h1,
+.tinymce-content h2,
+.tinymce-content h3,
+.tinymce-content p {
+  font-family: inherit;
+}
 html,body{
   margin:0;
   padding: 0;
   overflow-x: hidden;
 }
+
 /* <-----------HEADER--------------> */
 
 .header-main {
@@ -270,6 +307,7 @@ input#search_call:checked ~ .header-main-left-search-input {
 .header-main-nav-row-1 a {
   text-decoration: none;
   color: #002b6a;
+  max-width: 100px;
   font-family: "Nunito Sans", sans-serif;
   font-weight: bold;
 }
@@ -413,6 +451,7 @@ input#search_call:checked ~ .header-main-left-search-input {
   align-items: center;
   justify-content: center;
   gap: 20px;
+
 }
 
 .header-logo-svg-bg img {
@@ -2786,7 +2825,7 @@ input:checked + label .arrow-card i {
 
   .main-slider-btn {
     text-decoration: none;
-    width: 150px;
+    width: 164px;
     height: 35px;
     border: 2px #fff solid;
     border-radius: 50px;
@@ -3753,5 +3792,78 @@ input:checked + label .arrow-card i {
     font-family: "Nunito Sans", sans-serif;
     font-weight: 560;
     font-size: 17px;
+  }
+}
+
+
+:root {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Add these styles to your existing CSS */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.skeleton {
+  animation: pulse 1.5s infinite;
+}
+
+/* Optional: Add hover effect for skeleton cards */
+.news-card.skeleton:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Person Details Page */
+.skeleton-loading {
+  padding: 2rem;
+  background: #f0f0f0;
+  border-radius: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+.error-message {
+  padding: 2rem;
+  color: #dc2626;
+  text-align: center;
+}
+
+.person-details .news-card {
+  transition: none;
+  transform: none;
+}
+
+.person-details .news-title-span {
+  color: #002b6a;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.person-details .paragraph {
+  color: #374151;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+@media (min-width: 768px) {
+  .person-details .news-photo-div {
+    height: 500px;
+  }
+  
+  .person-details .news-title-span {
+    font-size: 2.5rem;
   }
 }

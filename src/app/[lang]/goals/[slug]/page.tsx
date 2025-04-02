@@ -113,11 +113,10 @@ const GoalNews = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return {
-      day: date.getDate(),
-      month: new Intl.DateTimeFormat('uz', { month: 'long' }).format(date),
-      year: date.getFullYear()
-    };
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
   };
 
   if (loading) {
@@ -129,57 +128,67 @@ const GoalNews = () => {
       <div className="container">
         <div className="main-news-pages">
           <a href={`/${i18n.language}`}>{t('common.home')}</a>
-          {/* <a href="#">{t('common.sustainableDevelopmentGoals')}</a> */}
-          <a href="#">{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name || ''}</a>
+          {goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name && (
+            <a href="#">{goalInfo.translations[params.lang as keyof typeof goalInfo.translations].name}</a>
+          )}
         </div>
         <div className="main-news">
           <div className="main-news-block">
-            <div className="main-news-block-title" style={{ background: `#${goalInfo?.color}` }}>
-              <div className="main-block-title-up">
-                <span>{goalInfo?.goals}</span>
-                <h1>{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name}</h1>
+            {goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name && (
+              <div className="main-news-block-title" style={{ background: `#${goalInfo?.color}` }}>
+                <div className="main-block-title-up">
+                  <span>{goalInfo?.goals}</span>
+                  <h1>{goalInfo.translations[params.lang as keyof typeof goalInfo.translations].name}</h1>
+                </div>
+                <div className="main-block-title-down">
+                  <p>{goalInfo.translations[params.lang as keyof typeof goalInfo.translations].name}</p>
+                </div>
               </div>
-              <div className="main-block-title-down">
-                <p>{goalInfo?.translations[params.lang as keyof typeof goalInfo.translations]?.name}</p>
-              </div>
-            </div>
+            )}
             
             <div className="main-news-block-cards">
-              {newsData?.results.map((item) => {
-                const date = formatDate(item.date_posted);
-                return (
-                  <div key={item.id} className="main-block-cards-card">
-                    <div className="main-cards-card-title">
-                      <h2>{item.translations[params.lang as keyof typeof item.translations]?.title}</h2>
-                    </div>
-                    <div className="main-cards-card-belongs">
-                      <p>Tegishli maqsadlar:</p>
-                      {item.display_goals.map((goal) => (
-                        <a
-                          key={goal.id}
-                          href="#"
-                          className="number"
-                          style={{ background: `#${goal.color}` }}
-                        >
-                          {goal.goals}
-                        </a>
-                      ))}
-                    </div>
+              {newsData && newsData.results && newsData.results
+                .filter(item => item.translations[params.lang as keyof typeof item.translations])
+                .map((item) => {
+                  const translation = item.translations[params.lang as keyof typeof item.translations];
+                  
+                  return (
+                    <div key={item.id} className="main-block-cards-card">
+                      <div className="main-cards-card-title">
+                        <h2>{translation.title}</h2>
+                      </div>
+                      <div className="main-cards-card-belongs">
+                        <p>{t('common.relatedGoals')}:</p>
+                        {item.display_goals
+                          .filter(goal => goal.translations[params.lang as keyof typeof goal.translations])
+                          .map((goal) => {
+                            const goalTranslation = goal.translations[params.lang as keyof typeof goal.translations];
+                            
+                            return (
+                              <a
+                                key={goal.id}
+                                href="#"
+                                className="number"
+                                style={{ background: `#${goal.color}` }}
+                              >
+                                {goal.goals}
+                              </a>
+                            );
+                          })}
+                      </div>
 
-                    <div className="main-cards-card-bottom">
-                      <div className="main-cards-card-date">
-                        <span className="day">{date.day}</span>
-                        <span className="month">{date.month}</span>
-                        <span className="year">{date.year}</span>
+                      <div className="main-cards-card-bottom">
+                        <div className="main-cards-card-date">
+                          <span>{formatDate(item.date_posted)}</span>
+                        </div>
+                        <div className="main-cards-card-btn">
+                          <a href={`/${i18n.language}/news/${translation.slug}`}>{t('common.readMore')}</a>
+                        </div>
                       </div>
-                      <div className="main-cards-card-btn">
-                        <a href={`/${i18n.language}/news/${item.translations[i18n.language as keyof typeof item.translations]?.slug}`}>{t('common.readMore')}</a>
-                      </div>
+                      <div className="card-line"></div>
                     </div>
-                    <div className="card-line"></div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
 
             {newsData && (

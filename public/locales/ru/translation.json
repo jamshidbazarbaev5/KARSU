@@ -44,15 +44,24 @@
       "relatedGoals":"Связанные цели"
 
     },
+    "faculty":{
+      "description":"Описание факультета",
+      "history":"История факультета"
+    },
     "common": {
+      "teachers":"Преподаватели",
+      "description":"Краткое описание",
+      "files":"Файлы",
+      "agencies": "Отделы",
       "readMore":"Подробнее",
+      "facultyDepartment":"Факультеты",
       "videos":"Видео",
       "normativeDocuments":"Нормативные документы",
       "soon":"Вскоре здесь будет важная информация",
       "allEvents":"Все события",
       "noNewsAvailable":"Новости не найдены",
       "nameOfBerdakh":"имени Бердаха",
-      "backToHome":"Вернутс в главную страницу",
+      "backToHome":"Вернуться в главную страницу",
       "events": "Событие",
       "relatedGoals": "Связанные цели",
       "moreDetails": "Подробнее",
@@ -60,7 +69,7 @@
       "attention": "ВНИМАНИЕ!!! ВНИМАНИЕ!!! СРОЧНО!!!!",
       "home": "Главная",
       "news": "Новости",
-      "berdakh": "Просвещение Искал Я благое, Бердак",
+      "berdakh": "Просвещение Искал Я благое, Бердах",
       "menus":"Посты",
       "allNews":"Все новости",
       "University":"КАРАКАЛПАКСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ",
@@ -74,8 +83,14 @@
       "documentType": "Тип документа / Издатель",
       "date": "Дата",
       "documentName": "Название документа",
-      "downloadDocument": "Скачать документ"
-
+      "downloadDocument": "Скачать документ",
+      "noNews":"Новостей нету",
+      "noEventsAvailable":"Событий нету",
+      "noServicesAvailable":"Услуг нету",
+      "noStatisticsAvailable":"Статистики нету",
+      "noPartnersAvailable":"Партнеров нету",
+      "noFacultiesAvailable":"Факультетов нету",
+      "noVideosAvailable":"Видео нету"
 
     },
     "buttons": {

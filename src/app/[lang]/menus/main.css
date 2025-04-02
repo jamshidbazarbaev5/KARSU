@@ -5,9 +5,40 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 /* <-----------HEADER--------------> */
+/* Override all font families except icons, specific elements, and TinyMCE content */
+*:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-brands):not(.berdaq-quote):not([class^="fa-"]):not(.tinymce-content):not(.tinymce-content *) {
+  font-family: var(--font-sans) !important;
+}
 
+.berdaq-quote {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+:root {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* TinyMCE content should inherit its fonts */
+.tinymce-content {
+  font-family: inherit;
+}
+
+.tinymce-content * {
+  font-family: inherit;
+}
+
+.tinymce-content h1,
+.tinymce-content h2,
+.tinymce-content h3,
+.tinymce-content p {
+  font-family: inherit;
+}
 .header-main {
   background: #002b6a;
   padding: 0 10px;
@@ -329,6 +360,7 @@ input#search_call:checked ~ .header-main-left-search-input {
 
 .header-main-nav-row-1 a {
   text-decoration: none;
+  max-width: 100px;
   color: #002b6a;
   font-family: "Nunito Sans", sans-serif;
   font-weight: bold;
@@ -535,8 +567,6 @@ input#search_call:checked ~ .header-main-left-search-input {
 
 .main-news-block-title h1 {
     margin: 20px 0;
-    font-family: 'Nunito', sans-serif;
-    font-size: 20px;
 }
 
 .main-news-block-date {
@@ -562,10 +592,6 @@ input#search_call:checked ~ .header-main-left-search-input {
 
 .main-news-block-text {
     padding: 15px 0;
-    font-family: "Source Sans 3", system-ui;
-    font-size: 15px;
-    line-height: 25px;
-    font-weight: 500;
     width: 100%;
     word-spacing: 0.3em;
     text-align: justify;
@@ -1583,8 +1609,7 @@ input#search_call:checked ~ .header-main-left-search-input {
     }
 
     .main-news-block-title h1 {
-        font-family: 'Nunito Sans', sans-serif;
-        font-size: 25px;
+        margin: 20px 0;
     }
 
     .main-news-block-date {
@@ -1620,12 +1645,10 @@ input#search_call:checked ~ .header-main-left-search-input {
     }
 
     .main-news-block-text {
-      font-family: "Source Sans 3", sans-serif;
-        font-size: 19px;
-        line-height: 30px;
-        font-weight: 400;
-        width: 100%;
-        word-spacing: 0.3em;
+      padding: 15px 0;
+      width: 100%;
+      word-spacing: 0.3em;
+      text-align: justify;
     }
 
 
@@ -2260,7 +2283,7 @@ input#search_call:checked ~ .header-main-left-search-input {
 
 .menu-post-card {
     background: #fff;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.2s ease-in-out;
@@ -2336,7 +2359,10 @@ input#search_call:checked ~ .header-main-left-search-input {
         width: 85%;
         gap: 1rem;
     }
+
 }
+
+
 
 
 
@@ -2394,3 +2420,5 @@ input#search_call:checked ~ .header-main-left-search-input {
   margin-bottom: 20px;
   text-align: justify;
 }
+
+

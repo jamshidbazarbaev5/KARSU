@@ -44,13 +44,24 @@
       "economics": "Faculty of Economics"
     },
     "common": {
-        "normativeDocuments":"Normative Documents",
+      "teachers":"Teachers",
+
+      "noVideosAvailable":"No videos available",
+      "noFacultiesAvailable":"No faculties available",
+      "noNews":"No news available",
+      "normativeDocuments":"Normative Documents",
       "soon":"Soon there will be important information here. Stay tuned!",
       "noNewsAvailable":"No news available",
       "readMore":"More",
       "nameOfBerdakh":"Named after Berdakh",
       "vidios":"Videos",
+      "files":"Files",
       "home": "Home",
+      "description":"Short description",
+      "noEventsAvailable":"No events available",
+      "noServicesAvailable":"No announcements available",
+      "noStatisticsAvailable":"No statistics available",
+      "noPartnersAvailable":"No partners available",
       "menus":"Posts",
       "backToHome":"Back to home",
       "news": "News",
@@ -73,7 +84,12 @@
       "documentType": "Document Type / Issued By",
       "date": "Date",
       "documentName": "Document Name",
-      "downloadDocument": "Download Document"
+      "downloadDocument": "Download Document",
+      "agencies": "Agencies"
+    },
+    "faculty":{
+      "description":"Faculty Description",
+      "history":"Faculty History"
     },
     "buttons": {
       "more": "More"

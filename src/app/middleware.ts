@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 let locales = ['uz', 'ru', 'en', 'kk']
-let defaultLocale = 'ru'
+let defaultLocale = 'uz'
 
 // Get the preferred locale from headers
 function getLocale(request: NextRequest) {
@@ -14,9 +14,7 @@ function getLocale(request: NextRequest) {
   }
 
   const headersObj = Object.fromEntries(headers.entries())
-//   const languages = new Negotiator({ headers: headersObj }).languages()
-  
-//   return match(languages, locales, defaultLocale)
+  return defaultLocale
 }
 
 export function middleware(request: NextRequest) {
@@ -37,7 +35,7 @@ export function middleware(request: NextRequest) {
     }
 
     // For other paths, add the locale prefix
-    return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url))
+    return NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.url))
   }
 }
 
@@ -48,6 +46,8 @@ export const config = {
     // Optional: Match root path
     '/',
     // Add news paths
-    '/news/:path*'
+    '/news/:path*',
+    // Add drafts paths
+    '/publications/drafts/:path*'
   ],
 }

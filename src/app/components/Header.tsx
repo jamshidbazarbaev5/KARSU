@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import './main.css';
+import { t } from 'i18next';
 
 interface MenuTranslation {
     name: string;
@@ -23,36 +24,51 @@ interface MenuItem {
         kk: MenuTranslation;
     };
     menu_posts: number[];
+    menu_outer_link?: {
+        id: number;
+        url: string;
+        img: string | null;
+        translations: Record<string, any>;
+        menu: number;
+        is_outer: boolean;
+    };
 }
 
 const Header = () => {
     const { t, i18n } = useTranslation();
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const router = useRouter();
-    
     useEffect(() => {
-        fetch('https:debttracker.uz/menus/main/')
-            .then(res => res.json())
-            .then(data => setMenuItems(data))
-            .catch(err => console.error('Error fetching menu items:', err));
+        const fetchMenus = async () => {
+            try {
+                const timestamp = new Date().getTime();
+                const response = await fetch(`https://karsu.uz/api/menus/main/?_=${timestamp}`, {
+                   
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch menus');
+                const data = await response.json();
+                const sortedMenus = data.sort((a: MenuItem, b: MenuItem) => a.id - b.id);
+                setMenuItems(sortedMenus);
+            } catch (error) {
+                console.error('Error fetching menu items:', error);
+            }
+        };
+
+        fetchMenus();
     }, []);
 
     const changeLanguage = (newLang: string) => {
         const currentPath = window.location.pathname
         const segments = currentPath.split('/')
         
-        // Remove empty segments and ensure we have clean path segments
         const cleanSegments = segments.filter(segment => segment)
         
-        // If we have segments, replace the language segment (first segment)
         if (cleanSegments.length > 0) {
-            // Remove the current language segment (first segment)
             cleanSegments.shift()
-            // Create new path with new language
             const newPath = `/${newLang}/${cleanSegments.join('/')}`
             window.location.href = newPath
         } else {
-            // If no segments, just add the new language
             window.location.href = `/${newLang}`
         }
     };
@@ -112,32 +128,55 @@ const Header = () => {
         };
       }, []);
 
+    const handleMenuClick = (e: React.MouseEvent<HTMLLabelElement>, item: MenuItem) => {
+        e.preventDefault(); // Prevent default behavior immediately
+        
+        // If it has an external link, open it directly
+        if (item.menu_outer_link?.is_outer) {
+            window.open(item.menu_outer_link.url, '_blank');
+            return;
+        }
+        
+        const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
+        if (hasChildren) {
+            return;
+        }
+        
+        const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
+        if (translation.slug) {
+            window.location.href = `/${i18n.language}/menus/main/${translation.slug}/`;
+        }
+    };
+
     const renderMenuItem = (item: MenuItem) => {
         const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
         const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
-        
-        const handleMenuClick = (e: React.MouseEvent<HTMLLabelElement>) => {
-            if (hasChildren) {
-                e.preventDefault();
-                return;
-            }
-            
-            const menuSlug = translation.slug;
-            if (menuSlug) {
-                window.location.href = `/${i18n.language}/menus/main/${menuSlug}/`;
-            }
-        };
 
         return (
             <li key={item.id} className='header-main-menu-list-li' id={`menu-${item.id}`}>
                 <input type="checkbox" id={`menu_${item.id}`} />
-                <label 
-                    htmlFor={`menu_${item.id}`}
-                    className="header-main-menu-list-li"
-                    onClick={handleMenuClick}
-                >
-                    {translation.name}
-                </label>
+                {item.menu_outer_link?.is_outer ? (
+                    <a 
+                        href={item.menu_outer_link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="header-main-menu-list-li"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            window.open(item.menu_outer_link?.url, '_blank');
+                        }}
+                    >
+                        {translation.name}
+                    </a>
+                ) : (
+                    <label 
+                        htmlFor={`menu_${item.id}`}
+                        className="header-main-menu-list-li"
+                        onClick={(e) => handleMenuClick(e, item)}
+                    >
+                        {translation.name}
+                    </label>
+                )}
 
                 {menuItems.filter(subItem => subItem.parent === item.id).length > 0 && (
                     <div className="header-main-hover">
@@ -208,23 +247,36 @@ const Header = () => {
         const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
         const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
         
+        const linkProps = item.menu_outer_link?.is_outer ? {
+            href: item.menu_outer_link.url,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            onClick: (e: React.MouseEvent) => {
+                e.preventDefault();
+                window.open(item.menu_outer_link?.url, '_blank');
+            }
+        } : {
+            href: hasChildren ? "#" : `/${i18n.language}/menus/main/${translation.slug}`,
+            onClick: (e: React.MouseEvent) => {
+                if (hasChildren) {
+                    e.preventDefault();
+                    const navList = e.currentTarget.nextElementSibling;
+                    const angle = e.currentTarget.querySelector('.non-active');
+                    
+                    if (navList?.classList.contains('header-main-nav-ul')) {
+                        navList.classList.toggle('open');
+                    }
+                    angle?.classList.toggle('rotate');
+                }
+            }
+        };
+        
         return (
             <ul key={item.id}>
                 <a 
-                    href={hasChildren ? "#" : `/${i18n.language}/menus/main/${translation.slug}`} 
+                    {...linkProps}
                     className="main-title"
-                    onClick={(e) => {
-                        if (hasChildren) {
-                            e.preventDefault();
-                            const navList = e.currentTarget.nextElementSibling;
-                            const angle = e.currentTarget.querySelector('.non-active');
-                            
-                            if (navList?.classList.contains('header-main-nav-ul')) {
-                                navList.classList.toggle('open');
-                            }
-                            angle?.classList.toggle('rotate');
-                        }
-                    }}
+                    style={{textDecoration: 'none', color: 'black'}}
                 >
                     <span>{translation.name}</span>
                     {hasChildren && (
@@ -418,12 +470,12 @@ const Header = () => {
                             <div className="header-main-nav-row-1">
                                 <Image src="/logo.png" alt='icons' priority unoptimized={true} width={20} height={20} />
                                 <a href={`/${i18n.language}/`}
-                                    className="header-row-title">КАРАКАЛПАКСКИЙ
-                                    ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ
+                                    className="header-row-title">
+                                    {t('common.University')}
                                 </a>
                             </div>
                             <div className="header-main-nav-row-2">
-                                <p>{t('common.berdakh')}</p>
+                                <p className='berdaq-quote'>{t('common.berdakh')}</p>
                                 <span className="quote-span">Call Markaz:
                                     &nbsp;&nbsp;&nbsp;+998 61 223 60 78
                                     &nbsp;&nbsp;&nbsp;+99861-223-59-25</span>

@@ -1,3 +1,37 @@
+/* <-----------HEADER--------------> */
+/* Override all font families except icons, specific elements, and TinyMCE content */
+*:not(.fa):not(.fas):not(.far):not(.fab):not(.fa-brands):not(.berdaq-quote):not([class^="fa-"]):not(.tinymce-content):not(.tinymce-content *) {
+    font-family: var(--font-sans) !important;
+  }
+  
+  /* Specific styling for the Berdaq quote */
+  .berdaq-quote {
+    font-family: 'Great Vibes', cursive !important;
+  }
+  
+  :root {
+    --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+  }
+  
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+  
+  .tinymce-content {
+    font-family: inherit;
+  }
+  
+  .tinymce-content * {
+    font-family: inherit;
+  }
+  
+  .tinymce-content h1,
+  .tinymce-content h2,
+  .tinymce-content h3,
+  .tinymce-content p {
+    font-family: inherit;
+  }
 .main-news-rubric {
     display: flex;
     flex-direction: column;

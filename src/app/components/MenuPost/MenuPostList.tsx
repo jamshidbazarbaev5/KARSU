@@ -39,7 +39,6 @@ export const MenuPostList = ({ posts }: MenuPostListProps) => {
         );
     }
 
-    // If there's only one post, use the single post layout
     const isSinglePost = posts.length === 1;
     
     return (
