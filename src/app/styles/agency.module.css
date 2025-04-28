@@ -92,10 +92,16 @@
     .container {
       margin-left: 0;
       max-width: 100%;
+      padding: 20px;
     }
     
     .grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Change the global selector to a composed class */
+    .sidebarHidden {
+      display: none;
     }
   }
   

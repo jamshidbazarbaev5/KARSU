@@ -88,12 +88,14 @@ export default function SingleAnnouncementPage() {
           </div>
         </div>
       </div>
-      <div className="main-news-pages">
+      <div className="main-news-pages" style={{maxWidth:"1215px"}}> 
         <a href={`/${i18n.language}`}>{t("common.home")}</a>
         <a href={`/${i18n.language}/events`}>{t("common.events")}</a>
         {getTranslatedText(announcement?.translations, i18n.language, "title") && (
           <a href="#">
-            {getTranslatedText(announcement?.translations, i18n.language, "title")}
+            {getTranslatedText(announcement?.translations, i18n.language, "title")?.length > 50 
+              ? `${getTranslatedText(announcement?.translations, i18n.language, "title")?.slice(0, 50)}...` 
+              : getTranslatedText(announcement?.translations, i18n.language, "title")}
           </a>
         )}
       </div>

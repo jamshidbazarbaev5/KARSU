@@ -30,6 +30,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 24px;
+  overflow: hidden;
 }
 
 .profile-image {
@@ -83,16 +84,20 @@ body {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  width: 100%;
 }
 
 .description-content.open {
   max-height: 1000px;
+  transition: max-height 0.5s ease-in;
 }
 
 .description-text {
   color: #4a4a4a;
   line-height: 1.6;
   margin-bottom: 16px;
+  width: 100%;
+  padding: 0 16px;
 }
 
 .contact-info {
@@ -114,4 +119,77 @@ body {
 
 .contact-item:hover {
   background: #ebebeb;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .profile-image {
+    width: 160px;
+    height: 200px;
+  }
+
+  .profile-content {
+    width: 100%;
+    text-align: center;
+  }
+
+  .profile-name {
+    font-size: 20px;
+  }
+
+  .profile-title {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contact-item {
+    justify-content: center;
+  }
+
+  .description-header {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .profile-container {
+    margin: 20px auto;
+    padding: 12px;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 150px;
+  }
+
+  .profile-name {
+    font-size: 18px;
+  }
+
+  .profile-title {
+    font-size: 14px;
+  }
+
+  .description-header h3 {
+    font-size: 16px;
+  }
+
+  .description-text {
+    font-size: 14px;
+  }
+
+  .contact-item {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
 }

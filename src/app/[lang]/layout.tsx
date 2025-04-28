@@ -95,14 +95,14 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
     en: 'Karakalpak State University',
     ru: 'Каракалпакский Государственный Университет',
     uz: 'Qoraqalpoq Davlat Universiteti',
-    kk: 'Qaraqalpaq Mamleketlik Universiteti'
+    kk: 'Qaraqalpaq mámleketlik universtiteti'
   };
 
   const description = {
     en: 'Karakalpak State University offers high-quality education, research opportunities, and diverse academic programs. Join our prestigious institution for excellence in higher education.',
     ru: 'Каракалпакский государственный университет предлагает качественное образование, возможности для исследований и разнообразные академические программы.',
     uz: 'Qoraqalpoq Davlat Universiteti sifatli ta\'lim, tadqiqot imkoniyatlari va xilma-xil akademik dasturlarni taqdim etadi.',
-    kk: 'Qaraqalpaq Mamleketlik Universiteti joqari sapali bilim'
+    kk: 'Qaraqalpaq mámleketlik universtiteti joqari sapali bilim'
   };
 
   return {
@@ -112,7 +112,7 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
     },
     description: description[language as keyof typeof description],
     keywords: [
-      'Kara-Kalpak State University',
+      'Karakalpak State University',
       'higher education Uzbekistan',
       'university Nukus',
       'KarSU',
@@ -125,7 +125,7 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
       'student life',
       'university admissions',
     ],
-    authors: [{ name: 'Kara-Kalpak State University' }],
+    authors: [{ name: 'KaraKalpak State University' }],
     creator: 'Softium',
     publisher: 'Softium',
     metadataBase: new URL('https://karsu.uz'),
@@ -142,13 +142,13 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
       type: 'website',
       locale: language,
       url: 'https://karsu.uz',
-      siteName: 'Kara-Kalpak State University',
+      siteName: 'KaraKalpak State University',
       images: [
         {
           url: '/images/karsu-og.jpg',
           width: 1200,
           height: 630,
-          alt: 'Kara-Kalpak State University Campus',
+          alt: 'KaraKalpak State University Campus',
         },
       ],
     },

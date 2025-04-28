@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -38,40 +38,38 @@ const Header = () => {
     const { t, i18n } = useTranslation();
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const router = useRouter();
-    useEffect(() => {
-        const fetchMenus = async () => {
-            try {
-                const timestamp = new Date().getTime();
-                const response = await fetch(`https://karsu.uz/api/menus/main/?_=${timestamp}`, {
-                   
-                });
 
-                if (!response.ok) throw new Error('Failed to fetch menus');
-                const data = await response.json();
-                const sortedMenus = data.sort((a: MenuItem, b: MenuItem) => a.id - b.id);
-                setMenuItems(sortedMenus);
-            } catch (error) {
-                console.error('Error fetching menu items:', error);
-            }
-        };
-
-        fetchMenus();
+    const fetchMenus = useCallback(async () => {
+        try {
+            const timestamp = new Date().getTime();
+            const response = await fetch(`https://karsu.uz/api/menus/main/?_=${timestamp}`);
+            
+            if (!response.ok) throw new Error('Failed to fetch menus');
+            const data = await response.json();
+            const sortedMenus = data.sort((a: MenuItem, b: MenuItem) => a.id - b.id);
+            setMenuItems(sortedMenus);
+        } catch (error) {
+            console.error('Error fetching menu items:', error);
+        }
     }, []);
 
-    const changeLanguage = (newLang: string) => {
-        const currentPath = window.location.pathname
-        const segments = currentPath.split('/')
-        
-        const cleanSegments = segments.filter(segment => segment)
+    useEffect(() => {
+        fetchMenus();
+    }, [fetchMenus]);
+
+    const changeLanguage = useCallback((newLang: string) => {
+        const currentPath = window.location.pathname;
+        const segments = currentPath.split('/');
+        const cleanSegments = segments.filter(segment => segment);
         
         if (cleanSegments.length > 0) {
-            cleanSegments.shift()
-            const newPath = `/${newLang}/${cleanSegments.join('/')}`
-            window.location.href = newPath
+            cleanSegments.shift();
+            const newPath = `/${newLang}/${cleanSegments.join('/')}`;
+            window.location.href = newPath;
         } else {
-            window.location.href = `/${newLang}`
+            window.location.href = `/${newLang}`;
         }
-    };
+    }, []);
 
     useEffect(() => {
         const burger_menu = document.querySelector('.header-menu-nav-burger');
@@ -128,31 +126,37 @@ const Header = () => {
         };
       }, []);
 
-    const handleMenuClick = (e: React.MouseEvent<HTMLLabelElement>, item: MenuItem) => {
-        e.preventDefault(); // Prevent default behavior immediately
+    const handleMenuClick = useCallback((e: React.MouseEvent<HTMLLabelElement>, item: MenuItem) => {
+        e.preventDefault();
         
-        // If it has an external link, open it directly
         if (item.menu_outer_link?.is_outer) {
             window.open(item.menu_outer_link.url, '_blank');
             return;
         }
         
-        // If no outer link but has children, just return (dropdown will handle the interaction)
         const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
         if (hasChildren) {
             return;
         }
         
-        // For regular menu items with no children and no outer link
         const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
         if (translation.slug) {
             window.location.href = `/${i18n.language}/menus/main/${translation.slug}/`;
         }
-    };
+    }, [menuItems, i18n.language]);
 
-    const renderMenuItem = (item: MenuItem) => {
+    const mainMenuItems = useMemo(() => {
+        return menuItems.filter(item => item.parent === null);
+    }, [menuItems]);
+
+    const getChildMenuItems = useCallback((parentId: number) => {
+        return menuItems.filter(subItem => subItem.parent === parentId);
+    }, [menuItems]);
+
+    const renderMenuItem = useCallback((item: MenuItem) => {
         const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
-        const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
+        const childItems = getChildMenuItems(item.id);
+        const hasChildren = childItems.length > 0;
 
         return (
             <li key={item.id} className='header-main-menu-list-li' id={`menu-${item.id}`}>
@@ -240,11 +244,12 @@ const Header = () => {
                 )}
             </li>
         );
-    };
+    }, [i18n.language, getChildMenuItems, handleMenuClick]);
 
-    const renderMobileMenuItem = (item: MenuItem) => {
+    const renderMobileMenuItem = useCallback((item: MenuItem) => {
         const translation = item.translations[i18n.language as keyof typeof item.translations] || item.translations.en;
-        const hasChildren = menuItems.filter(subItem => subItem.parent === item.id).length > 0;
+        const childItems = getChildMenuItems(item.id);
+        const hasChildren = childItems.length > 0;
         
         const linkProps = item.menu_outer_link?.is_outer ? {
             href: item.menu_outer_link.url,
@@ -309,16 +314,16 @@ const Header = () => {
                 )}
             </ul>
         );
-    };
+    }, [i18n.language, getChildMenuItems]);
 
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const query = formData.get('query');
         if (query) {
             router.push(`/${i18n.language}/search?query=${encodeURIComponent(query.toString())}`);
         }
-    };
+    }, [router, i18n.language]);
 
     return (
         <>
@@ -457,9 +462,7 @@ const Header = () => {
                     </div>
                     <div className='header-main-menu-list'>
                         <ul className='header-main-menu-list-ul'>
-                            {menuItems
-                                .filter(item => item.parent === null)
-                                .map(renderMenuItem)}
+                            {mainMenuItems.map(renderMenuItem)}
                         </ul>
                     </div>
                 </div>
@@ -503,4 +506,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default memo(Header)

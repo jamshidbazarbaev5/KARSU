@@ -27,7 +27,7 @@ export interface MenuPost {
     }[];
     views_count?: number;
     id: number;
-    menu?: number;
+    menu?: number |string;
     footer_menu?: number | null;
     main_image: string;
     images: string[];

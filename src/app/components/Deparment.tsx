@@ -70,14 +70,14 @@ const fetchAdminPage = async (page: number) => {
 };
 
 // Add this helper function
-const fetchTeachers = async () => {
+const fetchTeachers = async (departmentSlug: string) => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://karsu.uz/api';
-    let allTeachers :any= [];
+    let allTeachers: any = [];
     let page = 1;
 
     while (true) {
-      const response = await fetch(`${baseUrl}/publications/teachers?page=${page}`);
+      const response = await fetch(`${baseUrl}/menus/department/${departmentSlug}/teachers?page=${page}`);
       const data = await response.json();
 
       if (!data.results || data.results.length === 0) break;
@@ -103,9 +103,12 @@ const Department: React.FC<DepartmentProps> = ({ departmentData }) => {
   const [isOpen, setIsOpen] = React.useState<{[key: number]: boolean}>({});
 
   const getBreadcrumbPath = () => {
+    const slug = departmentData.translations[i18n.language]?.slug || '';
+    const isKafedra = slug.toLowerCase().includes('kafedra');
+    
     return {
-      path: departmentData.type === 'department' ? 'menus/main/otdely' : 'faculties',
-      text: t("common.departments")
+      path: isKafedra ? 'faculties' : 'menus/main/otdely',
+      text: isKafedra ? t("common.faculties") : t("common.departments")
     };
   };
 
@@ -149,7 +152,7 @@ const Department: React.FC<DepartmentProps> = ({ departmentData }) => {
 
     const fetchTeachersData = async () => {
       try {
-        const teachersData = await fetchTeachers();
+        const teachersData = await fetchTeachers(departmentData.translations[i18n.language]?.slug || '');
         const departmentTeachers = teachersData.filter(
           (teacher: TeacherData) => {
             // Only include teachers with translations in current language
@@ -228,7 +231,7 @@ const Department: React.FC<DepartmentProps> = ({ departmentData }) => {
           
           {departmentData.type === 'department' && teachers.length > 0 && (
             <div className="department-teachers">
-              <h2 className="teachers-title">{t("common.teachers")}</h2>
+              <h2 className="teachers-title" style={{margin:'0 auto',display:"flex", alignItems:"center",justifyContent:"center"}}>{t("common.teachers")}</h2>
               {teachers.map((teacher) => (
                 <div key={teacher.id} className="profile-container">
                   <div className="profile-card">

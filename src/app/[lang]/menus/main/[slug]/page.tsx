@@ -1,4 +1,4 @@
-  "use client";
+"use client";
   import { useEffect, useState } from "react";
   import { useParams } from "next/navigation";
   import { useTranslation } from "react-i18next";
@@ -366,7 +366,10 @@
                       return (
                         <MenuPostCard 
                           key={post.id} 
-                          post={transformedPost}
+                          post={{
+                            ...transformedPost,
+                            menu: slug as string // Add this line to pass the menu slug
+                          }}
                           isSinglePost={menuItem?.menu_posts?.length === 1}
                           totalPosts={menuItem?.menu_posts?.length || 0}
                         />

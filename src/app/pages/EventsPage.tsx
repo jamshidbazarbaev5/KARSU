@@ -52,6 +52,7 @@ const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
+  const [displayedEvents, setDisplayedEvents] = useState<Event[]>([]);
   const { i18n } = useTranslation();
   const itemsPerPage = 6;
 
@@ -61,21 +62,51 @@ const EventsPage = () => {
   }, [i18n.language]);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchEventsWithTranslations = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://karsu.uz/api/announcements/?page=${currentPage}`);
-        const data = await response.json();
-        setEvents(data.results);
-        setTotalPages(Math.ceil(data.count / itemsPerPage));
+        let translatedEvents: Event[] = [];
+        let currentPageToFetch = currentPage;
+        let totalItems = 0;
+
+        while (translatedEvents.length < itemsPerPage) {
+          const response = await fetch(`https://karsu.uz/api/announcements/?page=${currentPageToFetch}`);
+          const data = await response.json();
+
+          // Filter items that have translation for current language
+          const translatedItems = data.results.filter(
+            (item: Event) => item.translations && i18n.language in item.translations
+          );
+
+          translatedEvents = [...translatedEvents, ...translatedItems];
+
+          // Update total count on first fetch
+          if (currentPageToFetch === currentPage) {
+            totalItems = data.count;
+            setTotalPages(Math.ceil(totalItems / itemsPerPage));
+          }
+
+          // Break if no more pages or we have enough items
+          if (!data.next || translatedEvents.length >= itemsPerPage) {
+            break;
+          }
+
+          currentPageToFetch++;
+        }
+
+        // Take only the first itemsPerPage items
+        setDisplayedEvents(translatedEvents.slice(0, itemsPerPage));
+        setEvents(translatedEvents.slice(0, itemsPerPage));
       } catch (error) {
         console.error('Error fetching events:', error);
+        setDisplayedEvents([]);
+        setEvents([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEvents();
+    fetchEventsWithTranslations();
   }, [currentPage, i18n.language, itemsPerPage]);
 
   return (
@@ -92,14 +123,16 @@ const EventsPage = () => {
             {loading ? (
               <div>Loading...</div>
             ) : (
-              events.map((event) => (
-                <EventCard
-                  key={event.id}
-                  title={event.translations[i18n.language]?.title}
-                  description={event.translations[i18n.language]?.description}
-                  date={event.date_post}
-                  slug={event.translations[i18n.language]?.slug}
-                />
+              displayedEvents.map((event) => (
+                event.translations[i18n.language] && (
+                  <EventCard
+                    key={event.id}
+                    title={event.translations[i18n.language].title}
+                    description={event.translations[i18n.language].description}
+                    date={event.date_post}
+                    slug={event.translations[i18n.language].slug}
+                  />
+                )
               ))
             )}
           </div>

@@ -1091,8 +1091,13 @@ export default function MainSlider() {
                 </p>
               </div>
             )}
-            <div className="all-events-page-link-div">
-              <Link href={`/${i18n.language}/events`} className="all-events-page-link">
+            <div className="all-events-page-link-div2" style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "end",
+              width: announcements?.length === 6 ? '300%' : 'auto'
+            }}>
+              <Link href={`/${i18n.language}/events`} className="all-events-page-link2" style={{textDecoration:"none",color:"#002b6a",fontSize:"20px",fontWeight:'650',marginRight:"10px"}} >  
                 {t("common.allEvents")}
               </Link>
               <svg

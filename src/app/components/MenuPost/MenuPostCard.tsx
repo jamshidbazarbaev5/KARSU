@@ -120,7 +120,8 @@ export const MenuPostCard = ({ post, isSinglePost, totalPosts = 1, isOuterLink =
       if (isPerson) {
         router.push(`/${i18n.language}/menus/persons/${post.id}`);
       } else {
-        router.push(`/${i18n.language}/menus/main/posts/${translation.slug}`);
+        // Changed this line to use the current menu slug and post slug
+        router.push(`/${i18n.language}/menus/main/${post.menu}/${translation.slug}`);
       }
     }
   };

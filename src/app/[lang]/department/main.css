@@ -576,7 +576,7 @@ input#search_call:checked ~ .header-main-left-search-input {
   align-items: center;
   gap: 10px;
   font-family: "Nunito Sans", sans-serif;
-  font-size: 18px;
+  font-size: 17px;
 }
 .faculty-email i {
   color: #002b6a;
