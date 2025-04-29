@@ -216,7 +216,12 @@ export default async function RootLayout({
       `}
     >
       <head>
-        <link rel="icon" href="/icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/logo.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo.ico" />
+        <link rel="mask-icon" href="/logo.png" color="#000000" />
+        <meta name="msapplication-TileImage" content="/logo.ico" />
+        <meta name="msapplication-TileColor" content="#000000" />
         <link 
           rel="stylesheet" 
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
