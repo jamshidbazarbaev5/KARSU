@@ -34,6 +34,7 @@ export const MenuPostCard = ({ post, isSinglePost, totalPosts = 1, isOuterLink =
   const [nav2, setNav2] = useState<Slider | null>(null);
   const slider1 = useRef<Slider | null>(null);
   const slider2 = useRef<Slider | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
   const hasImages = post.main_image || (post.images && post.images.length > 0);
   const translation =
     post.translations[i18n.language as keyof typeof post.translations] ||
@@ -48,6 +49,16 @@ export const MenuPostCard = ({ post, isSinglePost, totalPosts = 1, isOuterLink =
   useEffect(() => {
     setNav1(slider1.current);
     setNav2(slider2.current);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth > 768);
+    };
+    
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const mainSettings: Settings = {
@@ -225,9 +236,11 @@ export const MenuPostCard = ({ post, isSinglePost, totalPosts = 1, isOuterLink =
             <div className="content">
               <div
                 className="faculty-block  tinymce-content"
-                style={{ width: "1200px", margin: "0 auto" }}
+                // style={{ width: "1200px", margin: "0 auto" }}
               >
-                <div className="faculty-block-title">
+                <div className="faculty-block-title" style={{
+                  marginLeft: isDesktop ? "72px" : "0"
+                }}>
                   <h3>{translation.title}</h3>
                 </div>
 
@@ -235,12 +248,16 @@ export const MenuPostCard = ({ post, isSinglePost, totalPosts = 1, isOuterLink =
                   className="paragraph tinymce-content"
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(translation.description, purifyConfig),
-                  }}
-                />
-
+                  }} style={{
+                    marginLeft: isDesktop ? "72px " : "0"
+                  }} />
+                  
                 {/* Add files section */}
                 {post.files && post.files.length > 0 && (
-                  <div className="files-section" style={{ marginTop: "20px" }}>
+                  <div className="files-section" style={{ 
+                    marginTop: "20px",
+                    marginLeft: isDesktop ? "72px" : "0"
+                  }}>
                     <h3>{t("common.files")}</h3>
                     {post.files.map((file, index) => (
                       <div key={index} style={{ marginTop: "10px" }}>

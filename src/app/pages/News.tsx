@@ -493,21 +493,7 @@ export default function News({ newsData }: NewsProps) {
             </>
           ) : (
             <>
-              <div className="header-logo-div">
-                <div className="header-logo-mini">
-                  <div className="header-logo-uni">
-                    <Image src="/logo.png" alt="logo" width={100} height={100} />
-                  </div>
-                  <div className="header-logo-uni-name">
-                    <a
-                      href={`/${i18n.language}`}
-                      className="header-logo-uni-name-span"
-                    >
-                      {t("common.University")}
-                    </a>
-                  </div>
-                </div>
-              </div>
+              
               <div
                 className="no-content-message"
                 style={{
