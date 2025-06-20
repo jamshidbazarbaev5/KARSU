@@ -171,6 +171,7 @@
     const [parentMenu, setParentMenu] = useState<ParentMenu | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isDesktop, setIsDesktop] = useState(true);
 
     const isDepartmentsSection = slug === 'bolimlar' || slug === 'otdely' || slug === 'departments' || slug === 'bolimler';
     const isSingleDepartment = agencyData?.length === 1;
@@ -252,6 +253,15 @@
       fetchData();
     }, [slug, isDepartmentsSection]);
 
+    useEffect(() => {
+      const handleResize = () => {
+        setIsDesktop(window.innerWidth >= 1024); // 1024px is a common desktop breakpoint
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const findAgencyAdmin = (agencyId: number) => {
       return adminData.find(admin => admin.agency === agencyId);
     };
@@ -297,8 +307,7 @@
                 })}
             </div>
           </main>
-          <Sidebar />
-
+          {isDesktop && <Sidebar />}
         </div>
       );
     }

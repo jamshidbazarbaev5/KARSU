@@ -387,11 +387,25 @@ const Header = () => {
                                 </svg>
                                 <span>{t('header.topLinks.rectorsOffice')}</span>
                             </a>
+
+                            <a href='http://kpi.allpro.uz' className='header-main-right-li'>
+                                <Image src={'/kpi-3.png'} alt='kpi' width={20} height={20}
+                                       style={{borderRadius: '50%', height: 20, width: "100%"}}/>
+                                <a href='http://kpi.allpro.uz' style={{
+                                    color: "white",
+                                    fontSize: "14px",
+                                    fontFamily: "Nunito Sans, sans-serif",
+                                    textDecoration: "none"
+                                }}>
+                                    KPI
+                                </a>
+
+                            </a>
                         </ul>
                     </div>
                     <div className='header-main-left'>
                         <div className='header-main-left-lang'>
-                            <svg className="top-links__svg" 
+                        <svg className="top-links__svg"
                                 xmlns="http://www.w3.org/2000/svg" 
                                 width="16px" 
                                 height="16px" 

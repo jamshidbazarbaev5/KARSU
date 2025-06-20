@@ -289,7 +289,7 @@ const Department: React.FC<DepartmentProps> = ({ departmentData }) => {
 
         <style jsx>{`
           .department-container {
-            max-width: 1200px;
+            max-width: 1261px;
             margin: 0 auto;
             padding: 20px;
             font-family: Arial, sans-serif;
