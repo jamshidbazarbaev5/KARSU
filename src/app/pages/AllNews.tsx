@@ -289,25 +289,25 @@ const AllNews = () => {
               <span className="news-page-title-span">{t("common.news")}</span>
             </div>
             <div className="news-page-menu">
-              <button
-                className={`news-page-menu-btn ${
-                  activeCategory === null ? "active" : ""
-                }`}
+                 <button 
+                className={`news-page-menu-btn ${activeCategory === null ? 'active' : ''}`} style={activeCategory === null ? { width: 400 } : undefined}
+                
                 onClick={() => handleCategoryClick(null)}
               >
                 {t("common.allNews")}
               </button>
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  className={`news-page-menu-btn ${
-                    activeCategory === getCategorySlug(category) ? "active" : ""
-                  }`}
-                  onClick={() => handleCategoryClick(getCategorySlug(category))}
-                >
-                  {getCategoryName(category.id)}
-                </button>
-              ))}
+              {categories.map((category) => {
+                const categorySlug = category.translations[i18n.language]?.slug;
+                return (
+                  <button
+                    key={category.id}
+                    className={`news-page-menu-btn ${activeCategory === categorySlug ? 'active' : ''}`} style={activeCategory === categorySlug ? { width: 400 } : undefined}
+                    onClick={() => handleCategoryClick(categorySlug)}
+                  >
+                    {getCategoryName(category.id)}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -383,7 +383,13 @@ const AllNews = () => {
               <div key={item.id} className="news-card">
                 <div className="news-photo-div">
                   <div className="news-category">
-                    <span className="news-category-span">
+                    <span className="news-category-span" style={{
+                       display: 'inline-block',
+                       maxWidth: 150,
+                       overflow: 'hidden',
+                       textOverflow: 'ellipsis',
+                       whiteSpace: 'nowrap'
+                     }}>
                       {getCategoryName(item.category)}
                     </span>
                   </div>
@@ -442,6 +448,26 @@ const AllNews = () => {
               </div>
             ))}
           </div>
+
+          {/* No news available message */}
+          {!loading && displayedNews.length === 0 && (
+            <div className="news-not-found" style={{
+              width: '100%',
+              padding: '40px 20px',
+              textAlign: 'center',
+              backgroundColor: '#f5f5f5',
+              borderRadius: '8px',
+              margin: '20px 0'
+            }}>
+              <p style={{
+                fontSize: '18px',
+                color: '#666',
+                margin: 0
+              }}>
+                {t('common.noNews')}
+              </p>
+            </div>
+          )}
 
           <div
             style={{

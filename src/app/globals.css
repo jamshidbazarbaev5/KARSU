@@ -8,7 +8,9 @@
   --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
 }
-
+.news-page-menu-btn.active{
+  width: 400px;
+}
 
 .news-loading-container {
   display: flex;

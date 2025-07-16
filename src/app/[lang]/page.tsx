@@ -880,7 +880,8 @@ export default function MainSlider() {
             </div>
             <div className="news-page-menu">
               <button 
-                className={`news-page-menu-btn ${activeCategory === null ? 'active' : ''}`}
+                className={`news-page-menu-btn ${activeCategory === null ? 'active' : ''}`} style={activeCategory === null ? { width: 400 } : undefined}
+                
                 onClick={() => handleCategoryClick(null)}
               >
                 {t("common.allNews")}
@@ -890,7 +891,7 @@ export default function MainSlider() {
                 return (
                   <button
                     key={category.id}
-                    className={`news-page-menu-btn ${activeCategory === categorySlug ? 'active' : ''}`}
+                    className={`news-page-menu-btn ${activeCategory === categorySlug ? 'active' : ''}`} style={activeCategory === categorySlug ? { width: 400 } : undefined}
                     onClick={() => handleCategoryClick(categorySlug)}
                   >
                     {getTranslatedText(category.translations, i18n.language, "name")}
@@ -916,7 +917,15 @@ export default function MainSlider() {
                   <div className="news-card" key={item.id}>
                     <div className="news-photo-div">
                       <div className="news-category">
-                        <span className="news-category-span">
+                        <span
+                           className="news-category-span"
+                           style={{
+                             display: 'inline-block',
+                             maxWidth: 150,
+                             overflow: 'hidden',
+                             textOverflow: 'ellipsis',
+                             whiteSpace: 'nowrap'
+                           }}>
                           {categoryName}
                         </span>
                       </div>
@@ -963,7 +972,7 @@ export default function MainSlider() {
                       <div className="news-post-date">
                         <span className="news-post-time-span">
                           {new Date(item.date_posted).toLocaleTimeString(
-                            i18n.language,
+                            'ru-Ru',
                             {
                               hour: "2-digit",
                               minute: "2-digit",

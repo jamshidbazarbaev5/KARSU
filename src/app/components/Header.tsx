@@ -38,6 +38,23 @@ const Header = () => {
     const { t, i18n } = useTranslation();
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const router = useRouter();
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        // Function to update screen size
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // 768px is a common mobile breakpoint
+        };
+
+        // Initial check
+        handleResize();
+
+        // Add event listener
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     useEffect(() => {
         const fetchMenus = async () => {
             try {
@@ -325,24 +342,24 @@ const Header = () => {
             <div className='header-main'>
                 <div className='header-main-center'>
                     <div className='header-main-right'>
-                        <ul className='header-main-right-ul'>
+                        <ul className='header-main-right-ul' style={{display:"flex",alignItems:"center",gap:"15px"}}>
                             <a href='https://dist.karsu.uz/' className='header-main-right-li'>
                                 <svg className="top-links__svg" viewBox="0 0 48 48"
-                                    width="20" height="20">
+                                     width="20" height="20">
                                     <path
                                         d="M33.5 16a9.439 9.439 0 0 0-6.5 2.602A9.439 9.439 0 0 0 20.5 16c-5.227 0-9.5 4.273-9.5 9.5V37h6V24.5a3.51 3.51 0 0 1 3.5-3.5 3.51 3.51 0 0 1 3.5 3.5V37h6V24.5a3.51 3.51 0 0 1 3.5-3.5 3.51 3.51 0 0 1 3.5 3.5V37h6V25.5c0-5.227-4.273-9.5-9.5-9.5z"
                                         fill="#ffffff"></path>
                                     <path d="M6 16.21V32" fill="none"
-                                        strokeWidth="1" strokeLinecap="butt"
-                                        strokeLinejoin="miter" stroke="#616161"
-                                        strokeOpacity="1"
-                                        strokeMiterlimit="10">
+                                          strokeWidth="1" strokeLinecap="butt"
+                                          strokeLinejoin="miter" stroke="#616161"
+                                          strokeOpacity="1"
+                                          strokeMiterlimit="10">
                                     </path>
                                     <path
                                         d="M22 13c1.086.36 2.621 2 3 3-1.754 1.738-2.574 2.867-3 6-.14 1.05-.902 1.688-2 1-3.055-1.914-6-2-8-2-1-1-.535-3.652 0-5l6 1z"
                                         fill="#ffffff"></path>
                                     <path d="M18 17H4l11-7h14z"
-                                        fill="#ffffff"></path>
+                                          fill="#ffffff"></path>
                                     <path
                                         d="M7.5 30c0-2.21-.672-4-1.5-4s-1.5 1.79-1.5 4 .672 4 1.5 4 1.5-1.79 1.5-4z"
                                         fill="#ffffff"></path>
@@ -351,8 +368,8 @@ const Header = () => {
                             </a>
                             <a href='https://karsu.uz/roundcube/' className='header-main-right-li'>
                                 <svg className="top-links__svg"
-                                    viewBox="0 0 230.17 230.17" width="17"
-                                    height="15">
+                                     viewBox="0 0 230.17 230.17" width="17"
+                                     height="15">
                                     <path
                                         d="M230,49.585c0-0.263,0.181-0.519,0.169-0.779l-70.24,67.68l70.156,65.518c0.041-0.468-0.085-0.94-0.085-1.418V49.585z"
                                         fill="#ffffff"></path>
@@ -370,27 +387,27 @@ const Header = () => {
                                 <span>{t('header.topLinks.corporateEmail')}</span>
                             </a>
                             <a href={`/${i18n.language}/rektor`}
-                                className='header-main-right-li'>
+                               className='header-main-right-li'>
                                 <svg className="top-links__svg"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="17px" height="17px"
-                                    viewBox="0 0 24 24" fill="none">
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     width="17px" height="17px"
+                                     viewBox="0 0 24 24" fill="none">
                                     <path
                                         d="M21.1938 2.80624C22.2687 3.88124 22.2687 5.62415 21.1938 6.69914L20.6982 7.19469C20.5539 7.16345 20.3722 7.11589 20.1651 7.04404C19.6108 6.85172 18.8823 6.48827 18.197 5.803C17.5117 5.11774 17.1483 4.38923 16.956 3.8349C16.8841 3.62781 16.8366 3.44609 16.8053 3.30179L17.3009 2.80624C18.3759 1.73125 20.1188 1.73125 21.1938 2.80624Z"
-                                        fill="#ffffff" />
+                                        fill="#ffffff"/>
                                     <path
                                         d="M14.5801 13.3128C14.1761 13.7168 13.9741 13.9188 13.7513 14.0926C13.4886 14.2975 13.2043 14.4732 12.9035 14.6166C12.6485 14.7381 12.3775 14.8284 11.8354 15.0091L8.97709 15.9619C8.71035 16.0508 8.41626 15.9814 8.21744 15.7826C8.01862 15.5837 7.9492 15.2897 8.03811 15.0229L8.99089 12.1646C9.17157 11.6225 9.26191 11.3515 9.38344 11.0965C9.52679 10.7957 9.70249 10.5114 9.90743 10.2487C10.0812 10.0259 10.2832 9.82394 10.6872 9.41993L15.6033 4.50385C15.867 5.19804 16.3293 6.05663 17.1363 6.86366C17.9434 7.67069 18.802 8.13296 19.4962 8.39674L14.5801 13.3128Z"
-                                        fill="#ffffff" />
+                                        fill="#ffffff"/>
                                     <path
                                         d="M20.5355 20.5355C22 19.0711 22 16.714 22 12C22 10.4517 22 9.15774 21.9481 8.0661L15.586 14.4283C15.2347 14.7797 14.9708 15.0437 14.6738 15.2753C14.3252 15.5473 13.948 15.7804 13.5488 15.9706C13.2088 16.1327 12.8546 16.2506 12.3833 16.4076L9.45143 17.3849C8.64568 17.6535 7.75734 17.4438 7.15678 16.8432C6.55621 16.2427 6.34651 15.3543 6.61509 14.5486L7.59235 11.6167C7.74936 11.1454 7.86732 10.7912 8.02935 10.4512C8.21958 10.052 8.45272 9.6748 8.72466 9.32615C8.9563 9.02918 9.22032 8.76528 9.57173 8.41404L15.9339 2.05188C14.8423 2 13.5483 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355Z"
-                                        fill="#ffffff" />
+                                        fill="#ffffff"/>
                                 </svg>
                                 <span>{t('header.topLinks.rectorsOffice')}</span>
                             </a>
 
                             <a href='http://kpi.allpro.uz' className='header-main-right-li'>
                                 <Image src={'/kpi-3.png'} alt='kpi' width={20} height={20}
-                                       style={{borderRadius: '50%', height: 20, width: "100%"}}/>
+                                       style={{borderRadius: '50%', height: 20}}/>
                                 <a href='http://kpi.allpro.uz' style={{
                                     color: "white",
                                     fontSize: "14px",
@@ -401,19 +418,36 @@ const Header = () => {
                                 </a>
 
                             </a>
+                            <a href='http://grant.karsu.uz' className='header-main-right-li flex items-center'>
+                              <Image
+                                src={'/award-2.png'}
+                                alt='kpi'
+                                width={20}
+                                height={20}
+                                style={{ borderRadius: '50%', height: 20 }}
+                              />
+                              <span
+                                className="ml-2 text-white text-[14px] font-sans no-underline hidden md:inline"
+                                style={{
+                                  fontFamily: "Nunito Sans, sans-serif",
+                                }}
+                              >
+                                {t('grant.request')}
+                              </span>
+                            </a>
                         </ul>
                     </div>
                     <div className='header-main-left'>
                         <div className='header-main-left-lang'>
-                        <svg className="top-links__svg"
-                                xmlns="http://www.w3.org/2000/svg" 
-                                width="16px" 
-                                height="16px" 
-                                viewBox="0 0 24 24">
-                                <path 
-                                    fill="none" 
-                                    stroke="#ffffff" 
-                                    strokeWidth="2" 
+                            <svg className="top-links__svg"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 width="16px"
+                                 height="16px"
+                                 viewBox="0 0 24 24">
+                                <path
+                                    fill="none"
+                                    stroke="#ffffff"
+                                    strokeWidth="2"
                                     d="M12,23 C18.0751322,23 23,18.0751322 23,12 C23,5.92486775 18.0751322,1 12,1 C5.92486775,1 1,5.92486775 1,12 C1,18.0751322 5.92486775,23 12,23 Z M12,23 C15,23 16,18 16,12 C16,6 15,1 12,1 C9,1 8,6 8,12 C8,18 9,23 12,23 Z M2,16 L22,16 M2,8 L22,8"
                                 />
                             </svg>

@@ -9,6 +9,9 @@
       "allVideos":"All Videos",
       "congratulations": "Congratulations"
     },
+  "grant": {
+    "request": "Submitting an application for a grant"
+  },
     "search":{
       "results":"Results for",
       "noResults":"No results found"

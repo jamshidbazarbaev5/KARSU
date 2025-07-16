@@ -530,6 +530,8 @@ input#search_call:checked ~ .header-main-left-search-input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* Keep consistent height to avoid layout shift when there are no news cards */
+  min-height: 540px;
 }
 
 .main-news-page {
